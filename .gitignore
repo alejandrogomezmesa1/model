@@ -30,6 +30,10 @@ data/overrides.json
 # Logs
 *.log
 
+# Secretos y claves
+.env
+data/.api_key
+
 # IDEs
 .vscode/
 .idea/

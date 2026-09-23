@@ -128,7 +128,7 @@ class KnowledgeBase:
         self.embeddings_path = str(self.data_dir / "product_embeddings.npy")
         self.embeddings_ids_path = str(self.data_dir / "product_embeddings_ids.json")
 
-        self.conn = sqlite3.connect(self.db_path)
+        self.conn = sqlite3.connect(self.db_path, check_same_thread=False)
         self.conn.row_factory = sqlite3.Row
         self._init_schema()
 
