@@ -1,0 +1,111 @@
+﻿nombre,marca,anio_lanzamiento,perfumista,genero,familia_olfativa,notas_salida,notas_corazon,notas_fondo,duracion,estela
+Chanel No. 5,Chanel,1921,Ernest Beaux,Femenino,Floral aldehidado,"Aldehidos, Bergamota, Limón","Iris, Jazmín, Rosa, Lirio de los valles","Sándalo, Váinilla, Ámbar, Almizcle",Muy duradero,Moderado
+Chanel Coco Mademoiselle,Chanel,2001,Jacques Polge,Femenino,Oriental floral,"Naranja, Bergamota","Rosa, Jazmín, Lichi","Pachuli, Váinilla, Ámbar, Almizcle",Duradero,Moderado a fuerte
+Dior J'adore,Dior,1999,Calice Becker,Femenino,Floral fruitál,"Bergamota, Pera, Mandarina","Jazmín, Orquídea, Rosa, Ylang-Ylang","Almizcle, Madera",Duradero,Moderado
+Dior Sauvage,Dior,2015,François Demachy,Masculino,Amaderado aromático,"Bergamota, Pimienta","Lavanda, Geranio, Elemi","Ambroxan, Cedro, Labdanum",Duradero,Fuerte
+Dior Miss Dior,Dior,2017,François Demachy,Femenino,Floral chipre,"Mandarina, Lichi","Rosa Grasse, Peonía, Jazmín","Almizcle, Pachuli",Moderado,Moderado
+Tom Ford Black Orchid,Tom Ford,2006,David Apel,Unisex,Oriental floral,"Trufa negra, Bálsamo, Bérgamota","Orquídea negra, Especias, Fruta","Pachuli, Chocolate, Incienso, Váinilla",Muy duradero,Fuerte
+Tom Ford Tobacco Vanille,Tom Ford,2007,"Tom Ford, Givaudan",Unisex,Oriental especiado,"Tabaco, Especias","Cacao, Tonka","Váinilla, Madera, Tabaco dulce",Muy duradero,Moderado a fuerte
+Yves Saint Laurent Black Opium,YSL,2014,"Nathalie Lorson, Marie Salamagne, Olivier Cresp",Femenino,Oriental gourmand,"Café, Pera, Mandarina","Jazmín, Almendra amarga, Flor de naranjo","Váinilla, Pachuli, Cedro",Duradero,Fuerte
+YSL Libre,YSL,2019,"Anne Flipo, Carlos Benaim",Femenino,Floral amaderado especiado,"Lavanda, Mandarina, Enebro","Flor de naranjo, Jazmín","Vainilla de Madagascar, Almizcle, Cedro",Duradero,Moderado a fuerte
+Armani Acqua di Giò,Giorgio Armani,1996,Alberto Morillas,Masculino,Amaderado aromático marino,"Bergamota, Limones sicilianos, Neroli","Jacinto, Romero, Jazmín","Almizcle blanco, Cedro, Musgo de roble",Moderado,Moderado
+Armani Stronger With You,Giorgio Armani,2017,"Vera Strubi, Vincent Ardiot, Nathalie Lorson",Masculino,Oriental especiado,"Cardamomo, Pimienta rosa","Piña, Caña de azüar, Lavanda","Vainilla, Cacao, Ámbar, Castor",Duradero,Moderado
+Versace Eros,Versace,2012,Aurelien Guichard,Masculino,Amaderado aromático,"Menta, Manzana verde, Limón","Tonka, Ambroxan, Geranio","Vainilla, Vetiver, Musgo de roble, Cedro",Muy duradero,Fuerte
+Versace Bright Crystal,Versace,2006,Alberto Morillas,Femenino,Floral fruitál,"Granada, Yuzu, Pera","Peonía, Magnolia, Loto","Ámbar, Musgo, Madera de caoba",Moderado,Suave a moderado
+Paco Rabanne 1 Million,Paco Rabanne,2008,"Christophe Raynaud, Olivier Pescheux",Masculino,Amaderado especiado,"Pomelo, Menta, Sangre de mandarina","Canela, Rosa, Especias","Cuero, Ámbar, Pachuli, Madera blanca",Duradero,Fuerte
+Paco Rabanne Lady Million,Paco Rabanne,2010,"Beatrice Piquet, Dominique Ropion, Christophe Raynaud",Femenino,Floral chipre,"Naranja, Frambuesa","Jazmín, Azucena, Flor de naranjo","Miel, Pachuli, Ámbar",Duradero,Fuerte
+Jean Paul Gaultier Le Male,Jean Paul Gaultier,1995,Francis Kurkdjian,Masculino,Oriental aromático,"Menta, Lavanda, Bergamota","Canela, Comino, Anis","Vainilla, Cachemira, Sandalo, Ambar",Duradero,Moderado a fuerte
+Jean Paul Gaultier Classique,Jean Paul Gaultier,1993,Jacques Cavallier,Femenino,Oriental floral,"Rosa, Jazmín, Anis","Nardo, Flor de naranjo, Vainilla","Ámbar, Vainilla, Almizcle",Duradero,Moderado
+Carolina Herrera Good Girl,Carolina Herrera,2016,"Sonia Constant, Louise Turner",Femenino,Oriental floral,"Almendra, Café, Bergamota","Jazmín Sambac, Tuberosa","Cacao, Tonka, Vainilla",Duradero,Moderado a fuerte
+Carolina Herrera 212 VIP,Carolina Herrera,2010,"Beatrice Piquet, Sonia Constant",Femenino,Floral frutícola,"Ron, Champaña, Mandarina","Gardenia, Flor de azahar","Vainilla, Musgo, Miel",Moderado,Moderado
+Prada Luna Rossa Carbon,Prada,2016,Daniela Andrier,Masculino,Amaderado aromático,"Lavanda, Manzana, Bergamota","Mirto, Salvia, Guisante dulce","Ambroxan, Almizcle, Sandalo",Duradero,Fuerte
+Prada Candy,Prada,2011,Daniela Andrier,Femenino,Oriental vainillado,Caramelo,"Almendra amarga, Praline","Vainilla, Almizcle blanco, Benjuí",Moderado a duradero,Moderado
+Burberry Her,Burberry,2018,"Nathalie Lorson, Francis Kurkdjian",Femenino,Frutal chipre,"Bayas, Mora, Frambuesa","Violeta, Peonía","Vainilla, Ámbar, Almizcle",Moderado,Moderado
+Gucci Bloom,Gucci,2017,Alberto Morillas,Femenino,Floral blanco,Jazmín Sambac,Tuberosa,Iris,Duradero,Suave a moderado
+Gucci Guilty,Gucci,2010,Aurelien Guichard,Masculino,Amaderado aromático,"Lavanda, Bergamota, Mandarina, Pomelo Rosa","Especias rosadas, Geranio, Naranja Amarga","Cuero, Cedro, Pachuli, Ámbar",Moderado,Moderado
+Dolce & Gabbana Light Blue,Dolce & Gabbana,2001,Olivier Cresp,Femenino,Floral fruitál,"Manzana Siciliana, Cedro, Campanilla","Jazmín, Rosa Blanca, Bambú","Cedro Blanco, Almizcle, Ámbar",Moderado,Suave a moderado
+Dolce & Gabbana The One,Dolce & Gabbana,2006,Olivier Polge,Femenino,Oriental floral,"Bergamota, Litchi, Durazno","Lirio, Jazmín, Flor de azahar","Vainilla, Ámbar, Madera",Duradero,Moderado
+Hugo Boss Bottled,Hugo Boss,1998,Annick Menardo,Masculino,Amaderado aromático,"Manzana, Ciruela, Bergamota, Hoja de Abedul","Canela, Geranio, Clavo, Nuez Moscada","Sandalo, Vetiver, Cedro, Vainilla",Moderado,Moderado
+Calvin Klein CK One,Calvin Klein,1994,"Alberto Morillas, Harry Fremont",Unisex,Cítrico aromático,"Bergamota, Cáscara de limón, Piel de mandarina, Piel de naranja, Papaya, Piña","Nuez moscada, Cardamomo, Violeta, Jazmín","Almizcle, Sándalo, Ámbar, Musgo de roble",Suave,Suave
+Calvin Klein Eternity,Calvin Klein,1988,Sophia Grojsman,Femenino,Floral verde,"Mandarina, Sandalo, Freesia","Lirio de los valles, Marigold, Narciso","Sándalo, Ámbar, Musgo",Moderado,Moderado
+Lancôme La Vie Est Belle,Lancôme,2012,"Olivier Polge, Dominique Ropion, Anne Flipo",Femenino,Floral frutícola gourmand,"Pera, Grosella negra","Iris, Jazmín, Azahar","Praline, Vainilla, Pachuli",Duradero,Moderado
+Guerlain Shalimar,Guerlain,1925,Jacques Guerlain,Femenino,Oriental vainillado,"Bergámota, Limón","Iris, Jazmín, Rosa","Vainilla, Ámbar, Bálsamo de Tolú, Almizcle",Muy duradero,Moderado
+Guerlain La Petite Robe Noire,Guerlain,2009,"Delphine Jelk, Thérry Wasser",Femenino,Oriental frutícola,"Cereza, Bergamota","Rosa, Almendra Amarga","Pachuli, Vainilla, Regaliz",Moderado,Moderado
+Chanel Bleu de Chanel,Chanel,2010,"Jacques Polge, Maurice Roucel",Masculino,Amaderado aromático,"Toronja, Limón, Menta, Pimienta Rosa","Jengibre, Nuez Moscada, Jazmín","Incienso, Cáscara de Cédro, Sandalo, Sandalo, Labdanum, Vetiver, Pachuli, Musgo de roble",Duradero,Moderado a fuerte
+Chanel Chance,Chanel,2003,Jacques Polge,Femenino,Floral frutícola,"Toronja rosa, Piña, Limón, Bergamota","Jazmín, Iris, Hydrangea, Ámbar","Pachuli, Vetiver, Almizcle blanco",Moderado,Moderado
+Armani Code,Giorgio Armani,2004,"Antoine Lie, Antoine Maisondieu",Masculino,Oriental aromático especiado,"Bergamota, Limón","Especias, Flor de naranjo","Cuero, Tonka, Sandalo",Duradero,Moderado a fuerte
+Narciso Rodriguez For Her,Narciso Rodriguez,2003,Christine Nagel,Femenino,Almizclado floral,"Grosella, Osmanthus","Almizcle, Flor de azahar, Rosa","Almizcle, Vainilla, Ámbar",Duradero,Moderado
+Narciso Rodriguez Bleu Noir,Narciso Rodriguez,2015,Christine Nagel,Masculino,Amaderado aromático,"Bergamota, Cardamomo","Lavanda, Salvia","Vétiver, Sándalo, Musk",Moderado a duradero,Moderado
+Viktor & Rolf Flowerbomb,Viktor & Rolf,2005,"Carlos Benaim, Domitille Bertier, Olivier Polge",Femenino,Floral oriental,"Bergamota, Frangipani, Té verde","Jazmín, Rosa, Orquídea","Pachuli, Vainilla, Almizcle",Muy duradero,Fuerte
+Thierry Mugler Alien,Mugler,2005,"Dominique Ropion, Laurent Bruyere",Femenino,Amaderado floral,Jazmín Sambac,"Cashmeran, Madera Blanca","Ámbar, Madera Blanca",Duradero,Fuerte
+Thierry Mugler Angel,Mugler,1992,"Olivier Cresp, Yves de Chirin",Femenino,Oriental gourmand,"Melocotón, Algódón dulce, Bergamota","Miel, Ciruela, Praline, Chocolate","Pachuli, Vainilla, Caramelo",Muy duradero,Fuerte
+Lancome Tresor,Lancôme,1990,Sophia Grojsman,Femenino,Floral fruitál,"Melocotón, Piel de mandarina, Lilás","Rosa, Íris, Peonía, Lirio de los valles","Vainilla, Sándalo, Musgo, Ámbar",Duradero,Moderado
+Elizabeth Arden Green Tea,Elizabeth Arden,1999,Elizabeth Arden,Femenino,Cítrico verde,"Té verde, Bergamota, Limón","Menta, Jazmín, Amélia","Almizcle, Cariófilo",Suave,Suave
+Issey Miyake L'Eau d'Issey,Issey Miyake,1992,Jacques Cavallier,Femenino,Floral acuático,"Loto, Cítricos, Freesia","Lirio de los valles, Peonía, Ciclamen","Sándalo, Almizcle, Musgo de roble",Moderado,Suave
+Issey Miyake L'Eau d'Issey Pour Homme,Issey Miyake,1994,Jacques Cavallier,Masculino,Acuático aromático,"Yuzu, Limón, Bergamota","Salvia, Loto, Cédro","Vétiver, Sándalo, Almizcle",Moderado,Suave
+Bvlgari Omnia,Bvlgari,2003,Alberto Morillas,Femenino,Oriental especiado,"Cardamomo, Jengibre","Té negro, Chocolate","Vainilla, Sandalo, Almizcle",Moderado,Moderado
+Bvlgari Man in Black,Bvlgari,2014,Alberto Morillas,Masculino,Oriental especiado,"Ron, Especias","Cuero, Tabaco, Iris","Tonka, Ámbar, Cuero",Duradero,Moderado a fuerte
+Hermes Terre d'Hermes,Hermès,2006,Jean-Claude Ellena,Masculino,Amaderado especiado,"Naranja, Toronja, Pimienta","Geranio, Pachuli, Pimienta rosa","Vétiver, Cedro, Benjuí",Duradero,Moderado
+Hermes Un Jardin sur le Nil,Hermès,2005,Jean-Claude Ellena,Unisex,Cítrico verde,"Mango, Toronja","Loto, Higuera","Incienso, Sicomoro",Suave,Suave
+Creed Aventus,Creed,2010,"Olivier Creed, Erwin Creed",Masculino,Afrutado chipre,"Piña, Grosella negra, Manzana, Bergamota","Rosál, Musgo de roble, Abedul, Jazmín","Almizcle, Roble, Ambroxan, Vainilla",Duradero,Moderado a fuerte
+Creed Green Irish Tweed,Creed,1985,Pierre Bourdon,Masculino,Amaderado aromático,"Limón, Verbena, Menta","Violeta, Iris","Sándalo, Ámbar, Vetiver",Duradero,Moderado
+Byredo Gypsy Water,Byredo,2008,Jerome Epinette,Unisex,Amaderado aromático,"Bergamota, Limones, Pimienta","Incienso, Pino, Enebro","Vainilla, Sandalo, Ámbar",Moderado,Suave a moderado
+Byredo Bal d'Afrique,Byredo,2009,Jerome Epinette,Unisex,Floral cítrico,"Bergamota, Neroli, Pomelo","Violeta, Jazmín, Frangipani","Almizcle, Vetiver, Cedro",Moderado,Suave a moderado
+Maison Francis Kurkdjian Baccarat Rouge 540,Maison Francis Kurkdjian,2015,Francis Kurkdjian,Unisex,Amaderado amberado,"Azafrán, Jazmín","Ambergris, Almendra amarga","Cedro, Abedul, Ambroxan",Muy duradero,Fuerte
+Maison Francis Kurkdjian Grand Soir,Maison Francis Kurkdjian,2016,Francis Kurkdjian,Unisex,Oriental amberado,Vainilla,Ámbar,"Benjuí, Vainilla, Ámbar",Muy duradero,Moderado a fuerte
+Le Labo Santal 33,Le Labo,2011,Frank Voelkl,Unisex,Amaderado,"Cardamomo, Iris, Violeta","Cedro, Papyrus","Sándalo, Cuero, Almizcle",Duradero,Moderado a fuerte
+Le Labo Another 13,Le Labo,2013,Frank Voelkl,Unisex,Almizclado,Notas acuáticas,"Almizcle, Ambroxan","Almizcle, Sandalo",Moderado,Moderado
+Diptyque Philosykos,Diptyque,1996,Olivia Giacobetti,Unisex,Verde,Hoja de higuera,"Higo, Coco","Madera, Almizcle",Moderado,Suave
+Jo Malone Wood Sage & Sea Salt,Jo Malone,2014,Christine Nagel,Unisex,Aromatico acuático,"Notas de sal marina, Notas amberadas","Salvia, Notas marinas","Grenetina, Sequoia, Almizcle",Suave a moderado,Suave
+Jo Malone English Pear & Freesia,Jo Malone,2010,Christine Nagel,Femenino,Floral frutícola,"Pera, Amélia","Freesia, Rosa","Ambar, Almizcle blanco, Pachuli",Suave,Suave
+Acqua di Parma Colonia,Acqua di Parma,1916,Casa Acqua di Parma,Unisex,Cítrico aromático,"Bergamota siciliana, Limón, Lavanda","Rosa, Verbena, Romero","Sándalo, Vétiver, Musgo de roble",Suave a moderado,Suave
+Mancera Cedrat Boise,Mancera,2010,Pierre Montale,Unisex,Amaderado cítrico,"Cedrato, Bergamota","Piña, Jazmín","Sandalo, Vainilla, Ambar",Duradero,Fuerte
+Montale Intense Cafe,Montale,2010,Pierre Montale,Unisex,Oriental gourmand,"Café, Bergamota","Cacao, Rosa","Vainilla, Almizcle, Ámbar",Duradero,Fuerte
+Xerjoff Naxos,Xerjoff,2011,Chris Maurice,Masculino,Aromatico dulce,"Lavanda, Bergamota","Miel, Tabaco","Vainilla, Tonka, Sandalo",Duradero,Fuerte
+Parfums de Marly Layton,Parfums de Marly,2016,Hamid Merati-Kashani,Masculino,Aromatico frutál,"Bergamota, Manzana, Lavanda, Coriandro","Geranio, Manzana, Sal Violeta","Vainilla, Sandalo, Tonka",Duradero,Fuerte
+Parfums de Marly Delina,Parfums de Marly,2017,Quentin Bisch,Femenino,Floral cítrico,"Litchi, Bergamota, Ruibárbaro","Peonía, Rosa Turca, Lirio","Almizcle, Vainilla, Cedro",Duradero,Fuerte
+Nasomatto Black Afgano,Nasomatto,2009,Alessandro Gualtieri,Unisex,Amaderado especiado,"Cañamo, Especias","Incienso, Cacao","Vetiver, Vainilla, Sandalo",Duradero,Fuerte
+Amouage Interlude Man,Amouage,2012,"Karine Vinchon-Spehner, Pierre Negrin",Masculino,Oriental especiado,"Incienso, Bergamota, Pimienta rosa","Enebro, Ambar Gris, Salvia","Labdanum, Ámbar Gris, Estoraque",Muy duradero,Fuerte
+Amouage Jubilation XXV,Amouage,2007,Karine Vinchon-Spehner,Masculino,Oriental especiado,"Cardamomo, Cítricos, Notas verdes","Especias, Cuero, Fruta seca","Sandalo, Pachuli, Ámbar",Muy duradero,Fuerte
+Kilian Love Don't Be Shy,By Kilian,2007,Calice Becker,Femenino,Oriental gourmand,Neroli,"Praline, Cacao","Vainilla, Miel, Almendra",Duradero,Moderado a fuerte
+Roja Dove Elysium,Roja Parfums,2013,Roja Dove,Masculino,Amaderado aromático,"Bergamota, Salvia","Geranio, Lavanda","Sandalo, Musgo de roble, Cuero",Duradero,Fuerte
+Initio Oud for Greatness,Initio Parfums,2016,Mark Buxton,Unisex,Amaderado especiado,"Especias, Baúl","Oud, Rosa","Ambar, Cuero, Cachemira",Muy duradero,Fuerte
+Xerjoff Erba Pura,Xerjoff,2016,Chris Maurice,Unisex,Floral frutícola,"Bergamota, Mandarina, Piña","Jasmín, Rosa","Vainilla, Ambar, Almizcle",Duradero,Fuerte
+Lattafa Khamrah,Lattafa,2021,Lattafa Perfumes,Unisex,Oriental especiado,"Canela, Nuez Moscada, Bergamota","Fruta seca, Rosa","Vainilla, Ámbar, Benjuí, Cachemira",Muy duradero,Fuerte
+Lattafa Asad,Lattafa,2020,Lattafa Perfumes,Masculino,Oriental amaderado,"Miel, Canela","Baúl, Ámbar","Oud, Cuero, Ámbar Gris",Muy duradero,Fuerte
+Al Haramain Amber Oud,Al Haramain,2015,Al Haramain,Unisex,Amaderado amberado,"Bergamota, Especias","Ámbar, Oud","Musgo, Cuero, Sandalo",Muy duradero,Fuerte
+Ajmal Wisal,Ajmal,2013,Ajmal Perfumes,Femenino,Floral oriental,"Rosa, Lichi","Jazmín, Almizcle","Vainilla, Ámbar, Sandalo",Duradero,Moderado a fuerte
+Rasasi Hawas,Rasasi,2013,Rasasi Perfumes,Masculino,Oriental floral,"Manzana, Especias","Lavanda, Geranio","Ámbar, Almizcle, Cuero",Duradero,Moderado a fuerte
+Nishane Ani,Nishane,2018,Cristiano Canali,Unisex,Amaderado especiado,"Cardamomo, Naranja Sanguína","Pimienta Rosa, Incienso","Ambroxan, Almizcle, Sándalo",Duradero,Fuerte
+Nishane Hacivat,Nishane,2015,Cristiano Canali,Unisex,Frutal amaderado,"Piña, Coco","Vainilla, Praline","Almizcle, Musgo, Cedro",Duradero,Moderado a fuerte
+Zoologist Bee,Zoologist Perfumes,2016,Eugene Y. Song,Unisex,Floral miel,"Miel, Cítricos","Flores de cera, Cera de abeja","Musgo, Sándalo, Ámbar",Moderado,Moderado
+Ormonde Jayne Tolu,Ormonde Jayne,2016,Geza Schoen,Unisex,Amaderado especiado,"Cardamomo, Incienso","Iris, Rosa","Vainilla, Tolu, Vetiver",Duradero,Moderado
+Escentric Molecules Escentric 01,Escentric Molecules,2006,Geza Schoen,Unisex,Almizclado sintético,Iso E Super,Iso E Super,Iso E Super,Duradero,Suave a moderado (piel-dependiente)
+Comme des Garcons 2 Man,Comme des Garcons,1999,Mark Buxton,Masculino,Amaderado especiado,"Pimienta, Canela","Incienso, Cuero","Vetiver, Tabaco, Sandalo",Moderado,Moderado
+Etat Libre d'Orange Rossy de Palma,Etat Libre d'Orange,2009,Antoine Lie,Femenino,Floral especiado,"Pimienta rosa, Bergamota","Jazmín, Rosa","Vainilla, Almizcle, Ambar",Moderado,Moderado
+Serge Lutens Ambre Sultan,Serge Lutens,2000,Christopher Sheldrake,Unisex,Oriental amberado,"Orégano, Especias","Miel, Salvia","Ámbar, Vainilla, Bencilo",Muy duradero,Moderado a fuerte
+Serge Lutens Tubereuse Criminelle,Serge Lutens,1999,Christopher Sheldrake,Unisex,Floral blanco,"Alcanfor, Menta","Tuberosa, Nardo","Almizcle, Vainilla, Especias",Duradero,Fuerte
+Frederic Malle Portrait of a Lady,Editions de Parfums Frederic Malle,2010,Dominique Ropion,Femenino,Oriental especiado,"Especias, Frambuesa","Rosa Turca, Incienso","Pachuli, Sandalo, Ámbar",Muy duradero,Fuerte
+Frederic Malle Musc Ravageur,Editions de Parfums Frederic Malle,2000,Maurice Roucel,Unisex,Oriental almizclado,"Lavanda, Bergamota","Canela, Váinilla","Almizcle, Ámbar, Sandalo",Duradero,Moderado a fuerte
+Chloe Eau de Parfum,Chloé,2008,Amandine Marie,Femenino,Floral,"Peonía, Litchi, Frescia","Rosa, Lirio de los valles, Magnolia","Almizcle, Cedro, Ambar",Moderado,Moderado
+Marc Jacobs Daisy,Marc Jacobs,2007,Alberto Morillas,Femenino,Floral fruitál,"Fresa Silvestre, Violeta, Uva","Jazmín, Gardenia, Violeta","Sándalo, Almizcle Blanco, Cedro Rojo",Suave a moderado,Suave
+Ralph Lauren Polo Blue,Ralph Lauren,2003,Loc Dong,Masculino,Acuático aromático,"Melon, Cucumber","Notas marinas, Geranio","Almizcle, Sandalo, Cedro",Moderado,Suave a moderado
+Ralph Lauren Romance,Ralph Lauren,1998,"Loc Dong, Harry Fremont",Femenino,Floral,"Freesia, Marigold","Rosa, Peonía, Lirio","Sándalo, Almizcle, Vainilla",Moderado,Moderado
+Tommy Hilfiger Tommy Girl,Tommy Hilfiger,1996,"Steve Demercik, Karyn Khoury",Femenino,Floral cítrico,"Manzanilla, Mandarina","Clavel, Melocotón, Jazmín","Sándalo, Almizcle, Vainilla",Suave,Suave
+Davidoff Cool Water,Davidoff,1988,Pierre Bourdon,Masculino,Acuático aromático,"Menta, Lavanda, Coco","Geranio, Jazmín, Espliego","Almizcle, Tabaco, Ámbar",Moderado,Moderado
+Azzaro Chrome,Azzaro,1996,"Fabrice Pellegrin, Gerard Anthony",Masculino,Cítrico acuático,"Bergamota, Limón","Melon marino, Jazmín","Almizcle, Cedro",Moderado,Suave a moderado
+Montblanc Legend,Montblanc,2011,"Fabrice Pellegrin, Olivier Pescheux",Masculino,Amaderado aromático,"Bergamota, Piña","Lavanda, Geranio","Cuero, Sandalo, Haba tonka",Moderado,Moderado
+Boss Bottled Night,Hugo Boss,2011,"Annick Menardo, Beatrice Piquet",Masculino,Amaderado especiado,"Bergamota, Pomelo, Cardamomo","Lavanda, Salvia","Vetiver, Tabaco, Musgo",Moderado,Moderado
+Coach Man,Coach,2018,Coach Fragrances,Masculino,Amaderado cítrico,"Bergamota, Toronja","Salvia, Lavanda","Cedro, Pachuli, Almizcle",Moderado,Moderado
+Michael Kors Sexy Amber,Michael Kors,2013,Yann Vasnier,Femenino,Oriental amberado,"Mandarina, Ylang-Ylang","Jazmín, Flor de azahar","Ámbar, Sandalo, Vainilla",Duradero,Moderado
+Valentino Born In Roma,Valentino,2019,Antoine Maisondieu,Unisex,Amaderado especiado,"Bergamota, Pimienta rosa","Almizcle, Iris","Vainilla, Ambar Gris, Cedro",Duradero,Moderado a fuerte
+Valentino Voce Viva,Valentino,2020,Sophie Labbe,Femenino,Floral,"Frambuesa, Bergamota","Jazmín, Naranja","Vainilla, Ámbar Gris",Duradero,Moderado a fuerte
+Yves Saint Laurent Y,YSL,2017,"Dora Baghriche, Marie Salamagne",Masculino,Aromatico frutál,"Manzana, Jengibre, Bergamota","Salvia, Geranio, Incienso","Haba tonka, Sándalo, Musgo de roble",Duradero,Moderado a fuerte
+Dior Homme Intense,Dior,2011,François Demachy,Masculino,Amaderado floral,"Lavanda, Bergamota","Iris, Pera, Ambrette","Vetiver, Cacao, Cedro",Duradero,Moderado a fuerte
+Chanel Allure Homme Sport,Chanel,2004,Jacques Polge,Masculino,Amaderado aromático,"Naranja Sicilia, Mandarina","Neroli, Jengibre","Almizcle, Sandalo, Cedro",Moderado,Moderado
+Guerlain Habit Rouge,Guerlain,1965,Jean-Paul Guerlain,Masculino,Oriental cítrico,"Bergamota, Naranja","Rosa, Jazmín, Canela","Vainilla, Cuero, Sandalo",Duradero,Moderado
+Guerlain Vetiver,Guerlain,1959,Jean-Paul Guerlain,Masculino,Amaderado aromático,"Limón, Bergamota, Pimienta","Vetiver, Tabaco","Cuero, Nuez Moscada",Duradero,Moderado
+Aramis Classic,Aramis,1964,Bernard Chant,Masculino,Chipre aromático,"Salvia, Lavanda","Pachuli, Cuero","Musgo de roble, Sándalo, Ambar",Duradero,Moderado
+Dunhill Icon,Dunhill,2013,Ilias Ermenidis,Masculino,Amaderado,"Bergamota, Cardamomo, Elemi","Salvia, Geranio, Coriandro","Vetiver, Ambroxan, Musgo",Duradero,Moderado
+Salvatore Ferragamo Uomo,Salvatore Ferragamo,2016,Alberto Morillas,Masculino,Aromatico especiado,"Bergamota, Almendra","Geranio, Miel","Haba tonka, Almizcle, Cuero",Duradero,Moderado
+Zara Man Nightshift,Zara,2020,Zara Fragrances,Masculino,Amaderado especiado,"Bergamota, Especias","Cedro, Cuero","Vainilla, Ámbar",Moderado,Moderado

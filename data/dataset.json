@@ -1,0 +1,122 @@
+[
+  {
+    "messages": [
+      {
+        "role": "user",
+        "content": "¿Qué es la maceración de un perfume y cuánto tiempo debe durar?"
+      },
+      {
+        "role": "assistant",
+        "content": "La maceración es la etapa donde los aceites esenciales o moléculas aromáticas se integran íntimamente con el alcohol y el agua desmineralizada. Durante este reposo en un ambiente oscuro y templado, las notas se redondean y se eliminan asperezas olfativas. Se recomienda un periodo mínimo de entre 3 a 6 semanas."
+      }
+    ]
+  },
+  {
+    "messages": [
+      {
+        "role": "user",
+        "content": "¿Cuál es la función del fijador en una fragancia?"
+      },
+      {
+        "role": "assistant",
+        "content": "El fijador reduce la presión de vapor y retarda la velocidad de evaporación de las notas más volátiles. No cambia el aroma principal, sino que ancla las moléculas y prolonga la longevidad de la fragancia sobre la piel. Se suelen usar resinas, maderas o almizcles sintéticos como fijadores."
+      }
+    ]
+  },
+  {
+    "messages": [
+      {
+        "role": "user",
+        "content": "¿Cuáles son las diferencias entre Eau de Toilette y Eau de Parfum?"
+      },
+      {
+        "role": "assistant",
+        "content": "La principal diferencia radica en la concentración del concentrado aromático: un Eau de Toilette (EDT) contiene típicamente entre un 8% y un 15% de esencia en alcohol, ofreciendo una proyección fresca y duración moderada (3 a 5 horas). En cambio, un Eau de Parfum (EDP) tiene entre un 15% y un 20% de concentración, aportando mayor profundidad, fijación y duración (6 a 8 horas o más)."
+      }
+    ]
+  },
+  {
+    "messages": [
+      {
+        "role": "user",
+        "content": "¿Cómo se estructura la pirámide olfativa de un perfume?"
+      },
+      {
+        "role": "assistant",
+        "content": "La pirámide olfativa se compone de tres etapas: 1. Notas de salida o cabeza: son ligeras y volátiles (cítricos, hierbas), perceptibles durante los primeros 15 minutos. 2. Notas de corazón o cuerpo: definen la identidad de la fragancia (flores, especias, frutas), duran varias horas. 3. Notas de fondo o base: las más densas y pesadas (maderas, resinas, almizcle, vainilla), que perduran en la piel tras la evaporación del resto."
+      }
+    ]
+  },
+  {
+    "messages": [
+      {
+        "role": "user",
+        "content": "¿Qué tipo de alcohol se debe utilizar para formular perfumes?"
+      },
+      {
+        "role": "assistant",
+        "content": "Se debe emplear alcohol etílico desnaturalizado de grado perfumería al 96% (o 96° sin desnaturalizar si la regulación lo permite). Es fundamental que sea neutro, sin olores residuales fuertes ni impurezas para que no altere la composición aromática."
+      }
+    ]
+  },
+  {
+    "messages": [
+      {
+        "role": "user",
+        "content": "¿Por qué un perfume cambia de aroma a lo largo de las horas en la piel?"
+      },
+      {
+        "role": "assistant",
+        "content": "Cambia por dos razones principales: la evaporación progresiva de las moléculas según su peso molecular (desde las notas de salida hasta las de fondo) y la química particular de cada piel, que incluye el pH, la temperatura corporal y los lípidos cutáneos."
+      }
+    ]
+  },
+  {
+    "messages": [
+      {
+        "role": "user",
+        "content": "¿Cómo se calcula la densidad y el porcentaje de dilución al formular un lote?"
+      },
+      {
+        "role": "assistant",
+        "content": "El porcentaje de dilución se calcula por peso: (Peso de la esencia / Peso total de la mezcla) x 100. Por ejemplo, para 100 gramos de Eau de Parfum al 20%, se pesan 20 gramos de concentrado de aceites y 80 gramos de solución alcohólica."
+      }
+    ]
+  },
+  {
+    "messages": [
+      {
+        "role": "user",
+        "content": "¿Cómo se protege una fragancia de la oxidación y la luz?"
+      },
+      {
+        "role": "assistant",
+        "content": "Para proteger una fragancia se debe almacenar en envases de vidrio oscuro (ámbar o cobalto), mantenerla alejada del calor y de la luz solar directa, y minimizar el espacio de aire en el frasco. En formulaciones comerciales también se añaden antioxidantes como el BHT o tocoferol y filtros UV."
+      }
+    ]
+  },
+  {
+    "messages": [
+      {
+        "role": "user",
+        "content": "¿Qué es la maduración frente a la maceración en perfumería?"
+      },
+      {
+        "role": "assistant",
+        "content": "La maduración es el reposo previo del concentrado de aceites esenciales puros antes de mezclarlos con alcohol, permitiendo que las sustancias puras interactúen. La maceración es el reposo posterior, una vez que el concentrado ya se ha disuelto en alcohol y agua."
+      }
+    ]
+  },
+  {
+    "messages": [
+      {
+        "role": "user",
+        "content": "¿Qué es una nota gourmand?"
+      },
+      {
+        "role": "assistant",
+        "content": "Una nota gourmand evoca aromas comestibles y dulces, como vainilla, chocolate, café, caramelo, almendra o miel. Suelen aportar calidez, confort y una excelente fijación al situarse predominantemente en el fondo de la composición."
+      }
+    ]
+  }
+]

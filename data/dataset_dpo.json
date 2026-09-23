@@ -1,0 +1,122 @@
+[
+  {
+    "prompt": "¿Qué es el proceso de maceración en un perfume y cuánto tiempo debe durar?",
+    "chosen": "La maceración es el proceso físico-químico fundamental donde el concentrado aromático, el alcohol etílico desodorizado y el agua desmineralizada alcanzan el equilibrio molecular. Durante este reposo en oscuridad y a temperatura templada (15°C - 18°C), ocurren reacciones de esterificación que suavizan el impacto pungente del alcohol y armonizan las notas de salida, corazón y fondo. El tiempo mínimo recomendado es de **3 a 6 semanas** en recipientes de vidrio ámbar herméticamente sellados.",
+    "rejected": "La maceración es mezclar vinagre, agua y cáscaras de fruta en un frasco durante un par de horas o unos días hasta que huela a licor. Es un proceso para añadir especias lácteas y azúcar."
+  },
+  {
+    "prompt": "¿Cómo se calcula la cantidad de alcohol y esencia para hacer 100 ml de Eau de Parfum al 18%?",
+    "chosen": "Para formular 100 ml de Eau de Parfum (EDP) al 18% con alcohol de 96°:\n1. **Concentrado de fragancia**: 18 ml (aprox. 17.1 gramos según la densidad del aceite).\n2. **Alcohol etílico desodorizado 96°**: 78 ml.\n3. **Agua desmineralizada**: 4 ml.\nProcedimiento: Disolver primero la esencia con el alcohol agitando suavemente; luego agregar el agua gota a gota. Dejar reposar de 3 a 4 semanas para completar la maceración antes del filtrado y uso.",
+    "rejected": "Solo echa un poco de alcohol cualquiera en una botella y ponle unas gotas de aceite hasta que huela fuerte. No hace falta medir nada exacto ni usar agua."
+  },
+  {
+    "prompt": "¿Qué función cumple el Ambroxan en perfumería y por qué se usa tanto?",
+    "chosen": "El Ambroxan es una molécula sintética derivada del esclareol (salvia romana) que reproduce la faceta más noble del ámbar gris. Cumple dos funciones esenciales:\n1. **Fijador de fondo**: Su alto peso molecular y baja volatilidad retienen las notas más ligeras y otorgan fijación de más de 24 horas.\n2. **Difusión y aura**: Aporta una estela cálida, amaderada, seca y aterciopelada de gran proyección sin resultar pesada, siendo el ingrediente insignia en éxitos modernos como *Dior Sauvage*.",
+    "rejected": "El ambroxan es una especia de cocina que se le echa al perfume para que huela a caramelo y galletas."
+  },
+  {
+    "prompt": "¿Cuáles son las notas y características del perfume Dior Sauvage?",
+    "chosen": "**Dior Sauvage** (Dior, 2015)\n- **Perfumista:** François Demachy\n- **Género:** Masculino | **Familia olfativa:** Amaderado aromático\n- **Pirámide olfativa:**\n  - *Notas de salida:* Bergamota de Reggio Calabria, Pimienta de Sichuan\n  - *Notas de corazón:* Lavanda, Geranio, Pimienta rosa, Elemi\n  - *Notas de fondo:* Ambroxan, Cedro, Labdanum\n- **Rendimiento:** Longevidad duradera (8-10 horas) con estela potente y marcada.",
+    "rejected": "**Doris Sánchez** (Doris, 2015)\n- Perfumista: François Pouget\n- Notas: Pérez, Moreno, Vexa, Durango, Vainilla\n- Es producido por Carolina Herrera."
+  },
+  {
+    "prompt": "¿Cuáles son las notas del perfume Tom Ford Tobacco Vanille?",
+    "chosen": "**Tom Ford Tobacco Vanille** (Tom Ford, 2007)\n- **Perfumista:** Olivier Gillotin / Tom Ford\n- **Género:** Unisex | **Familia olfativa:** Oriental especiado\n- **Pirámide olfativa:**\n  - *Notas de salida:* Hoja de tabaco, Notas especiadas aromáticas\n  - *Notas de corazón:* Vainilla, Cacao, Haba tonka, Flor del tabaco\n  - *Notas de fondo:* Frutos secos, Acordes amaderados\n- **Rendimiento:** Muy duradero (+12 horas) con una estela cálida y opulenta.",
+    "rejected": "Alicante de Manzanilla, Almeji, Ambroxan, Bambú, Blanca de Lavanda, Borbuda, Camaclans, Canto, Cortejo, Delfin, Enebro, Fuego, Grifín, Guayran, Haricot, Incienso, Jardimar, Kermesse, Lanzadero, Malva, Mince, Miso, Nuez, Oreganza, Orquídea, Pacífico, Papaya, Peoniego, Piernito, Queso, Receptivo, Rojo, Rubén, Sándalo, Soplo, Udon, Vallejo, Vitamina."
+  },
+  {
+    "prompt": "santal 33",
+    "chosen": "**Le Labo Santal 33** (Le Labo, 2011)\n- **Perfumista:** Frank Voelkl\n- **Género:** Unisex | **Familia olfativa:** Amaderado aromático\n- **Pirámide olfativa:**\n  - *Notas de salida:* Cardamomo, Iris, Violeta\n  - *Notas de corazón:* Papiro, Cedro, Ambrox\n  - *Notas de fondo:* Sándalo australiano, Cuero, Ámbar\n- **Rendimiento:** Excelente duración (9-12 horas) con estela distintiva y sofisticada.",
+    "rejected": "Una especie floral pardo con notas de Salvia, Geranio, Almendra, Pimienta negra, Canela, Menta. El salón de monterroso a la frutagaría de los amorados."
+  },
+  {
+    "prompt": "¿Cuáles son las notas y características de Creed Aventus?",
+    "chosen": "**Creed Aventus** (Creed, 2010)\n- **Perfumistas:** Jean-Christophe Hérault, Erwin Creed\n- **Género:** Masculino | **Familia olfativa:** Chipre frutal\n- **Pirámide olfativa:**\n  - *Notas de salida:* Piña, Grosellas negras, Manzana, Bergamota\n  - *Notas de corazón:* Abedul ahumado, Pachulí, Jazmín de Marruecos, Rosa\n  - *Notas de fondo:* Almizcle, Musgo de roble, Ámbar gris, Vainilla\n- **Rendimiento:** Duración duradera con estela moderada a fuerte, símbolo de elegancia y masculinidad moderna.",
+    "rejected": "La medicina del hombre que apoya la inventura de estos fruturas para desafiarse con flores y sorgillientes."
+  },
+  {
+    "prompt": "¿Qué referencias de Tom Ford conoces en tu catálogo?",
+    "chosen": "En el catálogo disponemos de las siguientes referencias exclusivas de la casa **Tom Ford**:\n\n1. **Tom Ford Black Orchid** (2006) - Unisex | *Oriental floral* (Trufa negra, Orquídea negra, Pachulí, Chocolate).\n2. **Tom Ford Tobacco Vanille** (2007) - Unisex | *Oriental especiado* (Tabaco, Vainilla, Cacao, Haba tonka).\n3. **Tom Ford Grey Vetiver** (2009) - Masculino | *Amaderado especiado* (Vetiver, Pomelo, Salvia, Maderas nobles).\n\n¿Deseas profundizar en las notas o la pirámide de alguna de ellas?",
+    "rejected": "Tom Ford tiene los siguientes perfumes: Perla de Salsaba (2014), Flor de Amor (1998) y Rosa de Amore (3067)."
+  },
+  {
+    "prompt": "¿Por qué mi perfume casero quedó turbio y parece leche después de mezclarlo?",
+    "chosen": "Ese enturbiamiento lechoso se denomina químicamente **efecto Ouzo o louching**. Sucede porque los aceites esenciales y compuestos aromáticos insolubles en agua precipitan en forma de microgotas cuando el porcentaje de agua en la solución hidroalcohólica es demasiado alto.\n\n### Cómo corregirlo:\n1. **Añadir más alcohol**: Incrementa la graduación alcohólica con alcohol al 96° hasta que la solución vuelva a ser translúcida.\n2. **Filtración en frío**: Coloca el perfume a 0°C - 4°C en refrigeración durante 48 horas. Las partículas insolubles coagularán; luego fíltralo con papel de poro cerrado (1 a 3 micras) en frío. El producto resultante quedará brillante y transparente.",
+    "rejected": "Quedó blanco porque le echaste leche o azúcar. Tienes que calentarlo en el microondas 5 minutos y se arregla."
+  },
+  {
+    "prompt": "¿Qué es la pirámide olfativa y cómo evoluciona un perfume?",
+    "chosen": "La pirámide olfativa es la estructura temporal de evaporación de una fragancia, dividida en tres etapas según el peso molecular de sus componentes:\n\n1. **Salida (15-30 min)**: Moléculas pequeñas y muy volátiles (cítricos, aldehídos, notas verdes). Crean el impacto inicial.\n2. **Corazón (2-4 horas)**: Moléculas de peso medio (flores, especias, frutas, aromáticos). Es el alma y tema principal de la composición.\n3. **Fondo (6-24+ horas)**: Moléculas pesadas de baja volatilidad (maderas, resinas, almizcles, ambroxan, vainilla). Proporcionan la fijación, memoria olfativa y anclaje sobre la piel.",
+    "rejected": "La pirámide es una forma de triángulo que se dibuja en la caja del perfume y solo sirve para la publicidad."
+  },
+  {
+    "prompt": "¿Qué características y precio tiene Bharara Soleil en el catálogo?",
+    "chosen": "**BHARARA SOLEIL** pertenece a nuestra colección **Árabe** (Masculino), con un valor de **$130.000 COP** (100ml en envase de Vidrio).\n\nEs una fragancia de perfil ámbar amaderado y frutal con gran presencia, estela potente y excelente rendimiento sobre piel.",
+    "rejected": "Bharara Soleil es un perfume francés femenino de flores acuáticas que cuesta 25 dólares y viene en plástico de 10ml."
+  },
+  {
+    "prompt": "Háblame de Hawas Ice de Rasasi y sus notas",
+    "chosen": "**HAWAS ICE RASASI** ($150.000 COP - 100ml Vidrio):\n\nUna evolución ultra refrescante, cítrica y chispeante del legendario ADN Hawas. Abre con una explosión helada de manzana fresca, limón italiano y anís estrellado, seguida de un corazón frutal de ciruela y cardamomo sobre un fondo masculino y limpio de madera flotante y almizcle. Rendimiento y duración de primer nivel.",
+    "rejected": "Hawas Ice es un desodorante de menta y jengibre para después del afeitado creado en Alemania por 20.000 pesos."
+  },
+  {
+    "prompt": "alexandria ii xerjoff",
+    "chosen": "**ALEXANDRIA II XERJOFF** (Árabe / Nicho - Unisex) | **$125.000 COP** (100ml Vidrio):\n\nAbre con un contraste refinado entre la frescura limpia de la lavanda y la dulzura de la manzana con calidez de canela y palo de rosa de palisandro. Una fragancia densa, aristocrática y sumamente lujosa con acordes de oud, ámbar y maderas preciosas.",
+    "rejected": "Alexandria II es una colonia de bebé de farmacia que cuesta 5 dólares."
+  },
+  {
+    "prompt": "¿Cuánto cuesta y qué perfil tiene Baccarat Rouge 540 en la tienda?",
+    "chosen": "**BACCARAT ROUGE 540 MAISON FRANCIS** tiene un valor de **$110.000 COP** (presentación 60ml en envase de Vidrio).\n\nEs el epítome del lujo contemporáneo: combina la calidez luminosa del azafrán y el jazmín con la densidad dulce-resinosa del ámbar gris y el cedro recién cortado, dejando una estela poética y adictiva.",
+    "rejected": "Baccarat Rouge 540 cuesta 15 millones de euros y huele a vinagre blanco y pimienta negra en polvo."
+  },
+  {
+    "prompt": "9pm afnan",
+    "chosen": "**9PM NIGHT OUT AFNAN** ($135.000 COP - 100ml Vidrio):\n\nUna auténtica bestia nocturna para fiestas y citas. Abre con una explosión magnética de manzana silvestre y canela especiada, sellada por una base ultra seductora de vainilla negra. Rendimiento sobresaliente que asegura cumplidos durante toda la noche.",
+    "rejected": "9PM Afnan es un té aromático para dormir que se toma a las 9 de la noche."
+  },
+  {
+    "prompt": "yara lattafa",
+    "chosen": "**YARA LATTAFA** ($110.000 COP - 100ml):\n\nFragancia oriental dulce, cremosa y sofisticada diseñada para mujeres que buscan un aroma envolvente y elegante. Destaca por sus notas avainilladas, acordes florales tropicales y fondo almizclado suave.",
+    "rejected": "Yara es un jabón exfoliante para manos con aroma a eucalipto."
+  },
+  {
+    "prompt": "¿Cuáles son los perfumes más vendidos de tu tienda?",
+    "chosen": "En Alta Densidad nuestro ranking Top incluye referentes icónicos como **Santal 33**, **Hawas Ice Rasasi**, **Baccarat Rouge 540**, **Club de Nuit Intense**, **9PM Afnan**, **Bharara King** y **Yara Lattafa**, reconocidos por su alta proyección y excelente fijación.",
+    "rejected": "Los más vendidos son perfumes que inventé ayer con agua de grifo y cáscara de naranja."
+  },
+  {
+    "prompt": "Carolina no es una fragancia es una marca",
+    "chosen": "¡Tienes toda la razón! Carolina Herrera es la prestigiosa casa de moda y perfumería, no una fragancia individual. En Alta Densidad manejamos sus mayores éxitos: Good Girl ($90.000 COP), 212 VIP Rosé ($85.000 COP), 212 VIP Black ($85.000 COP) y 212 Men. ¿Buscas una opción femenina o masculina?",
+    "rejected": "CAROLINA FRAGANCIA MARCA (Artista - Alta Densidad): Es una fragancia fresca de mandarina y sándalo por $70,000 COP."
+  },
+  {
+    "prompt": "Hola",
+    "chosen": "¡Hola! Bienvenido a Alta Densidad. ¿En qué te puedo asesorar hoy? ¿Buscas alguna fragancia en específico, deseas conocer nuestro Top 10 más vendido o buscas una recomendación para alguna ocasión?",
+    "rejected": "CAROLINA HERRERA GOOD GIRL (Mujer): Notas de haba tonka y jazmín. $90.000 COP."
+  },
+  {
+    "prompt": "Si",
+    "chosen": "¡Con mucho gusto! Cuéntame si buscas una fragancia para ti o para regalar, o si deseas conocer precios, notas olfativas y envases disponibles.",
+    "rejected": "Deberías comprar $80,000 COP la 100ml Vidrio de Hawa (Bharara)."
+  },
+  {
+    "prompt": "Hola que cuesta la bharara",
+    "chosen": "¡Hola! En Alta Densidad disponemos de las siguientes referencias oficiales de **Bharara** (100ml en envase de Vidrio):\n\n- **BHARARA KING**: $110.000 COP (Masculino)\n- **BHARARA SOLEIL**: $130.000 COP (Masculino)\n- **BHARARA ROSE**: $115.000 COP (Femenino)\n- **BHARARA NICHE**: $115.000 COP (Unisex)\n\n¿Te gustaría conocer las notas olfativas o recomendaciones de alguna de ellas?",
+    "rejected": "La Bharara tiene una duración de 12 meses en nuestra tienda. Deberías comprar $80,000 COP la 100ml Vidrio de Hawa (Bharara)."
+  },
+  {
+    "prompt": "Art of Universe recomendaciones de uso",
+    "chosen": "Para **Art of Universe**, recomendamos aplicar de **5 a 7 atomizaciones** en puntos de pulso: 2 en el cuello, 2 en los hombros/clavícula, 1 en la nuca y en las muñecas. Posee una duración diaria de **8 a 10 horas en piel** con estela notable. Ideal para eventos y clima templado.",
+    "rejected": "Art of Universe se aplica una vez al año y posee una duración de 12 meses a 2 años en el refrigerio."
+  },
+  {
+    "prompt": "¿Cuánto dura un perfume en la piel? Me dijeron que dura 12 meses",
+    "chosen": "En la piel, nuestras formulaciones de alta densidad duran entre **8 y 12 horas** diarias según el tipo de fragancia y la piel. Los **12 a 24 meses** corresponden a la **vida útil del frasco** bien cerrado en lugar fresco y oscuro, nunca a la permanencia sobre el cuerpo.",
+    "rejected": "Tiene una duración de 12 meses a 2 años en el cuerpo del cliente en vaso de plástico."
+  },
+  {
+    "prompt": "ola que vale la bharara",
+    "chosen": "¡Hola! Bienvenido a Alta Densidad. De la casa **Bharara** tenemos disponibles:\n- **Bharara King**: $110.000 COP (100ml)\n- **Bharara Soleil**: $130.000 COP (100ml)\n- **Bharara Rose**: $115.000 COP (100ml)\n- **Bharara Niche**: $115.000 COP (100ml)\n¿Cuál te gustaría conocer en detalle?",
+    "rejected": "Barricada 120ml vaso de plástico $80.000 te ofrecemos en el local."
+  }
+]

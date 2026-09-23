@@ -1,0 +1,42 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+
+# Entorno Virtual
+hf-locql/
+env/
+venv/
+.venv/
+
+# Checkpoints y Pesos Intermedios
+checkpoints/
+*.pt
+*.bin
+
+# Modelos entrenados (pesos grandes)
+models/
+*.safetensors
+
+# Datos de runtime y base de conocimiento generada
+data/perfumes_db.sqlite
+data/*.npy
+data/product_embeddings_ids.json
+data/*.jsonl
+data/overrides.json
+
+# Logs
+*.log
+
+# IDEs
+.vscode/
+.idea/
+
+# Sistema Operativo
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+.DS_Store
