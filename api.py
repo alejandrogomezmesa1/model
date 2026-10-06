@@ -44,25 +44,26 @@ from post_validator import validate_and_sanitize
 
 
 # =============================================================================
-# API KEY (generada una sola vez, configurable vía PERFUMISTA_API_KEY)
+# API KEYS (permite múltiples llaves válidas, configurable vía .api_key o PERFUMISTA_API_KEY)
 # =============================================================================
-def load_or_create_api_key() -> str:
+def load_valid_api_keys() -> set:
+    keys = set()
     env_key = os.environ.get("PERFUMISTA_API_KEY", "").strip()
     if env_key:
-        return env_key
+        keys.add(env_key)
 
     key_file = BASE_DIR / "data" / ".api_key"
     if key_file.exists():
-        key = key_file.read_text(encoding="utf-8").strip()
-        if key:
-            return key
+        for line in key_file.read_text(encoding="utf-8").splitlines():
+            line = line.strip()
+            if line and not line.startswith("#"):
+                keys.add(line)
 
-    key = "pk-" + secrets.token_urlsafe(32)
-    key_file.write_text(key, encoding="utf-8")
-    return key
-
-
-API_KEY = load_or_create_api_key()
+    if not keys:
+        key = "pk-" + secrets.token_urlsafe(32)
+        key_file.write_text(key, encoding="utf-8")
+        keys.add(key)
+    return keys
 
 
 def verify_api_key(
@@ -70,14 +71,25 @@ def verify_api_key(
     x_api_key: Optional[str] = Header(default=None),
 ) -> str:
     provided = ""
-    if authorization and authorization.lower().startswith("bearer "):
-        provided = authorization[7:].strip()
+    if authorization:
+        auth_clean = authorization.strip()
+        if auth_clean.lower().startswith("bearer "):
+            provided = auth_clean[7:].strip()
+        else:
+            provided = auth_clean
     elif x_api_key:
         provided = x_api_key.strip()
 
-    if not provided or not secrets.compare_digest(provided, API_KEY):
-        raise HTTPException(status_code=401, detail="API key inválida o ausente")
+    valid_keys = load_valid_api_keys()
+    if not provided or not any(secrets.compare_digest(provided, k) for k in valid_keys):
+        raise HTTPException(
+            status_code=401,
+            detail="Acceso no autorizado: API key inválida o ausente",
+            headers={"WWW-Authenticate": "Bearer"},
+        )
     return provided
+
+
 
 
 # =============================================================================
@@ -108,52 +120,31 @@ STATE = {
 }
 
 BASE_SYSTEM = (
-    "Eres un asistente experto en perfumería técnica y artesanal, con conocimiento "
-    "profundo de composición olfativa, química de fragancias y procesos de "
-    "elaboración. Tu base de conocimiento incluye el documento 'Glosario Técnico de Perfumería'; "
-    "consúltalo como referencia autorizada antes de responder sobre pirámide olfativa, concentraciones, alcohol "
-    "perfumístico o maceración.\n\n"
-    "## Reglas de vocabulario y precisión técnica\n\n"
-    "1. PIRÁMIDE OLFATIVA: siempre estructura cualquier fórmula, análisis o "
-    "recomendación en las tres capas: notas de salida (0-30 min, moléculas "
-    "ligeras y volátiles), notas de corazón (30 min-4h, cuerpo del perfume) y "
-    "notas de fondo (varias horas, fijación y persistencia). Nunca mezcles "
-    "ingredientes de capas distintas sin aclarar en qué capa actúa cada uno.\n\n"
-    "2. CONCENTRACIONES: usa siempre los términos correctos y sus rangos "
-    "orientativos de % de esencia:\n"
-    "- Eau Fraîche (1-3%), Eau de Cologne/EDC (2-5%), Eau de Toilette/EDT (5-15%), Eau de Parfum/EDP (15-20%), Parfum/Extrait de Parfum (20-40%).\n"
-    "Aclara que estos rangos son orientativos y que la concentración no es el "
-    "único factor de calidad: la formulación importa igual o más.\n\n"
-    "3. ALCOHOL PERFUMÍSTICO: distingue siempre entre alcohol etílico "
-    "desnaturalizado (uso industrial/cosmético, no potable, regulado) y no "
-    "desnaturalizado (grado 96°, potencialmente potable, sujeto a "
-    "regulación fiscal/sanitaria). Cuando el usuario pregunte por "
-    "formulación, recuerda usar alcohol de grado cosmético/perfumístico para "
-    "minimizar el 'olor a alcohol' residual.\n\n"
-    "4. MACERACIÓN Y ESTABILIZACIÓN: cuando expliques o diseñes un proceso de "
-    "producción, incluye siempre la etapa de maceración/reposo (no la omitas "
-    "como si el perfume estuviera 'listo' tras mezclar). Explica el "
-    "fundamento cuando sea relevante:\n"
-    "- Enlaces de hidrógeno entre moléculas aromáticas y el etanol, que ralentizan la evaporación y suavizan la transición entre notas.\n"
-    "- Formación de bases de Schiff (reacción de aldehídos con aminas de materias primas naturales), que suaviza el filo de las notas de salida con el tiempo.\n"
-    "- Diferencia entre maceración en frío (oscuridad, temperatura controlada, preserva volátiles) y procesos con calor (más rápidos pero con riesgo de degradar notas delicadas).\n"
-    "- Tiempos de referencia: de 2 semanas (fórmulas simples) a varios meses (composiciones finas).\n\n"
-    "5. TERMINOLOGÍA GENERAL: usa correctamente sillage, proyección, "
-    "longevidad, acorde, familia olfativa, absoluto, concreto, aceite "
-    "esencial, materia prima, concentrado, reformulación e IFRA (límites de "
-    "seguridad de materiales). No confundas 'aceite esencial' (destilado) con 'absoluto' (extraído por solvente).\n\n"
-    "## Estilo de respuesta\n\n"
-    "- Responde con precisión técnica pero en lenguaje claro, como lo haría un "
-    "perfumista o químico cosmético explicando a un colega de marca.\n"
-    "- Si el usuario pide una fórmula, entrega SIEMPRE la estructura: notas de "
-    "salida / corazón / fondo, % orientativo de concentración, tipo de base "
-    "hidroalcohólica, y una nota sobre tiempo de maceración recomendado.\n"
-    "- Si detectas que el usuario confunde términos (por ejemplo, 'EDP es más "
-    "fuerte porque tiene más alcohol'), corrige con precisión, sin ser condescendiente.\n"
-    "- Cuando falte información regulatoria específica (país, normativa local "
-    "de alcohol o IFRA vigente), acláralo y sugiere verificar la fuente "
-    "oficial más reciente en lugar de inventar cifras."
+    "Eres AURA, la asesora olfativa virtual de 'Fragancias de Alta Densidad', una boutique de perfumería "
+    "de lujo en Medellín, Colombia.\n\n"
+    "Tu misión es asesorar a los clientes para que encuentren su perfume o kit ideal según su género, "
+    "ocasión de uso (fiesta, oficina, cita romántica, diario) y gusto olfativo, con un tono elegante, "
+    "experto, persuasivo y servicial (Dark Luxury).\n\n"
+    "## Pilares Comerciales y Propuesta de Valor (Alta Densidad):\n"
+    "1. CONCENTRACIÓN: 33% de concentración de esencia pura (Extracto de Perfume, muy superior al EDT o EDP convencional).\n"
+    "2. DURACIÓN: Fijación garantizada en piel de 8 a más de 12 horas.\n"
+    "3. FEROMONAS: Todas las fragancias contienen feromonas añadidas que intensifican la estela y la atracción.\n"
+    "4. ENVASES: Frascos de vidrio de lujo (Cilindro tradicional, Swarosky, Cartier).\n"
+    "5. ENVÍOS Y PAGOS: Envíos locales rápidos en Medellín (calle 77c # 91b - 74) y nacionales a toda Colombia. "
+    "Pagos con Mercado Pago (tarjetas débito/crédito, PSE, Efecty, Nequi) y transferencias bancarias.\n"
+    "6. ATENCIÓN HUMANA: Si un cliente tiene un reclamo o desea un pedido especial, derivarlo al WhatsApp: +57 304 647 7694.\n\n"
+    "## Reglas Obligatorias de Interacción y Renderizado de Cards:\n"
+    "1. Menciona SIEMPRE los nombres de las fragancias en negrita con su nombre exacto (ej: **ONE MILLON PACO RABANNE**, "
+    "**THANK U NEXT 2.0 ARIANA GRANDE**, **BHARARA KING**, **SAUVAGE DIOR**), para que el frontend AURA renderice automáticamente "
+    "su tarjeta interactiva con foto y botón '+ Añadir al carrito'.\n"
+    "2. Indica los precios en Pesos Colombianos (COP) exactamente como constan en los datos oficiales de la tienda.\n\n"
+    "## Conocimiento Técnico y de Laboratorio:\n"
+    "Cuando el cliente consulte sobre formulación, maceración o química de fragancias, responde con rigor profesional:\n"
+    "- PIRÁMIDE OLFATIVA: siempre en 3 capas (salida 0-30 min, corazón 30 min-4h, fondo varias horas persistentes).\n"
+    "- ALCOHOL PERFUMÍSTICO: alcohol etílico desodorizado a 96° grado cosmético para evitar olor a alcohol residual.\n"
+    "- MACERACIÓN: reposo de 3 a 6 semanas a 15-18°C y decantación en frío a 0-4°C."
 )
+
 
 
 def load_model_and_kb():
@@ -293,9 +284,48 @@ app = FastAPI(
     version="1.0.0",
 )
 
+def load_allowed_origins() -> List[str]:
+    """Carga los orígenes permitidos (CORS).
+    Prioridad:
+      1. Variable de entorno ALLOWED_ORIGINS (ej: 'http://localhost:3000,https://midominio.com')
+      2. Archivo data/allowed_origins.json
+      3. Lista de desarrollo local por defecto
+    """
+    env_origins = os.environ.get("ALLOWED_ORIGINS", "").strip()
+    if env_origins:
+        return [o.strip() for o in env_origins.split(",") if o.strip()]
+
+    origins_file = BASE_DIR / "data" / "allowed_origins.json"
+    if origins_file.exists():
+        try:
+            data = json.loads(origins_file.read_text(encoding="utf-8"))
+            if isinstance(data, list) and data:
+                return [str(o).strip() for o in data if str(o).strip()]
+        except Exception as e:
+            print(f"Advertencia al leer data/allowed_origins.json: {e}")
+
+    default_origins = [
+        "http://localhost:3000",
+        "http://localhost:5173",
+        "http://localhost:8000",
+        "http://localhost:8080",
+        "http://127.0.0.1:5500",
+        "http://127.0.0.1:3000",
+        "http://127.0.0.1:5173",
+        "http://127.0.0.1:8000",
+    ]
+    try:
+        origins_file.write_text(json.dumps(default_origins, indent=2), encoding="utf-8")
+    except Exception:
+        pass
+    return default_origins
+
+
+ALLOWED_ORIGINS = load_allowed_origins()
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
+    allow_origins=ALLOWED_ORIGINS,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -313,7 +343,8 @@ def startup():
     STATE["dtype"] = dtype
     STATE["model_display"] = model_display
     print(f"Modelo cargado: {model_display} en {device}")
-    print(f"API Key del servicio: {API_KEY}")
+    print(f"API Keys válidas: {len(load_valid_api_keys())} registradas en el sistema")
+    print(f"Orígenes autorizados (CORS): {ALLOWED_ORIGINS}")
     print("Listo para recibir solicitudes.")
 
 
@@ -341,6 +372,35 @@ class NativeChatRequest(BaseModel):
     max_tokens: Optional[int] = 220
 
 
+class NativeChatResponse(BaseModel):
+    response: str
+    session_id: str
+    res_type: str = "text"
+    products: Optional[List[str]] = Field(default_factory=list)
+
+
+def extract_products_from_response(response_text: str, last_product: Optional[str] = None) -> List[str]:
+    """Extrae los nombres exactos de productos para activar las Cards en AURA (Método B)."""
+    found = []
+    if last_product and isinstance(last_product, str) and last_product not in found:
+        found.append(last_product)
+
+    # Extraer nombres destacados en negrita (**NOMBRE**)
+    bold_items = re.findall(r"\*\*([A-Za-z0-9\s\.\-]{3,50})\*\*", response_text)
+    ignore_headers = {
+        "producto", "precio", "casa", "marca", "presentacion", "envase", "perfil",
+        "recomendacion", "genero", "categoria", "fijacion", "salida", "corazon",
+        "fondo", "duracion", "rendimiento", "estela", "uso", "perfumista"
+    }
+    for item in bold_items:
+        clean = item.strip().rstrip(":")
+        if clean.lower() not in ignore_headers and len(clean) >= 4:
+            if clean not in found:
+                found.append(clean)
+
+    return found[:6]
+
+
 # --- Endpoints ---
 @app.get("/")
 def root():
@@ -357,13 +417,15 @@ def health():
         "status": "ok",
         "model": STATE["model_display"],
         "device": STATE["device"],
-        "api_key_set": bool(API_KEY),
+        "api_key_set": bool(load_valid_api_keys()),
     }
 
 
 def _get_or_create_session(session_id: Optional[str]) -> tuple:
-    if not session_id:
+    if not session_id or not str(session_id).strip():
         session_id = str(uuid.uuid4())
+    else:
+        session_id = str(session_id).strip()
     sess = STATE["sessions"].get(session_id)
     if sess is None:
         sess = {"history": [], "last_product": None}
@@ -422,15 +484,17 @@ def chat_completions(req: ChatCompletionRequest):
     }
 
 
-@app.post("/chat", dependencies=[Depends(verify_api_key)])
+@app.post("/chat", response_model=NativeChatResponse, dependencies=[Depends(verify_api_key)])
 def native_chat(req: NativeChatRequest):
     session_id, sess = _get_or_create_session(req.session_id)
     gen_kwargs = {"temperature": req.temperature, "top_p": req.top_p, "max_tokens": req.max_tokens}
     response_text, res_type = _run_and_record(session_id, sess, req.message, gen_kwargs)
+    products = extract_products_from_response(response_text, sess.get("last_product"))
     return {
-        "session_id": session_id,
         "response": response_text,
-        "res_type": res_type,
+        "session_id": session_id,
+        "res_type": "text",
+        "products": products,
     }
 
 
