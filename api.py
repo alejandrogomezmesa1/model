@@ -138,7 +138,10 @@ def load_model_and_kb():
     # sin ella se usa el primero que exista de esta lista.
     candidatos = [os.environ["AURA_MODELO"]] if os.environ.get("AURA_MODELO") else [
         "aura_v2", "aura_v2_sft", "mi_modelo_perfumista_v1", "mi_modelo_sft"]
-    model_id, model_display = "Qwen/Qwen2.5-0.5B-Instruct", "Qwen/Qwen2.5-0.5B-Instruct (Base HF Hub)"
+    # Sin modelo en disco (p. ej. en el Space de Hugging Face) se baja de AURA_MODELO_HF; si es un
+    # repositorio privado, transformers usa el token de la variable HF_TOKEN.
+    model_id = os.environ.get("AURA_MODELO_HF", "Qwen/Qwen2.5-0.5B-Instruct")
+    model_display = f"{model_id} (Hugging Face Hub)"
     for nombre in candidatos:
         model_dir = resolve_path(nombre, is_dir=True)
         if model_dir and os.path.isfile(os.path.join(model_dir, "model.safetensors")):
