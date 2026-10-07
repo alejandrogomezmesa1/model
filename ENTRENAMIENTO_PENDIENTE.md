@@ -1,6 +1,6 @@
 # Entrenar AURA con el dataset nuevo: estado y pendientes
 
-El dataset vive en el repo de la tienda: `AltaDensidadPAGE/tools/dataset_aura/` (github `alejandrogomezmesa1/AltaDensidadPAGE`). Ahí están las carpetas `salida/` y los scripts `generar_dataset.py`, `validar_dataset.py` y `evaluar.py` que se nombran abajo.
+El dataset está en `dataset_aura/` de este repo. Ahí están las carpetas `salida/` y los scripts `generar_dataset.py`, `validar_dataset.py` y `evaluar.py` que se nombran abajo.
 
 Fecha: 2026-10-06. Este repo (`alejandrogomezmesa1/model`): Qwen2.5-0.5B-Instruct con LoRA, SFT + DPO, RAG en SQLite y API FastAPI, en el PC con la RTX 3050 de 4 GB.
 
