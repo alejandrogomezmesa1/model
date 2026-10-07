@@ -81,6 +81,14 @@ STOPWORDS = {
 
 DURACION_PIEL = "8 a 12 horas en piel (según el tipo de piel)"
 
+# Género pedido por el cliente (texto normalizado, sin tildes). Unisex primero: «unisex para hombre» es unisex.
+PATRONES_GENERO = [
+    ("Unisex", r"\b(unisex|ambos|para los dos|compartir)\b"),
+    ("Masculino", r"\b(hombres?|caballeros?|masculinos?|varon|varones|novio|esposo|papa|padre|hijo|hermano|abuelo|chico|man|men)\b"),
+    ("Femenino", r"\b(mujer|mujeres|damas?|femeninos?|femenina|ella|novia|esposa|mama|madre|hija|hermana|abuela|chica|woman|women)\b"),
+]
+GENERO_PALABRA = {"Masculino": "hombre", "Femenino": "mujer", "Unisex": "unisex"}
+
 KNOWN_BRANDS = [
     ("carolina herrera", "Carolina Herrera"),
     ("carolina", "Carolina Herrera"),
@@ -296,8 +304,16 @@ class KnowledgeBase:
         """
         q_norm = normalize_text(query)
         bloques, productos = [], []
+        genero = self.detectar_genero(q_norm, history)
 
         res = self.search(query, history)
+        # Pedidos por género sin perfume, marca ni familia concretos («perfumes de hombre») caen en el
+        # respaldo vectorial, que no sabe de género: se responden con los favoritos de ese género.
+        # Si además pide un estilo («algo fresco para hombre»), se conservan las coincidencias del vector
+        # (filtradas por género más abajo); si solo dice el género, se usan los favoritos.
+        if genero and (res.get("type") == "none" or (
+                res.get("source") == "vector_fallback" and not self._pide_estilo(q_norm))):
+            res = self.get_recommendations(q_norm + " " + GENERO_PALABRA[genero])
         data = res.get("data")
         if res.get("type") == "override":
             data = None
@@ -316,6 +332,14 @@ class KnowledgeBase:
                     d = self._producto_por_nombre(d["nombre"])
                 if isinstance(d, dict) and d.get("contexto") and d["id"] not in {p["id"] for p in productos}:
                     productos.append(d)
+        if genero and res.get("type") != "product_card":
+            # Nunca se le pasan al modelo perfumes del género contrario: un modelo pequeño los recomienda igual.
+            # Si el cliente nombró un perfume concreto (product_card), se respeta aunque sea de otro género.
+            productos = [p for p in productos if self._genero_compatible(p.get("genero"), genero)]
+            if len(productos) < 3:
+                extra = self.get_recommendations(GENERO_PALABRA[genero]).get("data") or []
+                productos += [p for p in extra if p["id"] not in {x["id"] for x in productos}
+                              and self._genero_compatible(p.get("genero"), genero)]
         productos = productos[:max_productos]
         if productos:
             bloques.append("CATÁLOGO RELEVANTE:\n" + "\n".join(p["contexto"] for p in productos))
@@ -325,6 +349,34 @@ class KnowledgeBase:
         if re.search(r"\b(crea|crear|armar|arma|personaliz\w*|envases?|frascos?|botellas?)\b", q_norm):
             bloques.append(self._bloque("crea_tu_perfume"))
         return "\n\n".join(b for b in bloques if b), productos
+
+    @staticmethod
+    def detectar_genero(q_norm: str, history: list = None):
+        """'Masculino', 'Femenino', 'Unisex' o None, según la pregunta o, si no lo dice, los últimos mensajes del cliente."""
+        textos = [q_norm] + [normalize_text(m.get("content", "")) for m in reversed(history or [])
+                             if m.get("role") == "user"][:2]
+        for t in textos:
+            for genero, patron in PATRONES_GENERO:
+                if re.search(patron, t):
+                    return genero
+        return None
+
+    @staticmethod
+    def _pide_estilo(q_norm: str) -> bool:
+        """True si la pregunta trae algo más que el género (un estilo, ocasión o nota)."""
+        resto = q_norm
+        for _, patron in PATRONES_GENERO:
+            resto = re.sub(patron, " ", resto)
+        palabras = [w for w in resto.split() if w not in STOPWORDS and len(w) > 2
+                    and w not in {"busco", "buscando", "regalo", "regalar", "mis", "uno", "unos"}]
+        return bool(palabras)
+
+    @staticmethod
+    def _genero_compatible(genero_producto, genero_pedido) -> bool:
+        g = (genero_producto or "").lower()
+        if genero_pedido == "Unisex":
+            return "unisex" in g
+        return "unisex" in g or genero_pedido.lower() in g
 
     def _bloque(self, clave: str) -> str:
         cur = self.conn.cursor()
@@ -556,12 +608,16 @@ class KnowledgeBase:
         # =====================================================================
         q_clean = " ".join(q_words) if q_words else q_norm
         if q_clean and HAS_RAPIDFUZZ and self._product_names_cache:
-            best_match = process.extractOne(
+            candidatos = process.extract(
                 q_clean,
                 self._product_names_cache,
                 scorer=fuzz.token_set_ratio,
-                processor=rf_utils.default_process
+                processor=rf_utils.default_process,
+                limit=5
             )
+            # token_set_ratio da 100 a «Light blue» y a «Light blue living stromboli» si el cliente escribe
+            # «light blue»: entre los empatados gana el nombre más parecido a lo escrito
+            best_match = max(candidatos, key=lambda c: (c[1], fuzz.ratio(q_clean, rf_utils.default_process(c[0])))) if candidatos else None
             if best_match and best_match[1] >= 75.0:
                 matched_name, score, idx = best_match
                 matched_id = self._product_ids_cache[idx]
@@ -818,15 +874,18 @@ class KnowledgeBase:
     def get_recommendations(self, q_norm: str) -> dict:
         """Recomendación abierta con datos de SQLite: favoritos del Top 10 primero, filtrando por género si se pide."""
         cur = self.conn.cursor()
+        # El género pedido va primero; los unisex solo completan la lista
         if any(g in q_norm for g in ["hombre", "masculino", "caballero"]):
-            filtro, titulo = "WHERE genero LIKE '%Masculino%' OR genero LIKE '%Unisex%'", "PERFUMES PARA HOMBRE RECOMENDADOS"
+            filtro, titulo, primero = "WHERE genero LIKE '%Masculino%' OR genero LIKE '%Unisex%'", "PERFUMES PARA HOMBRE RECOMENDADOS", "Masculino"
         elif any(g in q_norm for g in ["mujer", "femenino", "dama"]):
-            filtro, titulo = "WHERE genero LIKE '%Femenino%' OR genero LIKE '%Unisex%'", "PERFUMES PARA MUJER RECOMENDADOS"
+            filtro, titulo, primero = "WHERE genero LIKE '%Femenino%' OR genero LIKE '%Unisex%'", "PERFUMES PARA MUJER RECOMENDADOS", "Femenino"
         elif any(g in q_norm for g in ["unisex", "ambos", "compartir"]):
-            filtro, titulo = "WHERE genero LIKE '%Unisex%'", "PERFUMES UNISEX RECOMENDADOS"
+            filtro, titulo, primero = "WHERE genero LIKE '%Unisex%'", "PERFUMES UNISEX RECOMENDADOS", "Unisex"
         else:
-            filtro, titulo = "", "FRAGANCIAS FAVORITAS DE ALTA DENSIDAD"
-        cur.execute(f"SELECT * FROM productos {filtro} ORDER BY agotado ASC, COALESCE(top10, 99) ASC, id ASC LIMIT 4")
+            filtro, titulo, primero = "", "FRAGANCIAS FAVORITAS DE ALTA DENSIDAD", ""
+        cur.execute(f"SELECT * FROM productos {filtro} ORDER BY agotado ASC, "
+                    f"CASE WHEN ? <> '' AND genero LIKE ? THEN 0 ELSE 1 END, COALESCE(top10, 99) ASC, id ASC LIMIT 4",
+                    (primero, f"%{primero}%"))
         prods = [dict(r) for r in cur.fetchall()]
         lines = [f"- **{p['nombre']}** ({p.get('marca', '')}): ${p.get('precio', 0):,.0f} COP ({p.get('ml', '100ml')})".replace(",", ".") for p in prods]
         rendered = f"{titulo}:\n" + "\n".join(lines) + f"\n\nTodas en Extrait de Parfum, con fijación de {DURACION_PIEL}."
