@@ -44,3 +44,6 @@ ehthumbs.db
 Desktop.ini
 $RECYCLE.BIN/
 .DS_Store
+
+# Catálogo descargado por generar_dataset.py --cache
+data/cache_tienda/

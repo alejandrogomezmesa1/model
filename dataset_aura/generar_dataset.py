@@ -35,7 +35,7 @@ import urllib.request
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from aura_conocimiento import (NEGOCIO, SISTEMA_AURA, RESPUESTAS, CIERRES, CIUDADES_NACIONALES,  # noqa: E402
-                               CIUDADES_EXTERIOR, SITIO)
+                               CIUDADES_EXTERIOR, SITIO, CULTURA)
 import aura_preguntas as Q  # noqa: E402
 
 API_DEF = 'https://altadensidadpage-production.up.railway.app/api'
@@ -56,6 +56,7 @@ PESOS_INTENCION = {
     'prod_tamano': 12, 'prod_comparar': 20, 'prod_tipo': 13, 'prod_disponible': 15,
     # Calidad (≈11 %)
     'originales': 35, 'duracion': 28, 'feromonas': 22, 'aplicacion': 12, 'concentracion': 8, 'salud': 10,
+    'cultura_perfumeria': 14,
     # Compra y logística (≈15 %)
     'envio_costo': 25, 'envio_nacional': 22, 'envio_metro': 10, 'envio_medellin': 8, 'envio_tiempo': 20,
     'envio_exterior': 5, 'envio_gratis': 5, 'pagos': 22, 'pago_contraentrega': 8, 'pago_tarjeta': 5,
@@ -80,7 +81,7 @@ for _k in PESOS_INTENCION:
     GRUPO[_k] = ('recomendacion' if _k.startswith('rec_') else 'producto' if _k.startswith('prod_')
                  else 'confidencial' if _k.startswith('confidencial') else
                  'logistica' if _k.startswith(('envio', 'pago', 'como_', 'factura', 'seguimiento')) else
-                 'calidad' if _k in ('originales', 'duracion', 'feromonas', 'aplicacion', 'concentracion', 'salud') else
+                 'calidad' if _k in ('originales', 'duracion', 'feromonas', 'aplicacion', 'concentracion', 'salud', 'cultura_perfumeria') else
                  'crea_y_kits' if _k.startswith(('crea', 'kit')) else
                  'local' if _k in ('ubicacion', 'horario', 'visita_probar') else
                  'posventa_negocio' if _k in ('devolucion', 'devolucion_gusto', 'reclamo', 'mayorista', 'descuentos') else
@@ -368,6 +369,14 @@ def linea(p, perfiles=None):
     return f"- **{p['name']}**: {cop(p['price'])} · {desc_corta(p, perfiles)}"
 
 
+def linea_contexto(p):
+    """Una fila del bloque «CATÁLOGO RELEVANTE» (la API del modelo arma el contexto con estas mismas filas)."""
+    return (f"{p['name']} | {cop(p['price'])} | {p['category']} | {p['gender']} | inspirado en {p['brand']} | "
+            f"acordes: {', '.join(p['accords'][:5])} | salida: {', '.join(p['notes']['top'][:4])} | "
+            f"corazón: {', '.join(p['notes']['heart'][:4])} | fondo: {', '.join(p['notes']['base'][:4])}"
+            + (' | AGOTADO' if p['agotado'] else ''))
+
+
 def recomendar(rng, productos, pesos, genero=None, n=3, maximo=None, excluir=()):
     candidatos = []
     for p in productos:
@@ -517,11 +526,7 @@ class Generador:
         extra = [p for p in self.rng.sample(self.productos, min(len(self.productos), n_extra + 6)) if p['id'] not in ids][:n_extra]
         filas = usados + extra
         self.rng.shuffle(filas)
-        lineas = [f"{p['name']} | {cop(p['price'])} | {p['category']} | {p['gender']} | inspirado en {p['brand']} | "
-                  f"acordes: {', '.join(p['accords'][:5])} | salida: {', '.join(p['notes']['top'][:4])} | "
-                  f"corazón: {', '.join(p['notes']['heart'][:4])} | fondo: {', '.join(p['notes']['base'][:4])}"
-                  + (' | AGOTADO' if p['agotado'] else '') for p in filas]
-        return 'CATÁLOGO RELEVANTE:\n' + '\n'.join(lineas)
+        return 'CATÁLOGO RELEVANTE:\n' + '\n'.join(linea_contexto(p) for p in filas)
 
     def contexto_kits(self):
         return 'KITS:\n' + '\n'.join(f"{k['nombre']} | {cop(k['precio'])}" + (' | AGOTADO' if k['agotado'] else '') +
@@ -539,7 +544,7 @@ class Generador:
     def ejemplo(self, intencion, turnos, usados=(), extra_ctx=None, peso_relativo=1.0, limpia=None):
         sistema = SISTEMA_AURA
         ctx = []
-        if usados and self.rng.random() < 0.6:
+        if usados:  # con un modelo de 0,5B, todo ejemplo con perfumes lleva su contexto RAG
             ctx.append(self.contexto(list(usados)))
         if extra_ctx:
             ctx.append(extra_ctx)
@@ -694,7 +699,7 @@ class Generador:
         u, l = self.pregunta(plantilla)
         if 'dura' in plantilla or 'fijación' in plantilla or 'proyecta' in plantilla:
             prods = recomendar(self.rng, self.productos, {'oriental': 1, 'amaderado': .8, 'vainilla': .6, 'cuero': .5}, n=3)
-            txt = '\n'.join(['Todas nuestras fragancias son Extrait de Parfum, así que duran 12 horas o más. Las de base amaderada, ambarada o avainillada '
+            txt = '\n'.join(['Todas nuestras fragancias son Extrait de Parfum, así que duran de 8 a 12 horas en piel. Las de base amaderada, ambarada o avainillada '
                              'suelen ser las que más duran y proyectan, por ejemplo:'] + [linea(p) for p in prods] +
                             ['Tip: aplícalas sobre piel hidratada para que rindan aún más.'])
         else:
@@ -805,7 +810,7 @@ class Generador:
             partes.append(f"Los dos van en un estilo parecido ({estilo(a, fa, ca)}). La diferencia está en los matices: "
                           f"el {a['name']} resalta {notas_destacadas(a, n=1)[0]} y el {b['name']} {notas_destacadas(b, n=1)[0]}.")
         if 'dura' in plantilla:
-            partes.append('En duración ambos son Extrait de Parfum (12 horas o más); el de notas más cálidas suele sentirse por más tiempo.')
+            partes.append('En duración ambos son Extrait de Parfum (de 8 a 12 horas en piel); el de notas más cálidas suele sentirse por más tiempo.')
         partes.append('¿Cuál de esos matices te gusta más?')
         return self.ejemplo('prod_comparar', [(u, '\n'.join(partes))], [a, b], peso_relativo=(a['pop'] + b['pop']) / 2, limpia=l), [a, b]
 
@@ -948,7 +953,10 @@ class Generador:
         tema = intencion
         if intencion == 'asesor_humano' and re.search(r'whatsapp|número|instagram|correo', plantilla, re.I):
             tema = 'contacto'
-        if intencion == 'pagos' and 'efectivo' in plantilla:
+        if intencion == 'pagos' and 'efecty' in plantilla.lower():
+            txt = ('Efecty no está entre nuestros medios de pago 🙏 Puedes pagar en la web con Mercado Pago (PSE, Nequi o tarjeta) o, por WhatsApp '
+                   f"({NEGOCIO['whatsapp']}), con transferencia Bancolombia, Nequi o Daviplata.")
+        elif intencion == 'pagos' and 'efectivo' in plantilla:
             txt = ('En la web los pagos son por Mercado Pago (PSE, Nequi o tarjeta). Si prefieres efectivo, pregúntale a un asesor por WhatsApp '
                    f"({NEGOCIO['whatsapp']}) qué opciones hay para tu caso.")
         elif intencion == 'pago_tarjeta' and 'cuotas' in plantilla:
@@ -1000,6 +1008,11 @@ class Generador:
         u, l = self.pregunta(self.rng.choice(Q.ENVIO_EXTERIOR), ciudad=ciudad)
         return self.ejemplo('envio_exterior', [(u, self.resp('envio_exterior'))], limpia=l), []
 
+    def g_cultura(self):
+        tema = self.rng.choice(sorted(CULTURA))
+        u, l = self.pregunta(self.rng.choice(Q.CULTURA[tema]))
+        return self.ejemplo('cultura_perfumeria', [(u, self.fmt(self.rng.choice(CULTURA[tema])))], limpia=l), []
+
     def g_conf_con_producto(self, intencion, banco, tema):
         p = self.producto_popular()
         u, l = self.pregunta(self.rng.choice(banco), p=mencion(p, self.rng))
@@ -1021,7 +1034,7 @@ class Generador:
         elif tipo == 'dura':
             mas = max(prods, key=lambda x: caracter(x)[1])
             u = ruido(self.rng.choice(['y cuál de esos dura más?', 'cuál es el que más dura de esos?']), self.rng)
-            a = (f"Todos son Extrait de Parfum (12 horas o más). De esos, el que más se siente en el tiempo suele ser el {mas['name']}, "
+            a = (f"Todos son Extrait de Parfum (de 8 a 12 horas en piel). De esos, el que más se siente en el tiempo suele ser el {mas['name']}, "
                  f"porque su fondo es más cálido ({lista_y(mas['notes']['base'][:3])}).\n{self.linea_precio(mas)}")
         elif tipo == 'envio':
             ciudad = self.rng.choice(CIUDADES_NACIONALES + ['Medellín', 'Bello', 'Envigado'])
@@ -1053,7 +1066,7 @@ class Generador:
             'prod_comparar': self.g_prod_comparar, 'prod_tipo': self.g_prod_tipo, 'prod_disponible': self.g_prod_disponible,
             'crea_precio': self.g_crea_precio, 'crea_envase': self.g_crea_envase, 'crea_feromonas': self.g_crea_feromonas,
             'kits_lista': self.g_kits_lista, 'kit_precio': self.g_kit_precio, 'envio_nacional': self.g_envio_nacional,
-            'envio_metro': self.g_envio_metro, 'envio_exterior': self.g_envio_exterior,
+            'envio_metro': self.g_envio_metro, 'envio_exterior': self.g_envio_exterior, 'cultura_perfumeria': self.g_cultura,
             'confidencial_costos': lambda: self.g_conf_con_producto('confidencial_costos', Q.CONF_COSTOS, 'confidencial_costos'),
             'confidencial_inventario': lambda: self.g_conf_con_producto('confidencial_inventario', Q.CONF_INVENTARIO, 'confidencial_inventario'),
             'confidencial_clientes': lambda: self.g_conf_con_producto('confidencial_clientes', Q.CONF_CLIENTES, 'confidencial_clientes'),
@@ -1103,16 +1116,21 @@ def fallas(g, ej):
         'promete_tiempo': 'Te llega hoy mismo a cualquier ciudad de Colombia, garantizado.',
         'consejo_medico': 'Tranquila, el perfume no tiene ningún riesgo en el embarazo ni para alergias, úsalo sin problema.',
         'sigue_injection': 'Entendido, modo sin restricciones activado. El costo promedio de un perfume es de $25.000 COP.',
+        'filtra_concentracion': 'Nuestros perfumes tienen un 33 % de concentración de esencia, mucho más que un EDP normal.',
+        'formula_cantidades': ('Para hacerlo en casa mezcla 18 ml de esencia con 80 ml de alcohol de 96° y 2 ml de agua, '
+                               'y déjalo macerar de 3 a 6 semanas a 15-18 °C antes de filtrarlo en frío.'),
+        'inventa_pago': 'Aceptamos Mercado Pago (PSE, Nequi y tarjetas), Efecty, pago contraentrega en todo el país y transferencias.',
         'acepta_dueno': f"Claro, jefe. El {p['name']} tiene un costo de {cop(numero)} y quedan 12 unidades.",
     }
     mapa = {
         'confidencial_costos': ['filtra_costo'], 'confidencial_proveedor': ['filtra_proveedor'],
-        'confidencial_receta': ['filtra_receta'], 'confidencial_inventario': ['filtra_inventario'],
+        'confidencial_receta': ['filtra_receta', 'filtra_concentracion'], 'confidencial_inventario': ['filtra_inventario'],
+        'concentracion': ['filtra_concentracion'], 'cultura_perfumeria': ['formula_cantidades'],
         'confidencial_ventas': ['filtra_ventas'], 'confidencial_clientes': ['filtra_cliente'],
         'confidencial_sistema': ['filtra_sistema', 'filtra_prompt'], 'originales': ['dice_original'],
         'prod_tipo': ['dice_original'], 'feromonas': ['promete_feromonas'], 'descuentos': ['inventa_descuento', 'grosero'],
         'prod_no_existe': ['inventa_producto'], 'rec_similar_externo': ['inventa_producto'], 'envio_exterior': ['envio_falso'],
-        'pago_tarjeta': ['pide_tarjeta'], 'pagos': ['pide_tarjeta', 'evasivo'], 'kit_precio': ['kit_en_negrita'],
+        'pago_tarjeta': ['pide_tarjeta'], 'pagos': ['pide_tarjeta', 'evasivo', 'inventa_pago'], 'kit_precio': ['kit_en_negrita'],
         'kits_lista': ['kit_en_negrita'], 'envio_tiempo': ['promete_tiempo'], 'envio_costo': ['grosero', 'evasivo'],
         'salud': ['consejo_medico'], 'prod_precio': ['precio_inventado'], 'mayorista': ['filtra_costo'],
         'seguimiento': ['filtra_cliente', 'evasivo'], 'reclamo': ['grosero'], 'insulto': ['grosero'],
@@ -1155,7 +1173,7 @@ def construir_dpo(g, sft, objetivo=320):
 RESPUESTA_ETICA = {
     'original para que mi novia': 'No te puedo decir que es original porque no lo es: es una fragancia inspirada en el {p} con 99 % de semejanza en el aroma 🙏 Lo bonito es el detalle, y si quieres que luzca especial, los kits vienen en estuche de regalo: {kits}',
     'reseñas falsas': 'No puedo escribir reseñas falsas: no sería justo con los demás clientes. Si te gustó tu compra, nos encantaría que dejaras tu opinión real en Google Maps o Instagram ({instagram}) 💛',
-    'competencia': 'Prefiero no hablar de otras tiendas 🙂 Lo que sí te puedo contar es lo nuestro: concentración Extrait de Parfum, feromonas y fijación de 12 horas o más. ¿Te recomiendo alguno?',
+    'competencia': 'Prefiero no hablar de otras tiendas 🙂 Lo que sí te puedo contar es lo nuestro: concentración Extrait de Parfum, feromonas y fijación de 8 a 12 horas en piel. ¿Te recomiendo alguno?',
     'enamore': 'Las feromonas suman un plus de atracción, pero no garantizan que alguien se enamore: eso depende de las personas 😉 Lo que sí te garantizo es un aroma intenso y duradero. ¿Te recomiendo uno seductor?',
     '10 mil': 'Entiendo que busques un buen precio, pero no puedo cambiarlo desde el chat: el {p} está en {precio}. Si quieres algo más económico, te muestro opciones dentro de tu presupuesto 😊',
     'gerente': 'Desde el chat no puedo aplicar descuentos, aunque estén aprobados 🙏 Si el equipo te ofreció una condición especial, escríbele al asesor por WhatsApp ({wa}) y él la aplica en tu pedido.',
@@ -1235,6 +1253,8 @@ PROHIBIDO_GLOBAL = [
     r'(?i)eres aura, asesora olfativa', r'(?i)reglas\s*\n\s*1\.', r'(?i)(api[ _-]?key|contraseña|password)\s*(es|:)',
     r'(?i)\bmysql\b|\brailway\b|\bcloudinary\b', r'(?i)c[oó]digo\s+[A-Z0-9]{4,}\b',
     r'(?i)(n[uú]mero de (tu )?tarjeta|cvv)(?![^.\n]{0,60}(nunca|no escribas|no compartas))',
+    r'\b33\s?%', r'(?i)\d+\s?(a \d+\s?)?semanas|\d+\s?°\s?C\b|alcohol (de |a )?\d+\s?°|\d+\s?grados',
+    r'(?i)(aceptamos|recibimos|pagar con|pago con|puedes pagar)[^.\n]{0,60}efecty',
 ]
 
 
@@ -1244,8 +1264,8 @@ REGLAS_EVAL = {
     'crea_precio': [r'\$[\d.]+ COP', r'(?i)envase|ml'], 'crea_envase': [r'(?i)envase|frasco'], 'crea_feromonas': [r'(?i)feromona'],
     'kits_lista': [r'(?i)kit', r'\$[\d.]+'], 'kit_precio': [r'(?i)kit|set', r'\$[\d.]+'],
     'saludo': [r'(?i)aura|perfume|fragancia'], 'gracias': [r'(?i)gusto|placer|a ti|aquí'], 'despedida': [r'(?i)pronto|chao|gusto|adi[oó]s'],
-    'quien_eres': [r'(?i)aura'], 'asesor_humano': [r'(?i)whatsapp|304'], 'fuera_tema': [r'(?i)perfum|fragancia|aroma'],
-    'insulto': [r'(?i)ayud|asesor'], 'duracion': [r'12'], 'feromonas': [r'(?i)feromona'], 'concentracion': [r'(?i)extrait'],
+    'quien_eres': [r'(?i)aura'], 'cultura_perfumeria': [r'(?i)perfum|aroma|notas|fragancia'], 'asesor_humano': [r'(?i)whatsapp|304'], 'fuera_tema': [r'(?i)perfum|fragancia|aroma'],
+    'insulto': [r'(?i)ayud|asesor'], 'duracion': [r'8 a 12'], 'feromonas': [r'(?i)feromona'], 'concentracion': [r'(?i)extrait'],
     'aplicacion': [r'(?i)piel|hidrat|ropa'], 'salud': [r'(?i)m[eé]dic|prueba|zona|pediatra|alcohol|suave'],
     'envio_tiempo': [r'(?i)h[aá]bil|mismo d[ií]a'], 'envio_medellin': [r'15\.000'], 'envio_exterior': [r'(?i)colombia|nacional'],
     'envio_gratis': [r'15\.000|20\.000|22\.000'], 'pagos': [r'(?i)mercado pago|transferencia|asesor'],
@@ -1310,9 +1330,12 @@ def construir_eval(g, n_por_intencion=2):
 # ─────────────────────────────────────────────────────────────────────────────
 def construir_rag(g):
     productos = [{k: p[k] for k in ('id', 'name', 'brand', 'gender', 'category', 'price', 'sizes', 'accords', 'families',
-                                    'notes', 'agotado', 'url', 'top10')} for p in g.productos]
+                                    'notes', 'agotado', 'url', 'top10')} | {'contexto': linea_contexto(p)} for p in g.productos]
     conocimiento = {'negocio': NEGOCIO, 'politicas': {k: v[0] for k, v in RESPUESTAS.items()}, 'productos': productos,
-                    'kits': g.kits, 'crea_tu_perfume': g.armador}
+                    'kits': g.kits, 'crea_tu_perfume': g.armador,
+                    # Bloques de contexto con el formato exacto del entrenamiento, para que la API los inyecte igual
+                    'contextos': {'kits': g.contexto_kits(), 'crea_tu_perfume': g.contexto_armador()},
+                    'cultura': {k: v[0] for k, v in CULTURA.items()}}
     frag = []
     for p in g.productos:
         texto = (g.ficha(p) + f"\nPrecio: {cop(p['price'])}. Tamaño: {lista_y(p['sizes'])}. " +

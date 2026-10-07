@@ -79,6 +79,8 @@ STOPWORDS = {
 }
 
 
+DURACION_PIEL = "8 a 12 horas en piel (según el tipo de piel)"
+
 KNOWN_BRANDS = [
     ("carolina herrera", "Carolina Herrera"),
     ("carolina", "Carolina Herrera"),
@@ -145,6 +147,11 @@ class KnowledgeBase:
     def _init_schema(self):
         """Inicializa la tabla 'productos' y las tablas auxiliares en SQLite."""
         cur = self.conn.cursor()
+        # Bases creadas con el esquema anterior (sin la columna 'contexto') se recrean en build_from_sources
+        cur.execute("PRAGMA table_info(productos)")
+        cols = {r[1] for r in cur.fetchall()}
+        if cols and "contexto" not in cols:
+            cur.execute("DROP TABLE productos")
         cur.executescript("""
         CREATE TABLE IF NOT EXISTS productos (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -159,7 +166,17 @@ class KnowledgeBase:
             envase TEXT,
             duracion_piel TEXT,
             descripcion_olfativa TEXT,
-            uso_recomendado TEXT
+            uso_recomendado TEXT,
+            busqueda_norm TEXT,
+            top10 INTEGER,
+            agotado INTEGER DEFAULT 0,
+            url TEXT,
+            contexto TEXT
+        );
+
+        CREATE TABLE IF NOT EXISTS bloques_contexto (
+            clave TEXT PRIMARY KEY,
+            texto TEXT NOT NULL
         );
 
         CREATE TABLE IF NOT EXISTS guias_tecnicas (
@@ -219,110 +236,118 @@ class KnowledgeBase:
         first_token = nombre.split()[0].capitalize() if nombre.strip() else "Alta Densidad"
         return first_token
 
-    def build_from_sources(self):
-        """Indexa todos los archivos de datos (CSV, JSON) en SQLite y precomputa embeddings."""
+    def build_from_sources(self, conocimiento_path=None):
+        """Indexa el catálogo ACTUAL de la tienda (dataset_aura/salida/rag/conocimiento.json) en SQLite.
+
+        Solo entran productos que la tienda vende: nada de «clásicos» de dataset_perfumeria.csv
+        ni guías de formulación con cantidades (la concentración y la receta son confidenciales).
+        """
+        if conocimiento_path is None:
+            conocimiento_path = self.data_dir.parent / "dataset_aura" / "salida" / "rag" / "conocimiento.json"
+        with open(conocimiento_path, "r", encoding="utf-8") as f:
+            con = json.load(f)
+
         cur = self.conn.cursor()
+        for tabla in ("productos", "guias_tecnicas", "top10", "envases", "kits", "bloques_contexto"):
+            cur.execute(f"DELETE FROM {tabla}")
 
-        # Limpiar datos previos
-        cur.execute("DELETE FROM productos")
-        cur.execute("DELETE FROM guias_tecnicas")
-        cur.execute("DELETE FROM top10")
-        cur.execute("DELETE FROM envases")
-        cur.execute("DELETE FROM kits")
+        for p in con["productos"]:
+            notas = p.get("notes", {})
+            acordes = ", ".join(p.get("accords", [])[:6])
+            desc = (f"Acordes: {acordes}. Salida: {', '.join(notas.get('top', []))}. "
+                    f"Corazón: {', '.join(notas.get('heart', []))}. Fondo: {', '.join(notas.get('base', []))}.")
+            busqueda = normalize_text(" ".join([p["name"], p["brand"], p["gender"], p["category"], acordes,
+                                                " ".join(p.get("families", [])), desc]))
+            cur.execute("""
+            INSERT INTO productos (id, nombre, nombre_norm, marca, marca_norm, categoria, genero, precio, ml, envase,
+                                   duracion_piel, descripcion_olfativa, uso_recomendado, busqueda_norm, top10, agotado, url, contexto)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+            """, (p["id"], p["name"], normalize_text(p["name"]), p["brand"], normalize_text(p["brand"]), p["category"],
+                  p["gender"], float(p["price"]), ", ".join(p.get("sizes", [])) or "100ml", "Vidrio", DURACION_PIEL, desc,
+                  "Aplicar sobre piel hidratada en puntos de pulso (cuello, pecho, muñecas) sin frotar.",
+                  busqueda, p.get("top10"), int(bool(p.get("agotado"))), p.get("url"), p["contexto"]))
+            if p.get("top10"):
+                cur.execute("INSERT INTO top10 (posicion, nombre, categoria, genero, precio) VALUES (?, ?, ?, ?, ?)",
+                            (p["top10"], p["name"], p["category"], p["gender"], float(p["price"])))
 
-        # 1. Indexar productos oficiales de la tienda web (catalogo_web_productos.json)
-        web_path = self.data_dir / "catalogo_web_productos.json"
-        if web_path.exists():
-            with open(web_path, "r", encoding="utf-8") as f:
-                prods = json.load(f)
-                for p in prods:
-                    nombre = p.get("nombre", "").strip()
-                    nombre_norm = normalize_text(nombre)
-                    categoria = p.get("categoria", "Diseñador")
-                    marca = self._extract_brand(nombre, categoria)
-                    marca_norm = normalize_text(marca)
-                    genero = p.get("genero", "Unisex")
-                    precio = float(p.get("precio", 0.0))
-                    tallas = ", ".join(p.get("tallas", [])) if p.get("tallas") else "100ml"
-                    envases = ", ".join(p.get("tipos_envase", [])) if p.get("tipos_envase") else "Vidrio"
-
-                    if categoria.lower() == "arabe":
-                        duracion_piel = "8 a 12 horas en piel (alta concentración, estela potente)"
-                    else:
-                        duracion_piel = "8 a 10 horas en piel (excelente fijación diaria)"
-
-                    desc = p.get("descripcion", "").strip()
-                    uso_rec = f"Aplicar de 5 a 7 atomizaciones en puntos de pulso (cuello, hombros, muñecas). Ideal para eventos, ocasiones especiales y uso diario."
-
-                    cur.execute("""
-                    INSERT INTO productos (id, nombre, nombre_norm, marca, marca_norm, categoria, genero, precio, ml, envase, duracion_piel, descripcion_olfativa, uso_recomendado)
-                    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-                    """, (p.get("id"), nombre, nombre_norm, marca, marca_norm, categoria, genero, precio, tallas, envases, duracion_piel, desc, uso_rec))
-
-        # 2. Indexar catálogo clásico de perfumería (dataset_perfumeria.csv)
-        csv_path = self.data_dir / "dataset_perfumeria.csv"
-        if csv_path.exists():
-            df = pd.read_csv(csv_path)
-            for _, r in df.iterrows():
-                nombre = str(r["nombre"]).strip()
-                nombre_norm = normalize_text(nombre)
-                marca = str(r["marca"]).strip()
-                marca_norm = normalize_text(marca)
-                dur = str(r.get("duracion", "Duradero")).strip()
-
-                if "muy duradero" in dur.lower():
-                    dur_horas = "10 a 14 horas de fijación en piel"
-                elif "duradero" in dur.lower():
-                    dur_horas = "8 a 10 horas de fijación en piel"
-                else:
-                    dur_horas = "6 a 8 horas de fijación en piel"
-
-                familia = str(r.get("familia_olfativa", ""))
-                salida = str(r.get("notas_salida", ""))
-                corazon = str(r.get("notas_corazon", ""))
-                fondo = str(r.get("notas_fondo", ""))
-                desc_olfativa = f"Familia {familia}. Notas de salida: {salida}. Notas de corazón: {corazon}. Notas de fondo: {fondo}. Estela: {r.get('estela', 'Moderada')}."
-                uso_rec = "Se recomienda aplicar 5 atomizaciones en cuello y ropa para maximizar la difusión aromática."
-
-                # Insertar solo si no está ya en la tabla productos
-                cur.execute("SELECT id FROM productos WHERE nombre_norm = ?", (nombre_norm,))
-                if not cur.fetchone():
-                    cur.execute("""
-                    INSERT INTO productos (nombre, nombre_norm, marca, marca_norm, categoria, genero, precio, ml, envase, duracion_piel, descripcion_olfativa, uso_recomendado)
-                    VALUES (?, ?, ?, ?, 'Clásico de Colección', ?, 110000.0, '100ml', 'Vidrio', ?, ?, ?)
-                    """, (nombre, nombre_norm, marca, marca_norm, str(r.get("genero", "Unisex")), dur_horas, desc_olfativa, uso_rec))
-
-        # 3. Indexar Guías Técnicas
-        guias_path = self.data_dir / "guias_tecnicas.json"
-        if guias_path.exists():
-            with open(guias_path, "r", encoding="utf-8") as f:
-                guias = json.load(f)
-                for g in guias:
-                    q = g.get("q", "").strip()
-                    a = g.get("a", "").strip()
-                    q_norm = normalize_text(q)
-                    cur.execute("INSERT INTO guias_tecnicas (pregunta, pregunta_norm, respuesta) VALUES (?, ?, ?)", (q, q_norm, a))
-
-        # 4. Indexar Top 10, envases y kits
-        completo_path = self.data_dir / "catalogo_web_completo.json"
-        if completo_path.exists():
-            with open(completo_path, "r", encoding="utf-8") as f:
-                comp = json.load(f)
-                for t in comp.get("top10", []):
-                    cur.execute("INSERT INTO top10 (posicion, nombre, categoria, genero, precio) VALUES (?, ?, ?, ?, ?)",
-                                (t.get("posicion"), t.get("nombre"), t.get("categoria"), t.get("genero"), float(t.get("precio", 0))))
-                for e in comp.get("envases", []):
-                    cur.execute("INSERT INTO envases (nombre, material, descripcion) VALUES (?, ?, ?)",
-                                (e.get("nombre"), e.get("material", "Vidrio"), e.get("descripcion", "")))
-                for k in comp.get("kits", []):
-                    cur.execute("INSERT INTO kits (nombre, precio, descripcion) VALUES (?, ?, ?)",
-                                (k.get("nombre"), float(k.get("precio", 0)), k.get("descripcion", "")))
+        for e in con.get("crea_tu_perfume", {}).get("envases", []):
+            cur.execute("INSERT INTO envases (nombre, material, descripcion) VALUES (?, ?, ?)",
+                        (e["name"], e.get("material", "Vidrio"), e.get("description", "")))
+        for k in con.get("kits", []):
+            cur.execute("INSERT INTO kits (nombre, precio, descripcion) VALUES (?, ?, ?)",
+                        (k["nombre"], float(k["precio"]), k.get("resumen", "")))
+        for clave, texto in con.get("contextos", {}).items():
+            cur.execute("INSERT INTO bloques_contexto (clave, texto) VALUES (?, ?)", (clave, texto))
 
         self.conn.commit()
         self._load_overrides_from_file()
         self._load_fuzzy_cache()
         self._precompute_embeddings()
-        print(f"Base de conocimiento híbrida indexada exitosamente en: {self.db_path}")
+        print(f"Base de conocimiento indexada: {len(con['productos'])} perfumes, {len(con.get('kits', []))} kits → {self.db_path}")
+
+    # =========================================================================
+    # CONTEXTO RAG PARA EL MODELO (mismo formato que el dataset de entrenamiento)
+    # =========================================================================
+    def contexto(self, query: str, history: list = None, max_productos: int = 6) -> tuple:
+        """Devuelve (bloques de contexto, productos usados) para anexar al prompt de sistema de AURA.
+
+        Los bloques usan exactamente el formato del entrenamiento: «CATÁLOGO RELEVANTE:», «KITS:»
+        y «CREA TU PERFUME:».
+        """
+        q_norm = normalize_text(query)
+        bloques, productos = [], []
+
+        res = self.search(query, history)
+        data = res.get("data")
+        if res.get("type") == "override":
+            data = None
+        # El respaldo vectorial siempre devuelve algo: en preguntas de política o cultura general solo mete ruido
+        if res.get("source") == "vector_fallback" and re.search(
+                r"\b(envio\w*|domicilio|pag\w+|nequi|pse|tarjeta|devol\w*|reclam\w*|factura|pedido|direccion|ubicad\w*|"
+                r"horario|whatsapp|asesor|macera\w*|fijador\w*|piramide|alcohol|turbi\w*|guard\w*|concentracion|"
+                r"originales?|replicas?|feromonas?|duran?|descuentos?|cupon\w*|hola|gracias|quien eres)\b", q_norm):
+            data = None
+        if isinstance(data, dict):
+            data = [data]
+        if isinstance(data, list):
+            for d in data:
+                if isinstance(d, dict) and d.get("id") is None and d.get("nombre"):
+                    # Filas del top 10 no traen id: se resuelven por nombre
+                    d = self._producto_por_nombre(d["nombre"])
+                if isinstance(d, dict) and d.get("contexto") and d["id"] not in {p["id"] for p in productos}:
+                    productos.append(d)
+        productos = productos[:max_productos]
+        if productos:
+            bloques.append("CATÁLOGO RELEVANTE:\n" + "\n".join(p["contexto"] for p in productos))
+
+        if re.search(r"\b(kits?|combos?|sets?|estuches?|miniaturas?)\b", q_norm):
+            bloques.append(self._bloque("kits"))
+        if re.search(r"\b(crea|crear|armar|arma|personaliz\w*|envases?|frascos?|botellas?)\b", q_norm):
+            bloques.append(self._bloque("crea_tu_perfume"))
+        return "\n\n".join(b for b in bloques if b), productos
+
+    def _bloque(self, clave: str) -> str:
+        cur = self.conn.cursor()
+        cur.execute("SELECT texto FROM bloques_contexto WHERE clave = ?", (clave,))
+        row = cur.fetchone()
+        return row["texto"] if row else ""
+
+    def _producto_por_nombre(self, nombre: str):
+        cur = self.conn.cursor()
+        cur.execute("SELECT * FROM productos WHERE nombre_norm = ?", (normalize_text(nombre),))
+        row = cur.fetchone()
+        return dict(row) if row else None
+
+    def catalogo_precios(self) -> dict:
+        """{nombre normalizado: (nombre, precio)} para verificar las líneas «- **Nombre**: $precio» de la respuesta."""
+        cur = self.conn.cursor()
+        cur.execute("SELECT nombre, precio FROM productos")
+        return {normalize_text(r["nombre"]): (r["nombre"], r["precio"]) for r in cur.fetchall()}
+
+    def nombres_kits(self) -> set:
+        cur = self.conn.cursor()
+        cur.execute("SELECT nombre FROM kits")
+        return {normalize_text(r["nombre"]) for r in cur.fetchall()}
 
     # =========================================================================
     # PRECOMPUTACIÓN DE EMBEDDINGS (CAPA VECTORIAL DE FALLBACK)
@@ -449,7 +474,7 @@ class KnowledgeBase:
             return {
                 "type": "greeting",
                 "data": None,
-                "rendered": "¡Hola! Bienvenido a Alta Densidad, tu casa de alta perfumería y formulación. ¿Qué tipo de fragancia estás buscando hoy, o te gustaría alguna recomendación para hombre, mujer o unisex?"
+                "rendered": "¡Hola! 👋 Soy AURA, tu asesora olfativa de Fragancias de Alta Densidad. ¿Buscas un perfume para ti o para regalar? Cuéntame qué aromas te gustan y te recomiendo."
             }
 
         q_words = [w for w in q_norm.split() if w not in STOPWORDS and len(w) > 1]
@@ -508,15 +533,6 @@ class KnowledgeBase:
         if any(term in q_norm for term in ["kit", "promocion", "combo"]):
             kits = self.get_kits()
             return {"type": "kits", "data": kits, "rendered": self.render_kits(kits)}
-
-        # Consultas de química y guías técnicas de laboratorio (restringido a términos técnicos)
-        TECH_KEYWORDS = {"maceracion", "macerar", "alcohol", "fijador", "fijadores", "ambroxan", "iso e super",
-                         "galaxolide", "ouzo", "enturbiamiento", "turbio", "dilucion", "diluir", "porcentaje",
-                         "formular", "formulacion", "laboratorio", "esencia", "gotero", "gramos", "formula"}
-        if any(w in q_norm for w in TECH_KEYWORDS):
-            tech_guide = self.find_tech_guide(q_words, q_norm)
-            if tech_guide:
-                return {"type": "tech_guide", "data": tech_guide, "rendered": self.render_tech_guide(tech_guide)}
 
         # 4. Resolver de Familias Olfativas y Notas (Cítrico, Dulce, Especias, Acuático, Amaderado, Floral)
         olfactory_match = self.match_olfactory_family(q_norm)
@@ -677,7 +693,7 @@ class KnowledgeBase:
         for fam_key, terms, display in FAMILIES:
             if any(re.search(r'\b' + re.escape(t) + r'\b', q_norm) for t in terms):
                 cur = self.conn.cursor()
-                conditions = ["descripcion_olfativa LIKE ?" for _ in terms[:5]]
+                conditions = ["busqueda_norm LIKE ?" for _ in terms[:5]]
                 where_clause = " OR ".join(conditions)
                 params = [f"%{t}%" for t in terms[:5]]
 
@@ -689,7 +705,7 @@ class KnowledgeBase:
                 elif any(g in q_norm for g in ["unisex"]):
                     where_clause = f"({where_clause}) AND genero LIKE '%Unisex%'"
 
-                cur.execute(f"SELECT * FROM productos WHERE {where_clause} ORDER BY precio ASC LIMIT 4", params)
+                cur.execute(f"SELECT * FROM productos WHERE {where_clause} ORDER BY agotado ASC, COALESCE(top10, 99) ASC, precio ASC LIMIT 4", params)
                 prods = [dict(r) for r in cur.fetchall()]
                 if prods:
                     lines = []
@@ -713,6 +729,11 @@ class KnowledgeBase:
         for key, display in KNOWN_BRANDS:
             if re.search(r'\b' + re.escape(key) + r'\b', q_norm):
                 return display
+        cur = self.conn.cursor()
+        cur.execute("SELECT DISTINCT marca, marca_norm FROM productos")
+        for r in sorted(cur.fetchall(), key=lambda r: -len(r["marca_norm"])):
+            if len(r["marca_norm"]) > 2 and re.search(r'\b' + re.escape(r["marca_norm"]) + r'\b', q_norm):
+                return r["marca"]
         return ""
 
     def get_products_by_brand(self, brand: str) -> list:
@@ -795,94 +816,21 @@ class KnowledgeBase:
         return [dict(r) for r in cur.fetchall()]
 
     def get_recommendations(self, q_norm: str) -> dict:
-        """Genera una recomendación curada con datos verificados de SQLite para solicitudes abiertas."""
+        """Recomendación abierta con datos de SQLite: favoritos del Top 10 primero, filtrando por género si se pide."""
         cur = self.conn.cursor()
-
-        is_hombre = any(g in q_norm for g in ["hombre", "masculino", "caballero"])
-        is_mujer = any(g in q_norm for g in ["mujer", "femenino", "dama"])
-        is_unisex = any(g in q_norm for g in ["unisex", "ambos", "compartir"])
-
-        if is_hombre:
-            cur.execute("""
-                SELECT * FROM productos 
-                WHERE genero LIKE '%Masculino%' 
-                ORDER BY CASE 
-                    WHEN nombre_norm LIKE '%bharara king%' THEN 1 
-                    WHEN nombre_norm LIKE '%creed aventus%' THEN 2 
-                    WHEN nombre_norm LIKE '%lacoste blanca%' THEN 3
-                    WHEN nombre_norm LIKE '%212 vip black%' THEN 4
-                    ELSE 5 END, id ASC 
-                LIMIT 4
-            """)
-            prods = [dict(r) for r in cur.fetchall()]
-            lines = [f"- **{p['nombre']}** ({p.get('marca', '')}): ${p.get('precio', 0):,.0f} COP ({p.get('ml', '100ml')}) — {p.get('descripcion_olfativa', '')[:85]}...".replace(",", ".") for p in prods]
-            rendered = (
-                "PERFUMES MASCULINOS MÁS RECOMENDADOS EN ALTA DENSIDAD:\n\n" +
-                "\n".join(lines) +
-                "\n\nTodos cuentan con concentración de alta densidad, fijación en piel de 8 a 12 horas y envase de vidrio. "
-                "¿Te inclinas por un aroma cítrico refrescante, amaderado elegante o dulce especiado?"
-            )
-            return {"type": "recommendation", "data": prods, "rendered": rendered}
-
-        elif is_mujer:
-            cur.execute("""
-                SELECT * FROM productos 
-                WHERE genero LIKE '%Femenino%' 
-                ORDER BY CASE 
-                    WHEN nombre_norm LIKE '%light blue dama%' THEN 1 
-                    WHEN nombre_norm LIKE '%valentino donna%' THEN 2 
-                    WHEN nombre_norm LIKE '%yara%' THEN 3
-                    WHEN nombre_norm LIKE '%good girl%' THEN 4
-                    ELSE 5 END, id ASC 
-                LIMIT 4
-            """)
-            prods = [dict(r) for r in cur.fetchall()]
-            lines = [f"- **{p['nombre']}** ({p.get('marca', '')}): ${p.get('precio', 0):,.0f} COP ({p.get('ml', '100ml')}) — {p.get('descripcion_olfativa', '')[:85]}...".replace(",", ".") for p in prods]
-            rendered = (
-                "PERFUMES FEMENINOS MÁS RECOMENDADOS EN ALTA DENSIDAD:\n\n" +
-                "\n".join(lines) +
-                "\n\nTodos elaborados con esencias de alta densidad y fijación garantizada de 8 a 12 horas. "
-                "¿Prefieres notas florales y delicadas, dulces gourmand o frescas y frutales?"
-            )
-            return {"type": "recommendation", "data": prods, "rendered": rendered}
-
-        elif is_unisex:
-            cur.execute("""
-                SELECT * FROM productos 
-                WHERE genero LIKE '%Unisex%' 
-                ORDER BY CASE 
-                    WHEN nombre_norm LIKE '%santal 33%' THEN 1 
-                    WHEN nombre_norm LIKE '%amber oud gold%' THEN 2 
-                    WHEN nombre_norm LIKE '%badee al oud sublime%' THEN 3
-                    ELSE 4 END, id ASC 
-                LIMIT 4
-            """)
-            prods = [dict(r) for r in cur.fetchall()]
-            lines = [f"- **{p['nombre']}** ({p.get('marca', '')}): ${p.get('precio', 0):,.0f} COP ({p.get('ml', '100ml')}) — {p.get('descripcion_olfativa', '')[:85]}...".replace(",", ".") for p in prods]
-            rendered = (
-                "PERFUMES UNISEX DESTACADOS EN ALTA DENSIDAD:\n\n" +
-                "\n".join(lines) +
-                "\n\nFragancias versátiles y envolventes con fijación prolongada en piel de 8 a 12 horas. "
-                "¿Te gustaría conocer en detalle las notas olfativas de alguna de ellas?"
-            )
-            return {"type": "recommendation", "data": prods, "rendered": rendered}
-
+        if any(g in q_norm for g in ["hombre", "masculino", "caballero"]):
+            filtro, titulo = "WHERE genero LIKE '%Masculino%' OR genero LIKE '%Unisex%'", "PERFUMES PARA HOMBRE RECOMENDADOS"
+        elif any(g in q_norm for g in ["mujer", "femenino", "dama"]):
+            filtro, titulo = "WHERE genero LIKE '%Femenino%' OR genero LIKE '%Unisex%'", "PERFUMES PARA MUJER RECOMENDADOS"
+        elif any(g in q_norm for g in ["unisex", "ambos", "compartir"]):
+            filtro, titulo = "WHERE genero LIKE '%Unisex%'", "PERFUMES UNISEX RECOMENDADOS"
         else:
-            # Recomendación general balanceada (Hombre, Mujer, Unisex)
-            cur.execute("""
-                SELECT * FROM productos 
-                WHERE id IN (35, 68, 82, 96)
-                ORDER BY CASE id WHEN 35 THEN 1 WHEN 68 THEN 2 WHEN 82 THEN 3 WHEN 96 THEN 4 END
-            """)
-            prods = [dict(r) for r in cur.fetchall()]
-            lines = [f"- **{p['nombre']}** ({p.get('genero', 'Unisex')} - {p.get('marca', '')}): ${p.get('precio', 0):,.0f} COP ({p.get('ml', '100ml')})".replace(",", ".") for p in prods]
-            rendered = (
-                "¡Con mucho gusto! En Alta Densidad nuestras fragancias más aclamadas y recomendadas son:\n\n" +
-                "\n".join(lines) +
-                "\n\nTodas nuestras presentaciones son de 100ml en envase de vidrio con fijación garantizada de 8 a 12 horas en piel. "
-                "¿Buscas una opción para hombre, mujer o unisex, o tienes preferencia por algún perfil aromático (cítrico, dulce o amaderado)?"
-            )
-            return {"type": "recommendation", "data": prods, "rendered": rendered}
+            filtro, titulo = "", "FRAGANCIAS FAVORITAS DE ALTA DENSIDAD"
+        cur.execute(f"SELECT * FROM productos {filtro} ORDER BY agotado ASC, COALESCE(top10, 99) ASC, id ASC LIMIT 4")
+        prods = [dict(r) for r in cur.fetchall()]
+        lines = [f"- **{p['nombre']}** ({p.get('marca', '')}): ${p.get('precio', 0):,.0f} COP ({p.get('ml', '100ml')})".replace(",", ".") for p in prods]
+        rendered = f"{titulo}:\n" + "\n".join(lines) + f"\n\nTodas en Extrait de Parfum, con fijación de {DURACION_PIEL}."
+        return {"type": "recommendation", "data": prods, "rendered": rendered}
 
     # =========================================================================
     # EXTRACTIVE RENDERING BLINDADO (DATOS DUROS DIRECTOS DESDE SQLITE)
@@ -890,7 +838,7 @@ class KnowledgeBase:
     def render_product_card(self, p: dict) -> str:
         """Renderiza una ficha de producto blindada directamente desde SQLite."""
         precio_fmt = f"${p.get('precio', 0):,.0f} COP".replace(",", ".")
-        duracion = p.get("duracion_piel", "8 a 10 horas en piel")
+        duracion = p.get("duracion_piel") or DURACION_PIEL
         return (
             f"FICHA TÉCNICA Y COMERCIAL (OFICIAL ALTA DENSIDAD):\n"
             f"- **Producto:** {p.get('nombre')}\n"
@@ -914,7 +862,7 @@ class KnowledgeBase:
         return (
             f"REFERENCIAS DISPONIBLES EN TIENDA ALTA DENSIDAD:\n" +
             "\n".join(lines) +
-            f"\n(Todas con fijación en piel de 8 a 12 horas, envase de vidrio y alta concentración)."
+            f"\n(Todas en Extrait de Parfum, con fijación de 8 a 12 horas en piel)."
         )
 
     def render_brand_catalog(self, brand: str, products: list) -> str:
@@ -926,7 +874,7 @@ class KnowledgeBase:
                 precio_fmt = f"${precio:,.0f} COP".replace(",", ".")
                 lines.append(f"- **{p.get('nombre')}**: {precio_fmt} ({p.get('ml', '100ml')})")
             else:
-                lines.append(f"- **{p.get('nombre')}**: {p.get('duracion_piel', '8h en piel')}")
+                lines.append(f"- **{p.get('nombre')}**: {p.get('duracion_piel') or DURACION_PIEL}")
 
         return (
             f"CATÁLOGO DE LA CASA {brand.upper()} EN ALTA DENSIDAD:\n" +

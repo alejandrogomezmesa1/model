@@ -44,7 +44,8 @@ La guía completa de comportamiento está en [politica_aura.md](politica_aura.md
 - **Respuestas basadas en datos reales, no en plantillas genéricas.** Cada recomendación se calcula con los acordes, las notas y las familias de cada perfume. Por ejemplo, a «para la costa» responde con cítricos y acuáticos, y explica por qué.
 - **Así escriben los clientes:** sin tildes, en minúsculas, con «q», «pa», «porfa», saludos antepuestos y errores de tecleo. El 8 % son conversaciones de 2 turnos («¿y cuál dura más?», «¿me lo envían a Pasto?»).
 - **Compatible con el backend:** los perfumes van en el formato `- **Nombre**: $precio COP`, que el backend de la tienda (`backend/routes/chatbot.js`, repo AltaDensidadPAGE) verifica y corrige. Los kits van sin negrita, porque el backend borraría esas líneas.
-- **Mezcla con y sin contexto:** el 60 % de los ejemplos con perfumes trae un fragmento de catálogo en el prompt (con perfumes distractores), para que el modelo aprenda a usar el contexto que le pasen (RAG) en lugar de inventar.
+- **Siempre con contexto:** todos los ejemplos con perfumes traen un fragmento de catálogo en el prompt (con perfumes distractores), igual que la API del modelo en inferencia, para que aprenda a usar el contexto (RAG) en lugar de inventar. Con un modelo de 0,5B esto es clave.
+- **Cultura general sin cantidades:** la intención `cultura_perfumeria` enseña a explicar pirámide olfativa, maceración, fijadores o concentraciones como concepto, sin porcentajes, tiempos ni temperaturas. El validador rechaza cualquier cantidad de formulación, el «33 %» y ofrecer Efecty.
 - **Sin datos internos:** el generador solo lee la API pública. No hay costos, proveedores, recetas ni inventario que se puedan filtrar.
 
 ## Regenerar (cuando cambien productos o precios)

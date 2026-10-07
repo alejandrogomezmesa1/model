@@ -416,7 +416,7 @@ ENVIO_MEDELLIN += ['hacen domicilio en Robledo?', 'estoy en el centro de Medell�
                    'si pido antes de las 9 me llega hoy?', 'hacen domicilios en Belén?']
 PAGOS += ['cómo es el pago?', 'se puede pagar con Nequi?', 'qué medios de pago reciben?', 'puedo pagar con Bancolombia?',
           'tienen Mercado Pago?', 'puedo hacer transferencia?', 'puedo pagar por PSE con mi banco?', 'reciben pagos por Daviplata?',
-          'aceptan pagos en efectivo en el local?']
+          'aceptan pagos en efectivo en el local?', 'reciben Efecty?', 'puedo pagar por Efecty?']
 CONTRAENTREGA += ['puedo pagar contra entrega?', 'pago cuando me llegue el pedido?', 'tienen pago al recibir en Bogotá?',
                   'me lo mandan y pago en la puerta?']
 TARJETA += ['aceptan tarjetas débito?', 'puedo pagar con Visa o Mastercard?', 'reciben American Express?']
@@ -448,3 +448,20 @@ PRIVACIDAD += ['comparten mis datos con alguien?', 'para qué piden mi cédula?'
 PREFIJOS = ['hola ', 'hola, ', 'buenas, ', 'buenos días, ', 'buenas tardes, ', 'buenas noches, ', 'una pregunta, ',
             'oye, ', 'disculpa, ', 'consulta: ', 'hola aura, ', 'hola! ', 'qué más, ', 'hola buenas, ', 'perdón, ']
 SUFIJOS = [' porfa', ' por favor', ' gracias', ' 🙏', ' 😊', ' plis', ' muchas gracias']
+
+# ── Cultura general de perfumería (se responde sin cantidades) ───────────────
+CULTURA = {
+    'piramide': ['qué es la pirámide olfativa?', 'qué son las notas de salida, corazón y fondo?', 'por qué el perfume cambia de olor después de un rato?',
+                 'qué significa notas de fondo?'],
+    'maceracion': ['qué es la maceración de un perfume?', 'qué significa macerar un perfume?', 'para qué dejan reposar los perfumes?',
+                   'es cierto que el perfume mejora con el tiempo?'],
+    'fijador': ['qué es un fijador?', 'para qué sirve el fijador en un perfume?', 'qué es el ambroxan?', 'qué hace que un perfume dure más?'],
+    'concentraciones': ['cuál es la diferencia entre edt y edp?', 'qué diferencia hay entre colonia y perfume?', 'qué es más fuerte, eau de parfum o extrait?',
+                        'qué significa eau de toilette?'],
+    'turbio': ['por qué un perfume se pone turbio?', 'mi perfume se ve opaco, es normal?', 'por qué se nubla un perfume?'],
+    'conservar': ['cómo guardo el perfume para que no se dañe?', 'el perfume se daña con el sol?', 'se puede guardar el perfume en el baño?',
+                  'el perfume se vence?'],
+    'piel': ['por qué un perfume huele distinto en cada persona?', 'por qué a mi amiga le dura más el perfume que a mí?', 'el ph de la piel influye en el perfume?'],
+    'acordes': ['qué es un acorde en perfumería?', 'qué significa gourmand?', 'cuáles son las familias olfativas?', 'qué es un perfume amaderado?'],
+    'alcohol': ['por qué los perfumes llevan alcohol?', 'qué tipo de alcohol lleva un perfume?'],
+}

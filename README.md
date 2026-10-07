@@ -141,27 +141,43 @@ Compendio de 12 guías químicas de laboratorio:
 
 ---
 
-## 6. Pipeline de Entrenamiento: SFT + DPO (Aprendizaje por Refuerzo)
+## 6. Pipeline de Entrenamiento de AURA: SFT + DPO
 
-Para reproducir o reentrenar el modelo con nuevos datos:
+El modelo se entrena con el dataset de AURA (`dataset_aura/`), con **el mismo prompt de sistema y el mismo bloque de contexto RAG que usa `api.py`** en inferencia. El prompt sale de `dataset_aura/salida/sistema_aura.txt` y las filas de catálogo de `rag/conocimiento.json`.
 
-### Paso 1: Generar los datasets estructurados
+### Paso 1: Regenerar y validar el dataset (cuando cambien productos, precios o políticas)
 ```powershell
-& ./hf-locql/Scripts/python.exe src/build_dataset_reasoning.py
-& ./hf-locql/Scripts/python.exe src/build_dataset_dpo.py
+cd dataset_aura
+python generar_dataset.py      # descarga el catálogo público de la tienda
+python validar_dataset.py      # debe terminar en ✔
+cd ..
 ```
 
-### Paso 2: Fase 1 - Supervised Fine-Tuning (SFT)
-Entrena la base con LoRA ($r=16, \alpha=16$, 3 épocas, $lr=10^{-4}$) y exporta los pesos fusionados a `models/mi_modelo_sft/`:
+### Paso 2: Reconstruir la base de conocimiento y convertir el dataset
+```powershell
+& ./hf-locql/Scripts/python.exe -c "import sys; sys.path.insert(0,'src'); from knowledge_db import KnowledgeBase; KnowledgeBase().build_from_sources()"
+& ./hf-locql/Scripts/python.exe src/preparar_datos_aura.py
+```
+La base solo contiene los perfumes, kits y envases que vende la tienda. `preparar_datos_aura.py` escribe `data/aura_sft.jsonl` (SFT + ataques, formato prompt/completion) y `data/aura_dpo.jsonl`.
+
+### Paso 3: Fase 1 — SFT (≈25 min en la RTX 3050)
+LoRA r=16, α=32 sobre atención y MLP, 2 épocas, lr 2e-4, `max_length=2048` con gradient checkpointing; la pérdida solo cuenta la respuesta de AURA. Salida: `models/aura_v2_sft/`.
 ```powershell
 & ./hf-locql/Scripts/python.exe src/train_sft.py
 ```
 
-### Paso 3: Fase 2 - Direct Preference Optimization (DPO RL)
-Alinea las preferencias mediante refuerzo con $\beta=0.1$ y $lr=5 \times 10^{-6}$, suprimiendo alucinaciones y exportando el modelo final a `models/mi_modelo_perfumista_v1/`:
+### Paso 4: Fase 2 — DPO (≈1 h en la RTX 3050)
+β=0,1, lr 2e-5, 2 épocas, log-probs de referencia precalculados para caber en 4 GB. Salida: `models/aura_v2/`, que es el modelo que carga la API.
 ```powershell
 & ./hf-locql/Scripts/python.exe src/train_dpo.py
 ```
+
+### Paso 5: Evaluar antes de publicar
+```powershell
+& ./hf-locql/Scripts/python.exe -m uvicorn api:app --host 127.0.0.1 --port 8000      # en otra terminal
+python dataset_aura/evaluar.py --openai http://127.0.0.1:8000 --modelo aura --key (Get-Content data/.api_key) --pausa 0
+```
+Para comparar con otro modelo, arranca la API con `$env:AURA_MODELO="mi_modelo_perfumista_v1"`.
 
 ---
 

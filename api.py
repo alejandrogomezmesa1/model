@@ -40,7 +40,7 @@ sys.path.insert(0, str(BASE_DIR / "src"))
 sys.path.insert(0, str(BASE_DIR))
 
 from knowledge_db import KnowledgeBase, normalize_text
-from post_validator import validate_and_sanitize
+from post_validator import verificar_productos
 
 
 # =============================================================================
@@ -119,31 +119,9 @@ STATE = {
     "sessions": {},  # session_id -> {"history": [...], "last_product": ...}
 }
 
-BASE_SYSTEM = (
-    "Eres AURA, la asesora olfativa virtual de 'Fragancias de Alta Densidad', una boutique de perfumería "
-    "de lujo en Medellín, Colombia.\n\n"
-    "Tu misión es asesorar a los clientes para que encuentren su perfume o kit ideal según su género, "
-    "ocasión de uso (fiesta, oficina, cita romántica, diario) y gusto olfativo, con un tono elegante, "
-    "experto, persuasivo y servicial (Dark Luxury).\n\n"
-    "## Pilares Comerciales y Propuesta de Valor (Alta Densidad):\n"
-    "1. CONCENTRACIÓN: 33% de concentración de esencia pura (Extracto de Perfume, muy superior al EDT o EDP convencional).\n"
-    "2. DURACIÓN: Fijación garantizada en piel de 8 a más de 12 horas.\n"
-    "3. FEROMONAS: Todas las fragancias contienen feromonas añadidas que intensifican la estela y la atracción.\n"
-    "4. ENVASES: Frascos de vidrio de lujo (Cilindro tradicional, Swarosky, Cartier).\n"
-    "5. ENVÍOS Y PAGOS: Envíos locales rápidos en Medellín (calle 77c # 91b - 74) y nacionales a toda Colombia. "
-    "Pagos con Mercado Pago (tarjetas débito/crédito, PSE, Efecty, Nequi) y transferencias bancarias.\n"
-    "6. ATENCIÓN HUMANA: Si un cliente tiene un reclamo o desea un pedido especial, derivarlo al WhatsApp: +57 304 647 7694.\n\n"
-    "## Reglas Obligatorias de Interacción y Renderizado de Cards:\n"
-    "1. Menciona SIEMPRE los nombres de las fragancias en negrita con su nombre exacto (ej: **ONE MILLON PACO RABANNE**, "
-    "**THANK U NEXT 2.0 ARIANA GRANDE**, **BHARARA KING**, **SAUVAGE DIOR**), para que el frontend AURA renderice automáticamente "
-    "su tarjeta interactiva con foto y botón '+ Añadir al carrito'.\n"
-    "2. Indica los precios en Pesos Colombianos (COP) exactamente como constan en los datos oficiales de la tienda.\n\n"
-    "## Conocimiento Técnico y de Laboratorio:\n"
-    "Cuando el cliente consulte sobre formulación, maceración o química de fragancias, responde con rigor profesional:\n"
-    "- PIRÁMIDE OLFATIVA: siempre en 3 capas (salida 0-30 min, corazón 30 min-4h, fondo varias horas persistentes).\n"
-    "- ALCOHOL PERFUMÍSTICO: alcohol etílico desodorizado a 96° grado cosmético para evitar olor a alcohol residual.\n"
-    "- MACERACIÓN: reposo de 3 a 6 semanas a 15-18°C y decantación en frío a 0-4°C."
-)
+# Prompt de sistema: el MISMO con el que se entrena (dataset_aura/salida/sistema_aura.txt, generado
+# desde aura_conocimiento.SISTEMA_AURA). Si cambia una política, se regenera el dataset y se reentrena.
+BASE_SYSTEM = (BASE_DIR / "dataset_aura" / "salida" / "sistema_aura.txt").read_text(encoding="utf-8").strip()
 
 
 
@@ -153,19 +131,19 @@ def load_model_and_kb():
     cur.execute("SELECT count(*) as count FROM productos")
     if cur.fetchone()["count"] == 0:
         kb.build_from_sources()
+    STATE["catalogo"] = kb.catalogo_precios()
+    STATE["kits"] = kb.nombres_kits()
 
-    custom_model_dir = resolve_path("mi_modelo_perfumista_v1", is_dir=True)
-    if custom_model_dir and os.path.isfile(os.path.join(custom_model_dir, "model.safetensors")):
-        model_id = custom_model_dir
-        model_display = "Modelo Soberano Perfumista v1 (SFT + DPO RL)"
-    else:
-        custom_sft_dir = resolve_path("mi_modelo_sft", is_dir=True)
-        if custom_sft_dir and os.path.isfile(os.path.join(custom_sft_dir, "model.safetensors")):
-            model_id = custom_sft_dir
-            model_display = "Modelo Soberano SFT (Fase 1 LoRA Merged)"
-        else:
-            model_id = "Qwen/Qwen2.5-0.5B-Instruct"
-            model_display = "Qwen/Qwen2.5-0.5B-Instruct (Base HF Hub)"
+    # AURA_MODELO elige la carpeta de models/ (sirve para comparar el modelo nuevo contra el anterior);
+    # sin ella se usa el primero que exista de esta lista.
+    candidatos = [os.environ["AURA_MODELO"]] if os.environ.get("AURA_MODELO") else [
+        "aura_v2", "aura_v2_sft", "mi_modelo_perfumista_v1", "mi_modelo_sft"]
+    model_id, model_display = "Qwen/Qwen2.5-0.5B-Instruct", "Qwen/Qwen2.5-0.5B-Instruct (Base HF Hub)"
+    for nombre in candidatos:
+        model_dir = resolve_path(nombre, is_dir=True)
+        if model_dir and os.path.isfile(os.path.join(model_dir, "model.safetensors")):
+            model_id, model_display = model_dir, nombre
+            break
 
     if torch.cuda.is_available():
         device = "cuda"
@@ -188,9 +166,6 @@ def load_model_and_kb():
 # =============================================================================
 # MOTOR DE TURNO (RAG + GENERACIÓN), mismo flujo que chat.py
 # =============================================================================
-AFFIRMATIONS = {"si", "claro", "dale", "ok", "vale", "bueno", "por favor", "porfa", "yes", "sii", "si por favor"}
-EXTRACTIVE_TYPES = {"greeting", "override", "top10", "recommendation", "brand_catalog", "envases", "kits", "tech_guide", "multi_product"}
-
 # Serializa el acceso al modelo (GPU) y a la conexión SQLite (no thread-safe)
 INFERENCE_LOCK = threading.Lock()
 
@@ -202,43 +177,16 @@ def run_turn(user_text: str, history: list, last_product: Optional[str] = None, 
     tokenizer = STATE["tokenizer"]
     device = STATE["device"]
 
-    # Afirmaciones / seguimientos breves
-    user_norm = normalize_text(user_text)
-    if user_norm in AFFIRMATIONS and history:
-        response_text = (
-            "¡Con mucho gusto! Cuéntame cuál de las opciones te llama más la atención o si buscas "
-            "una recomendación según la ocasión (diario, citas o eventos elegantes), "
-            "y te asesoro con sus notas olfativas, envases y duración en piel."
-        )
-        return response_text, "affirmation", last_product
+    # Correcciones manuales guardadas con 'corregir:' tienen prioridad
+    override = kb.check_override(user_text)
+    if override:
+        return override, "override", last_product
 
-    search_result = kb.search(user_text, history)
-    res_type = search_result.get("type", "none")
-    rendered_output = search_result.get("rendered")
-    retrieved_data = search_result.get("data")
-
-    if res_type in EXTRACTIVE_TYPES:
-        response_text = rendered_output
-        if res_type == "brand_catalog":
-            last_product = search_result.get("brand")
-        return response_text, res_type, last_product
-
-    if res_type == "product_card" and isinstance(retrieved_data, dict):
-        last_product = retrieved_data.get("nombre")
-
-    if rendered_output:
-        system_context = (
-            f"{BASE_SYSTEM}\n\n"
-            f"[DATOS OFICIALES Y VERIFICADOS DE LA BASE DE DATOS]:\n"
-            f"{rendered_output}\n\n"
-            f"INSTRUCCIONES CLAVE:\n"
-            f"- Saluda o responde cordialmente al cliente con el estilo elegante, experto y cercano de Alta Densidad.\n"
-            f"- Asesora directamente sobre la consulta del cliente basándote estrictamente en los datos oficiales de arriba.\n"
-            f"- Menciona los precios, mililitros, envases y fijaciones exactamente como están en los datos oficiales, sin alterarlos.\n"
-            f"- Varia tu redacción y tus preguntas finales. Nunca repitas la misma pregunta de cierre que ya hiciste en turnos previos."
-        )
-    else:
-        system_context = BASE_SYSTEM
+    # RAG: bloques «CATÁLOGO RELEVANTE / KITS / CREA TU PERFUME», igual que en el dataset de entrenamiento
+    contexto, productos = kb.contexto(user_text, history)
+    system_context = BASE_SYSTEM + ("\n\n" + contexto if contexto else "")
+    if productos:
+        last_product = productos[0]["nombre"]
 
     trimmed_history = history[-4:]
     current_messages = [{"role": "system", "content": system_context}] + trimmed_history + [{"role": "user", "content": user_text}]
@@ -249,18 +197,18 @@ def run_turn(user_text: str, history: list, last_product: Optional[str] = None, 
 
     inputs = tokenizer(prompt_formatted, return_tensors="pt").to(device)
 
-    temperature = float(gen_kwargs.get("temperature", 0.4))
+    temperature = float(gen_kwargs.get("temperature", 0.3))
     top_p = float(gen_kwargs.get("top_p", 0.9))
-    max_new_tokens = int(gen_kwargs.get("max_tokens", 220))
+    max_new_tokens = int(gen_kwargs.get("max_tokens", 350))
 
     with torch.no_grad():
         output_tokens = model.generate(
             **inputs,
             max_new_tokens=max_new_tokens,
-            do_sample=True,
-            temperature=temperature,
-            top_p=top_p,
-            repetition_penalty=1.18,
+            do_sample=temperature > 0,
+            temperature=temperature if temperature > 0 else None,
+            top_p=top_p if temperature > 0 else None,
+            repetition_penalty=1.05,
             pad_token_id=tokenizer.eos_token_id,
         )
 
@@ -268,11 +216,13 @@ def run_turn(user_text: str, history: list, last_product: Optional[str] = None, 
     response_tokens = output_tokens[0][input_len:]
     raw_response = tokenizer.decode(response_tokens, skip_special_tokens=True).strip()
 
-    response_text = validate_and_sanitize(raw_response, retrieved_data)
-    if not response_text or len(response_text) < 15:
-        response_text = rendered_output or raw_response
+    # Mismo control que el backend de la tienda: productos inexistentes fuera, precios oficiales, kits sin negrita
+    response_text = verificar_productos(raw_response, STATE["catalogo"], STATE["kits"])
+    if not response_text:
+        response_text = ("Disculpa, no tengo esa información a la mano 🙏 Un asesor te ayuda por WhatsApp al "
+                         "+57 304 647 7694. ¿Te recomiendo algún perfume mientras tanto?")
 
-    return response_text, res_type, last_product
+    return response_text, "rag" if contexto else "text", last_product
 
 
 # =============================================================================
@@ -357,9 +307,9 @@ class ChatMessage(BaseModel):
 class ChatCompletionRequest(BaseModel):
     model: Optional[str] = "alta-densidad-perfumista-v1"
     messages: List[ChatMessage]
-    temperature: Optional[float] = 0.4
+    temperature: Optional[float] = 0.3
     top_p: Optional[float] = 0.9
-    max_tokens: Optional[int] = 220
+    max_tokens: Optional[int] = 350
     session_id: Optional[str] = None
     stream: Optional[bool] = False
 
@@ -367,9 +317,9 @@ class ChatCompletionRequest(BaseModel):
 class NativeChatRequest(BaseModel):
     message: str
     session_id: Optional[str] = None
-    temperature: Optional[float] = 0.4
+    temperature: Optional[float] = 0.3
     top_p: Optional[float] = 0.9
-    max_tokens: Optional[int] = 220
+    max_tokens: Optional[int] = 350
 
 
 class NativeChatResponse(BaseModel):
@@ -386,7 +336,7 @@ def extract_products_from_response(response_text: str, last_product: Optional[st
         found.append(last_product)
 
     # Extraer nombres destacados en negrita (**NOMBRE**)
-    bold_items = re.findall(r"\*\*([A-Za-z0-9\s\.\-]{3,50})\*\*", response_text)
+    bold_items = re.findall(r"\*\*([^*\n]{3,60})\*\*", response_text)
     ignore_headers = {
         "producto", "precio", "casa", "marca", "presentacion", "envase", "perfil",
         "recomendacion", "genero", "categoria", "fijacion", "salida", "corazon",

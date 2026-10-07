@@ -17,7 +17,7 @@ def normalize(text: str) -> str:
     return re.sub(r"[^a-z0-9\s]", " ", text).strip()
 
 
-def sanitize_skin_duration(text: str, default_duration: str = "8 a 10 horas de fijación en piel") -> str:
+def sanitize_skin_duration(text: str, default_duration: str = "8 a 12 horas de fijación en piel") -> str:
     """
     Detecta 'meses' o 'años' aplicados a fijación o duración en la piel y los reemplaza por horas reales.
     Soporta acentos (duración, fijación, años) y variantes sintácticas.
@@ -86,7 +86,7 @@ def validate_and_sanitize(response_text: str, retrieved_record = None) -> str:
     sanitized = re.sub(r'\bf[ií]jola\s*:\s*', r'Fijación: ', sanitized, flags=re.IGNORECASE)
 
     # 3. Blindaje de Duración
-    duracion_real = "8 a 10 horas de fijación en piel"
+    duracion_real = "8 a 12 horas de fijación en piel"
     if retrieved_record:
         if isinstance(retrieved_record, dict):
             duracion_real = retrieved_record.get("duracion_piel") or retrieved_record.get("duracion_horas") or duracion_real
@@ -130,6 +130,33 @@ def validate_and_sanitize(response_text: str, retrieved_record = None) -> str:
     # 7. Limpieza de saltos de línea excesivos y espacios
     sanitized = re.sub(r'\n{3,}', '\n\n', sanitized).strip()
     return sanitized
+
+LINEA_PRODUCTO = re.compile(r'^(\s*[-*•]\s*)\*\*(.+?)\*\*([^\n]*)$', re.M)
+
+
+def verificar_productos(texto: str, catalogo: dict, kits: set) -> str:
+    """Igual que verificarRespuesta del backend de la tienda, para las líneas «- **Nombre**: $precio COP · …».
+
+    catalogo: {nombre normalizado: (nombre exacto, precio)}; kits: nombres normalizados de kits.
+    - Producto que no existe en la tienda → se borra la línea.
+    - Producto existente → nombre exacto y precio oficial.
+    - Kit en negrita → se le quita la negrita (los kits no son productos para el backend).
+    """
+    def corregir(m):
+        viñeta, nombre, resto = m.group(1), m.group(2).strip().rstrip(':'), m.group(3)
+        clave = normalize(nombre)
+        if clave in kits:
+            return f"{viñeta}{nombre}{resto}"
+        if clave not in catalogo:
+            return ''
+        exacto, precio = catalogo[clave]
+        precio_fmt = f"${float(precio):,.0f}".replace(",", ".")
+        resto = re.sub(r'\$\s?[\d.]+', precio_fmt, resto, count=1)
+        return f"{viñeta}**{exacto}**{resto}"
+
+    texto = LINEA_PRODUCTO.sub(corregir, texto)
+    return re.sub(r'\n{3,}', '\n\n', texto).strip()
+
 
 # Alias para compatibilidad
 validate_and_sanitize_response = validate_and_sanitize

@@ -59,7 +59,7 @@
   "reclamo": "Lamento mucho lo que pasó 😔 Quiero que te lo solucionen rápido: escríbele a un asesor por WhatsApp al {wa} con tu número de pedido y una foto si aplica. Si es un defecto o un error en el pedido, recuerda reportarlo dentro de los 2 días hábiles siguientes a la entrega.",
   "privacidad": "Tratamos tus datos según la Ley 1581 de 2012 de protección de datos personales: los usamos solo para gestionar tu compra y el envío, y no los compartimos con fines externos 🔒",
   "originales": "Te cuento con total transparencia 😊 Nuestros perfumes son fragancias inspiradas en las originales de diseñador: no son el producto de la marca, sino recreaciones con esencias de alta calidad que logran un 99 % de semejanza en el aroma. Las elaboramos en concentración Extrait de Parfum y con feromonas, por eso rinden y duran tanto.",
-  "duracion": "⏳ Nuestras fragancias están en concentración Extrait de Parfum, así que duran 12 horas o más en piel y varios días en la ropa. La duración exacta depende de tu tipo de piel; hidratarla antes de aplicar ayuda mucho.",
+  "duracion": "⏳ Nuestras fragancias están en concentración Extrait de Parfum, así que duran de 8 a 12 horas en piel y varios días en la ropa. La duración exacta depende de tu tipo de piel; hidratarla antes de aplicar ayuda mucho.",
   "aplicacion": "Para que te dure más ✨\n• Aplícalo sobre piel limpia e hidratada (una crema sin olor ayuda mucho).\n• En puntos de pulso: cuello, muñecas, detrás de las orejas y pecho.\n• No frotes las muñecas: rompe las notas de salida.\n• Unas gotas en la ropa duran días.",
   "feromonas": "Todas nuestras fragancias llevan feromonas sintéticas: no tienen olor y se agregan como un plus que busca potenciar la atracción y la proyección del perfume con el calor de la piel. Eso sí, el efecto varía en cada persona; lo que te garantizamos es un aroma de alta concentración y gran fijación.",
   "concentracion": "Nuestros perfumes se elaboran en concentración Extrait de Parfum, la más alta de la perfumería. Por eso con pocas atomizaciones tienes muy buena proyección y fijación.",
@@ -85,7 +85,7 @@
   "opiniones": "Puedes ver qué fragancias prefieren nuestros clientes en el Top 10 ({top10}) ⭐ y conocer más de nosotros en Instagram {instagram}. ¿Te ayudo a elegir alguna?",
   "top10_intro": "Estas son algunas de las favoritas de nuestros clientes ⭐ (Top 10 completo en {top10}):",
   "crea_intro": "En «Crea tu perfume» armas el tuyo en 4 pasos: envase → tamaño → fragancia → feromonas (opcional). El precio es la esencia según el tamaño + el envase + las feromonas si las pides.",
-  "garantia_calidad": "Nuestra garantía es la calidad: esencias de alta calidad en concentración Extrait de Parfum, con 99 % de semejanza al aroma original y fijación de 12 horas o más. Y si un producto llega defectuoso, lo solucionamos (repórtalo dentro de 2 días hábiles).",
+  "garantia_calidad": "Nuestra garantía es la calidad: esencias de alta calidad en concentración Extrait de Parfum, con 99 % de semejanza al aroma original y fijación de 8 a 12 horas en piel. Y si un producto llega defectuoso, lo solucionamos (repórtalo dentro de 2 días hábiles).",
   "regalo_empaque": "Los kits ya vienen en estuche de regalo 🎁 Para un empaque especial o una tarjeta con mensaje en un perfume individual, coordínalo con un asesor por WhatsApp ({wa}) al hacer tu pedido.",
   "muestras": "No manejamos muestras gratis por ahora 🙈 Si quieres probar sin comprar el frasco grande, en «Crea tu perfume» puedes armar una presentación de 30 ml, y los kits de miniaturas son ideales para conocer varias fragancias.",
   "visita_probar": "Puedes visitarnos en la {direccion} 📍 Te recomiendo escribir antes por WhatsApp ({wa}) para confirmar la atención y que te tengan listas las fragancias que quieres oler."
@@ -138,7 +138,8 @@
    },
    "agotado": false,
    "url": "https://alta-densidad-page.vercel.app/perfume/afnan/9am-dive",
-   "top10": null
+   "top10": null,
+   "contexto": "9AM dive | $85.000 COP | Arabe | Unisex | inspirado en Afnan | acordes: afrutado, verde, amaderado, cítrico, aromático | salida: limón, pimienta rosa, menta, grosellas negras | corazón: manzana, incienso, cedro | fondo: pachulí, jazmín, jengibre, sándalo"
   },
   {
    "id": 125,
@@ -182,7 +183,8 @@
    },
    "agotado": false,
    "url": "https://alta-densidad-page.vercel.app/perfume/afnan/9am-pour-femme",
-   "top10": null
+   "top10": null,
+   "contexto": "9AM pour femme | $90.000 COP | Arabe | Femenino | inspirado en Afnan | acordes: cítrico, afrutado, dulce, almizclado, ámbar | salida: mandarina, bergamota, pomelo | corazón: grosellas negras, frambuesa | fondo: almizcle, naranja, ámbar"
   },
   {
    "id": 19,
@@ -230,7 +232,8 @@
    },
    "agotado": false,
    "url": "https://alta-densidad-page.vercel.app/perfume/afnan/9pm",
-   "top10": null
+   "top10": null,
+   "contexto": "9pm | $100.000 COP | Arabe | Masculino | inspirado en Afnan | acordes: avainillado, ámbar, cálido especiado, afrutado, canela | salida: manzana, canela, lavanda silvestre, bergamota | corazón: flor de azahar del naranjo, lirio de los valles | fondo: vainilla, haba tonka, ámbar, pachulí"
   },
   {
    "id": 124,
@@ -279,7 +282,8 @@
    },
    "agotado": false,
    "url": "https://alta-densidad-page.vercel.app/perfume/afnan/9pm-elixir",
-   "top10": null
+   "top10": null,
+   "contexto": "9PM Elixir | $85.000 COP | Arabe | Unisex | inspirado en Afnan | acordes: cálido especiado, avainillado, aromático, fresco especiado, cuero | salida: cardamomo, nuez moscada, elemí | corazón: pimienta de jamaica, cuero, lavanda | fondo: cisto, ladáno, pachulí, vainilla"
   },
   {
    "id": 105,
@@ -331,7 +335,8 @@
    },
    "agotado": false,
    "url": "https://alta-densidad-page.vercel.app/perfume/afnan/9-pm-night-out",
-   "top10": null
+   "top10": null,
+   "contexto": "9PM night out | $135.000 COP | Arabe | Masculino | inspirado en Afnan | acordes: amaderado, afrutado, cálido especiado, dulce, tropical | salida: pitahaya, coñac, lavanda, manzana | corazón: tofe, gamuza, cardamomo, cedro | fondo: haba tonka, akigalawood, pachulí, ambrofix"
   },
   {
    "id": 132,
@@ -376,7 +381,8 @@
    },
    "agotado": false,
    "url": "https://alta-densidad-page.vercel.app/perfume/afnan/9pm-rebel",
-   "top10": null
+   "top10": null,
+   "contexto": "9PM Rebel | $110.000 COP | Arabe | Unisex | inspirado en Afnan | acordes: frutal gourmand, piña, manzana verde, cedro, vainilla | salida: mandarina, piña, manzana verde | corazón: cedro, vainilla, musgo de roble | fondo: ámbar gris, notas amaderadas, caramelo, almizcle"
   },
   {
    "id": 28,
@@ -423,7 +429,8 @@
    },
    "agotado": false,
    "url": "https://alta-densidad-page.vercel.app/perfume/al-haramain-perfumes/amber-oud-gold-edition",
-   "top10": 6
+   "top10": 6,
+   "contexto": "Amber oud gold edition | $125.000 COP | Arabe | Unisex | inspirado en Al Haramain | acordes: dulce, afrutado, ozónico, avainillado, atalcado | salida: bergamota, notas verdes | corazón: melón, piña, ámbar, acorde goloso | fondo: vainilla, almizcle, notas amaderadas"
   },
   {
    "id": 47,
@@ -466,7 +473,8 @@
    },
    "agotado": false,
    "url": "https://alta-densidad-page.vercel.app/perfume/ariana-grande/cloud",
-   "top10": null
+   "top10": null,
+   "contexto": "Cloud | $80.000 COP | Diseñador | Femenino | inspirado en Ariana Grande | acordes: dulce, lactónico, avainillado, coco, almizclado | salida: lavanda, pera, bergamota | corazón: crema batida, coco, praliné, orquídea de vainilla | fondo: almizcle, notas amaderadas"
   },
   {
    "id": 113,
@@ -507,7 +515,8 @@
    },
    "agotado": false,
    "url": "https://alta-densidad-page.vercel.app/perfume/ariana-grande/thank-u-next-2-0",
-   "top10": null
+   "top10": null,
+   "contexto": "Thank u next 2.0 | $85.000 COP | Diseñador | Femenino | inspirado en Ariana Grande | acordes: afrutado, dulce, amaderado, atalcado, almizclado | salida: manzana, granada, fresa salvaje | corazón: jazmín, orquídea blanca | fondo: malvavisco, almizcle, sándalo"
   },
   {
    "id": 83,
@@ -548,7 +557,8 @@
    },
    "agotado": false,
    "url": "https://alta-densidad-page.vercel.app/perfume/ariana-grande/thank-u-next",
-   "top10": null
+   "top10": null,
+   "contexto": "Thank u, next | $80.000 COP | Diseñador | Femenino | inspirado en Ariana Grande | acordes: dulce, coco, afrutado, avainillado, rosa | salida: frambuesa, pera | corazón: coco, rosa rosada | fondo: macarrones dulces, almizcle"
   },
   {
    "id": 73,
@@ -597,7 +607,8 @@
    },
    "agotado": false,
    "url": "https://alta-densidad-page.vercel.app/perfume/armaf/club-de-nuit-intense-man",
-   "top10": null
+   "top10": null,
+   "contexto": "Club de nuit intense man | $105.000 COP | Arabe | Masculino | inspirado en Armaf | acordes: cítrico, afrutado, cuero, ahumado, amaderado | salida: limón, piña, bergamota, grosellas negras | corazón: abedul, jazmín, rosa | fondo: almizcle, ámbar gris, pachulí, vainilla"
   },
   {
    "id": 108,
@@ -643,7 +654,8 @@
    },
    "agotado": false,
    "url": "https://alta-densidad-page.vercel.app/perfume/armaf/desert-rose",
-   "top10": null
+   "top10": null,
+   "contexto": "Desert Rose | $135.000 COP | Arabe | Unisex | inspirado en Armaf | acordes: cuero, cálido especiado, ámbar, rosa, tropical | salida: maracuyá, azafrán, rosa turca | corazón: pachulí | fondo: cuero, ámbar, ladáno, vainilla"
   },
   {
    "id": 62,
@@ -691,7 +703,8 @@
    },
    "agotado": false,
    "url": "https://alta-densidad-page.vercel.app/perfume/armaf/island-bliss",
-   "top10": null
+   "top10": null,
+   "contexto": "Island bliss | $135.000 COP | Arabe | Femenino | inspirado en Armaf | acordes: avainillado, coco, dulce, floral blanco, almizclado | salida: bayas silvestres, notas verdes | corazón: coco, flor de azahar del naranjo, lactonas, nenúfar | fondo: vainilla, almizcle, haba tonka"
   },
   {
    "id": 98,
@@ -729,7 +742,8 @@
    },
    "agotado": false,
    "url": "https://alta-densidad-page.vercel.app/perfume/armaf/island-breeze",
-   "top10": null
+   "top10": null,
+   "contexto": "Island breeze | $135.000 COP | Arabe | Femenino | inspirado en Armaf | acordes: afrutado, almizclado, atalcado, rosa, amaderado | salida: durazno, bayas | corazón: rosa | fondo: almizcle blanco"
   },
   {
    "id": 143,
@@ -775,7 +789,8 @@
    },
    "agotado": false,
    "url": "https://alta-densidad-page.vercel.app/perfume/armaf/odyssey-aqua",
-   "top10": null
+   "top10": null,
+   "contexto": "Odyssey Aqua | $110.000 COP | Arabe | Masculino | inspirado en Armaf | acordes: aromático, fresco especiado, cítrico, verde, amaderado | salida: artemisa, naranja, pomelo | corazón: lavanda, menta | fondo: pachulí, ambroxan, ciprés"
   },
   {
    "id": 75,
@@ -822,7 +837,8 @@
    },
    "agotado": false,
    "url": "https://alta-densidad-page.vercel.app/perfume/armaf/odyssey-candee",
-   "top10": null
+   "top10": null,
+   "contexto": "Odyssey candee | $115.000 COP | Arabe | Femenino | inspirado en Armaf | acordes: afrutado, dulce, pachulí, caramelo, amaderado | salida: fresa, frambuesa, geranio, durazno | corazón: caramelo, jazmín, maracuyá | fondo: pachulí, almizcle, ámbar"
   },
   {
    "id": 76,
@@ -870,7 +886,8 @@
    },
    "agotado": false,
    "url": "https://alta-densidad-page.vercel.app/perfume/armaf/odyssey-dubai-chocolat",
-   "top10": null
+   "top10": null,
+   "contexto": "Odyssey dubai chocolat | $115.000 COP | Arabe | Unisex | inspirado en Armaf | acordes: cálido especiado, dulce, nueces, amaderado, café | salida: café, pistacho, avellana, praliné | corazón: chocolate, vainilla, cardamomo | fondo: caramelo, haba tonka, amberwood"
   },
   {
    "id": 144,
@@ -914,7 +931,8 @@
    },
    "agotado": false,
    "url": "https://alta-densidad-page.vercel.app/perfume/armaf/odyssey-go-mango",
-   "top10": null
+   "top10": null,
+   "contexto": "Odyssey Go Mango | $110.000 COP | Arabe | Unisex | inspirado en Armaf | acordes: tropical, afrutado, dulce, avainillado | salida: jengibre, limón, pimienta rosa, flores blancas | corazón: mango, haba tonka, notas amaderadas | fondo: ámbar, madera de gaiac, almizcle, nueces"
   },
   {
    "id": 79,
@@ -959,7 +977,8 @@
    },
    "agotado": false,
    "url": "https://alta-densidad-page.vercel.app/perfume/armaf/odyssey-mandarin-sky",
-   "top10": null
+   "top10": null,
+   "contexto": "Odyssey mandarin sky | $105.000 COP | Arabe | Masculino | inspirado en Armaf | acordes: cítrico, caramelo, dulce, ámbar, aromático | salida: mandarina, naranja, azafrán, salvia | corazón: caramelo, haba tonka, cempasúchil | fondo: ambroxan, cedro, vetiver"
   },
   {
    "id": 77,
@@ -1009,7 +1028,8 @@
    },
    "agotado": false,
    "url": "https://alta-densidad-page.vercel.app/perfume/armaf/odyssey-mega-man",
-   "top10": null
+   "top10": null,
+   "contexto": "Odyssey mega man | $115.000 COP | Arabe | Masculino | inspirado en Armaf | acordes: cítrico, aromático, fresco especiado, amaderado, dulce | salida: limón, bergamota, naranja, jengibre | corazón: piña, salvia, enebro, geranio | fondo: almizcle, cedro, haba tonka, vetiver"
   },
   {
    "id": 78,
@@ -1059,7 +1079,8 @@
    },
    "agotado": false,
    "url": "https://alta-densidad-page.vercel.app/perfume/armaf/odyssey-spectra",
-   "top10": null
+   "top10": null,
+   "contexto": "Odyssey spectra | $115.000 COP | Arabe | Masculino | inspirado en Armaf | acordes: avainillado, lavanda, cálido especiado, canela, ámbar | salida: canela, manzana, bergamota | corazón: lavanda, canela, flor de azahar del naranjo, lirio de los valles | fondo: vainilla, ámbar, tabaco, haba tonka"
   },
   {
    "id": 92,
@@ -1107,7 +1128,8 @@
    },
    "agotado": false,
    "url": "https://alta-densidad-page.vercel.app/perfume/armaf/yum-yum",
-   "top10": null
+   "top10": null,
+   "contexto": "Yum yum | $135.000 COP | Arabe | Femenino | inspirado en Armaf | acordes: afrutado, atalcado, a cereza, amaderado, rosa | salida: bayas silvestres, cereza, naranja, bergamota | corazón: rosa, vainilla, flores blancas | fondo: atalcadas, almizcle, ámbar"
   },
   {
    "id": 35,
@@ -1149,7 +1171,8 @@
    },
    "agotado": false,
    "url": "https://alta-densidad-page.vercel.app/perfume/bharara/king",
-   "top10": 4
+   "top10": 4,
+   "contexto": "King | $110.000 COP | Arabe | Masculino | inspirado en Bharara | acordes: cítrico, afrutado, dulce, avainillado, atalcado | salida: naranja, bergamota, limón | corazón: notas afrutadas | fondo: vainilla, almizcle blanco, ámbar"
   },
   {
    "id": 118,
@@ -1197,7 +1220,8 @@
    },
    "agotado": false,
    "url": "https://alta-densidad-page.vercel.app/perfume/bharara/king-soleil",
-   "top10": null
+   "top10": null,
+   "contexto": "King soleil | $130.000 COP | Arabe | Unisex | inspirado en Bharara | acordes: cítrico, avainillado, amaderado, nueces, atalcado | salida: naranja siciliana, bergamota, limon siciliano, frutas rojas/amarillas | corazón: frutales tropicales, jazmín, sándalo, ámbar gris | fondo: vainilla de madagascar, chocolate, avellana, benjuí de siam"
   },
   {
    "id": 36,
@@ -1241,7 +1265,8 @@
    },
    "agotado": false,
    "url": "https://alta-densidad-page.vercel.app/perfume/bharara/niche",
-   "top10": null
+   "top10": null,
+   "contexto": "Niche | $115.000 COP | Arabe | Unisex | inspirado en Bharara | acordes: amaderado, floral blanco, ámbar, fresco especiado, cálido especiado | salida: cítricos, enebro | corazón: jazmín, chocolate, abeto balsámico | fondo: amberwood, musgo"
   },
   {
    "id": 37,
@@ -1279,7 +1304,8 @@
    },
    "agotado": false,
    "url": "https://alta-densidad-page.vercel.app/perfume/bharara/rose",
-   "top10": null
+   "top10": null,
+   "contexto": "Rose | $115.000 COP | Arabe | Femenino | inspirado en Bharara | acordes: rosa, floral blanco, ámbar, floral, atalcado | salida: rosa, azafrán | corazón: jazmín, violeta | fondo: ámbar, madera de oud"
   },
   {
    "id": 40,
@@ -1330,7 +1356,8 @@
    },
    "agotado": false,
    "url": "https://alta-densidad-page.vercel.app/perfume/bond-no-9/bleecker-street",
-   "top10": null
+   "top10": null,
+   "contexto": "Bleecker street | $100.000 COP | Diseñador | Masculino | inspirado en Bond No. 9 | acordes: afrutado, amaderado, aromático, ozónico, verde | salida: hojas de violeta, moras azules, casis, tomillo | corazón: cedro, jazmín, canela | fondo: musgo de roble, gamuza, pachulí, ámbar"
   },
   {
    "id": 128,
@@ -1371,7 +1398,8 @@
    },
    "agotado": false,
    "url": "https://alta-densidad-page.vercel.app/perfume/burberry/her",
-   "top10": null
+   "top10": null,
+   "contexto": "Her | $70.000 COP | Diseñador | Femenino | inspirado en Burberry | acordes: afrutado, dulce, floral, almizclado | salida: grosellas negras, moras azules, frambuesa | corazón: jazmín, violeta | fondo: maderas blancas, almizcle, ámbar"
   },
   {
    "id": 49,
@@ -1415,7 +1443,8 @@
    },
    "agotado": false,
    "url": "https://alta-densidad-page.vercel.app/perfume/bvlgari/omnia-amethyste-eau-de-parfum",
-   "top10": null
+   "top10": null,
+   "contexto": "Omnia amethyste | $65.000 COP | Diseñador | Femenino | inspirado en Bvlgari | acordes: iris, ámbar, atalcado, almizclado, amaderado | salida: iris, almizcle | corazón: iris, rosa de damasco | fondo: resinas, notas amaderadas"
   },
   {
    "id": 80,
@@ -1460,7 +1489,8 @@
    },
    "agotado": false,
    "url": "https://alta-densidad-page.vercel.app/perfume/bvlgari/omnia-coral",
-   "top10": null
+   "top10": null,
+   "contexto": "Omnia coral | $65.000 COP | Diseñador | Femenino | inspirado en Bvlgari | acordes: floral, amaderado, fresco especiado, afrutado, almizclado | salida: bergamota, bayas de goji | corazón: granada, nenúfar, hibisco | fondo: almizcle, cedro de virginia"
   },
   {
    "id": 101,
@@ -1506,7 +1536,8 @@
    },
    "agotado": false,
    "url": "https://alta-densidad-page.vercel.app/perfume/bvlgari/omnia-crystalline",
-   "top10": null
+   "top10": null,
+   "contexto": "Omnia Crystalline | $65.000 COP | Diseñador | Femenino | inspirado en Bvlgari | acordes: atalcado, floral, almizclado, avainillado, amaderado | salida: flor de loto, mandarina | corazón: heliotropo, raíz de lirio | fondo: almizcle, benjuí de siam, sándalo"
   },
   {
    "id": 130,
@@ -1545,7 +1576,8 @@
    },
    "agotado": false,
    "url": "https://alta-densidad-page.vercel.app/perfume/carolina-herrera/212-heroes-mtv",
-   "top10": null
+   "top10": null,
+   "contexto": "212 Heroes MTV | $80.000 COP | Diseñador | Masculino | inspirado en Carolina Herrera | acordes: fresco especiado, aromático, cálido especiado, fresco, avainillado | salida: pimienta negra, cardamomo | corazón: jengibre, geranio | fondo: vainilla, vetiver"
   },
   {
    "id": 119,
@@ -1600,7 +1632,8 @@
    },
    "agotado": false,
    "url": "https://alta-densidad-page.vercel.app/perfume/carolina-herrera/212-men",
-   "top10": null
+   "top10": null,
+   "contexto": "212 Men | $70.000 COP | Diseñador | Masculino | inspirado en Carolina Herrera | acordes: cítrico, verde, fresco especiado, aromático, amaderado | salida: verdes, toronja, especias, bergamota | corazón: jengibre, violeta, gardenia, salvia | fondo: almizcle, sándalo, vetiver, incienso"
   },
   {
    "id": 17,
@@ -1651,7 +1684,8 @@
    },
    "agotado": false,
    "url": "https://alta-densidad-page.vercel.app/perfume/carolina-herrera/212-sexy",
-   "top10": null
+   "top10": null,
+   "contexto": "212 Sexy | $70.000 COP | Diseñador | Femenino | inspirado en Carolina Herrera | acordes: dulce, atalcado, almizclado, especiado suave, caramelo | salida: pimienta rosa, mandarina, bergamota | corazón: algodón de azúcar, gardenia, pelargonio, rosa | fondo: vainilla, almizcle, sándalo, caramelo"
   },
   {
    "id": 90,
@@ -1695,7 +1729,8 @@
    },
    "agotado": false,
    "url": "https://alta-densidad-page.vercel.app/perfume/carolina-herrera/212-vip-black",
-   "top10": 9
+   "top10": 9,
+   "contexto": "212 VIP Black | $70.000 COP | Diseñador | Masculino | inspirado en Carolina Herrera | acordes: aromático, avainillado, especiado suave, lavanda, anís | salida: absenta, anís, hinojo | corazón: lavanda | fondo: vaina de vainilla, almizcle"
   },
   {
    "id": 103,
@@ -1743,7 +1778,8 @@
    },
    "agotado": false,
    "url": "https://alta-densidad-page.vercel.app/perfume/carolina-herrera/212-vip-men",
-   "top10": null
+   "top10": null,
+   "contexto": "212 VIP Men | $70.000 COP | Diseñador | Masculino | inspirado en Carolina Herrera | acordes: fresco especiado, aromático, amaderado, verde, tropical | salida: maracuyá, lima, pimienta, jengibre | corazón: vodka, ginebra, menta, especias | fondo: ámbar, cuero"
   },
   {
    "id": 18,
@@ -1783,7 +1819,8 @@
    },
    "agotado": false,
    "url": "https://alta-densidad-page.vercel.app/perfume/carolina-herrera/212-vip-rose",
-   "top10": null
+   "top10": null,
+   "contexto": "212 VIP rosé | $65.000 COP | Diseñador | Femenino | inspirado en Carolina Herrera | acordes: floral, almizclado, afrutado, amaderado, atalcado | salida: champagne rosé, pimienta rosa | corazón: flor del duraznero, rosa | fondo: almizcle blanco, notas amaderadas"
   },
   {
    "id": 56,
@@ -1841,7 +1878,8 @@
    },
    "agotado": false,
    "url": "https://alta-densidad-page.vercel.app/perfume/carolina-herrera/good-girl",
-   "top10": null
+   "top10": null,
+   "contexto": "Good girl | $45.000 COP | Diseñador | Femenino | inspirado en Carolina Herrera | acordes: dulce, floral blanco, avainillado, cálido especiado, ámbar | salida: almendra, café, bergamota, limón | corazón: nardos, jazmín sambac, flor de azahar del naranjo, rosa de bulgaria | fondo: haba tonka, cacao, vainilla, praliné"
   },
   {
    "id": 57,
@@ -1885,7 +1923,8 @@
    },
    "agotado": false,
    "url": "https://alta-densidad-page.vercel.app/perfume/carolina-herrera/good-girl-blush",
-   "top10": null
+   "top10": null,
+   "contexto": "Good girl blush | $80.000 COP | Diseñador | Femenino | inspirado en Carolina Herrera | acordes: floral, avainillado, fresco, cítrico, dulce | salida: bergamota, almendra amarga | corazón: peonía, ylang-ylang | fondo: vainilla, cumarina"
   },
   {
    "id": 137,
@@ -1934,7 +1973,8 @@
    },
    "agotado": false,
    "url": "https://alta-densidad-page.vercel.app/perfume/carolina-herrera/la-bomba",
-   "top10": null
+   "top10": null,
+   "contexto": "La Bomba | $100.000 COP | Diseñador | Femenino | inspirado en Carolina Herrera | acordes: floral, tropical, afrutado, avainillado, fresco | salida: pitahaya, piña, mandarina amarilla | corazón: frangipani, plumaria, peonía roja, flor de azahar del naranjo | fondo: vainilla, pachulí, ambrofix™, haba tonka"
   },
   {
    "id": 88,
@@ -1975,7 +2015,8 @@
    },
    "agotado": false,
    "url": "https://alta-densidad-page.vercel.app/perfume/carolina-herrera/very-good-girl",
-   "top10": null
+   "top10": null,
+   "contexto": "Very good girl | $80.000 COP | Diseñador | Femenino | inspirado en Carolina Herrera | acordes: afrutado, rosa, fresco, avainillado, tropical | salida: lichi, grosella roja | corazón: rosa | fondo: vainilla, vetiver"
   },
   {
    "id": 38,
@@ -2027,7 +2068,8 @@
    },
    "agotado": false,
    "url": "https://alta-densidad-page.vercel.app/perfume/chanel/bleu-de-chanel",
-   "top10": null
+   "top10": null,
+   "contexto": "Bleu de Chanel | $80.000 COP | Diseñador | Masculino | inspirado en Chanel | acordes: cítrico, amaderado, fresco especiado, aromático, ámbar | salida: toronja, limón, menta, pimienta rosa | corazón: jengibre, nuez moscada, jazmín | fondo: incienso, cedro, vetiver, sándalo"
   },
   {
    "id": 48,
@@ -2079,7 +2121,8 @@
    },
    "agotado": false,
    "url": "https://alta-densidad-page.vercel.app/perfume/chanel/coco-mademoiselle",
-   "top10": null
+   "top10": null,
+   "contexto": "Coco mademoiselle | $85.000 COP | Diseñador | Femenino | inspirado en Chanel | acordes: cítrico, amaderado, pachulí, dulce, floral blanco | salida: naranja, mandarina, bergamota, flor de azahar del naranjo | corazón: rosa turca, jazmín, mimosa, ylang-ylang | fondo: pachulí, almizcle blanco, vainilla, vetiver"
   },
   {
    "id": 96,
@@ -2130,7 +2173,8 @@
    },
    "agotado": false,
    "url": "https://alta-densidad-page.vercel.app/perfume/creed/aventus",
-   "top10": 5
+   "top10": 5,
+   "contexto": "Aventus | $70.000 COP | Diseñador | Masculino | inspirado en Creed | acordes: afrutado, dulce, amaderado, cuero, cítrico | salida: bergamota, grosellas negras, manzana, limón | corazón: piña, pachulí, jazmín | fondo: abedul, almizcle, musgo de roble, cedro"
   },
   {
    "id": 95,
@@ -2175,7 +2219,8 @@
    },
    "agotado": false,
    "url": "https://alta-densidad-page.vercel.app/perfume/creed/silver-mountain-water",
-   "top10": null
+   "top10": null,
+   "contexto": "Silver mountain water | $70.000 COP | Diseñador | Unisex | inspirado en Creed | acordes: cítrico, verde, afrutado, almizclado, amaderado | salida: bergamota, mandarina | corazón: té verde, grosellas negras | fondo: almizcle, petit grain, sándalo, gálbano"
   },
   {
    "id": 72,
@@ -2224,7 +2269,8 @@
    },
    "agotado": false,
    "url": "https://alta-densidad-page.vercel.app/perfume/dior/miss-dior-eau-de-parfum-2021",
-   "top10": null
+   "top10": null,
+   "contexto": "Miss Dior | $75.000 COP | Diseñador | Femenino | inspirado en Dior | acordes: atalcado, avainillado, rosa, floral, afrutado | salida: iris, peonía, lirio de los valles | corazón: rosa, chabacano, durazno | fondo: vainilla, almizcle, haba tonka, sándalo"
   },
   {
    "id": 51,
@@ -2273,7 +2319,8 @@
    },
    "agotado": false,
    "url": "https://alta-densidad-page.vercel.app/perfume/dior/sauvage",
-   "top10": null
+   "top10": null,
+   "contexto": "Sauvage | $70.000 COP | Diseñador | Masculino | inspirado en Dior | acordes: fresco especiado, ámbar, cítrico, aromático, almizclado | salida: bergamota de calabria, pimienta | corazón: pimienta de sichuan, lavanda, pimienta rosa, vetiver | fondo: ambroxan, cedro, ladáno"
   },
   {
    "id": 68,
@@ -2319,7 +2366,8 @@
    },
    "agotado": false,
    "url": "https://alta-densidad-page.vercel.app/perfume/dolce-y-gabbana/light-blue",
-   "top10": 2
+   "top10": 2,
+   "contexto": "Light blue | $70.000 COP | Diseñador | Femenino | inspirado en Dolce & Gabbana | acordes: cítrico, amaderado, fresco, afrutado, aromático | salida: limón siciliano, manzana, cedro, campanilla | corazón: bambú, jazmín, rosa blanca | fondo: cedro, almizcle, ámbar"
   },
   {
    "id": 67,
@@ -2364,7 +2412,8 @@
    },
    "agotado": false,
    "url": "https://alta-densidad-page.vercel.app/perfume/dolce-gabbana/light-blue-living-stromboli",
-   "top10": null
+   "top10": null,
+   "contexto": "Light blue living stromboli | $75.000 COP | Diseñador | Masculino | inspirado en Dolce & Gabbana | acordes: acuático, fresco, aromático, cítrico, fresco especiado | salida: pimienta rosa, cítricos | corazón: notas acuáticas, geranio | fondo: vetiver, ámbar, pachulí"
   },
   {
    "id": 142,
@@ -2415,7 +2464,8 @@
    },
    "agotado": false,
    "url": "https://alta-densidad-page.vercel.app/perfume/dumont/nitro-red-intensely",
-   "top10": null
+   "top10": null,
+   "contexto": "Nitro Red Intensely | $100.000 COP | Arabe | Masculino | inspirado en Dumont | acordes: afrutado, amaderado, fresco, ámbar, atalcado | salida: manzana, durazno, melón, bergamota | corazón: ámbar, sal marina, cedro, lirio de los valles | fondo: ámbar, pachulí, sándalo, musgo"
   },
   {
    "id": 107,
@@ -2461,7 +2511,8 @@
    },
    "agotado": false,
    "url": "https://alta-densidad-page.vercel.app/perfume/french-avenue/vulcan-black-friday",
-   "top10": null
+   "top10": null,
+   "contexto": "Vulcan Black Friday | $110.000 COP | Arabe | Unisex | inspirado en French Avenue | acordes: cuero, cálido especiado, rosa, amaderado, animálico | salida: azafrán, manzana, canela | corazón: cuero, rosa | fondo: pachulí, musgo, almizcle, papiro de egipto"
   },
   {
    "id": 106,
@@ -2509,7 +2560,8 @@
    },
    "agotado": false,
    "url": "https://alta-densidad-page.vercel.app/perfume/french-avenue/vulcan-feu",
-   "top10": null
+   "top10": null,
+   "contexto": "Vulcan Feu | $110.000 COP | Arabe | Unisex | inspirado en French Avenue | acordes: tropical, afrutado, dulce, cítrico, amaderado | salida: mango, limón, jengibre, ruibarbo | corazón: pimienta rosa, jazmín, violeta, praliné | fondo: haba tonka, cedro, ámbar gris, musgo"
   },
   {
    "id": 22,
@@ -2569,7 +2621,8 @@
    },
    "agotado": false,
    "url": "https://alta-densidad-page.vercel.app/perfume/giorgio-armani/acqua-di-gio",
-   "top10": null
+   "top10": null,
+   "contexto": "Acqua di Gio | $85.000 COP | Diseñador | Masculino | inspirado en Giorgio Armani | acordes: cítrico, aromático, marino, fresco especiado, floral | salida: lima, limón, bergamota, jazmín | corazón: notas marinas, jazmín, calone, romero | fondo: almizcle blanco, cedro, musgo de roble, pachulí"
   },
   {
    "id": 133,
@@ -2615,7 +2668,8 @@
    },
    "agotado": false,
    "url": "https://alta-densidad-page.vercel.app/perfume/giorgio-armani/acqua-di-gio-profumo",
-   "top10": null
+   "top10": null,
+   "contexto": "Acqua di Gio Profumo | $85.000 COP | Diseñador | Masculino | inspirado en Giorgio Armani | acordes: aromático, marino, fresco especiado, ámbar, amaderado | salida: elemí, bergamota | corazón: geranio, salvia, romero | fondo: pachulí, incienso"
   },
   {
    "id": 59,
@@ -2658,7 +2712,8 @@
    },
    "agotado": false,
    "url": "https://alta-densidad-page.vercel.app/perfume/hugo-boss/boss-bottled-night",
-   "top10": null
+   "top10": null,
+   "contexto": "Boss bottled night | $80.000 COP | Diseñador | Masculino | inspirado en Hugo Boss | acordes: amaderado, violeta, atalcado, lavanda, cuero | salida: lavanda, abedul | corazón: violeta | fondo: notas amaderadas, almizcle"
   },
   {
    "id": 111,
@@ -2705,7 +2760,8 @@
    },
    "agotado": false,
    "url": "https://alta-densidad-page.vercel.app/perfume/hugo-boss/hugo-red",
-   "top10": null
+   "top10": null,
+   "contexto": "Hugo red | $80.000 COP | Arabe | Masculino | inspirado en Hugo Boss | acordes: afrutado, dulce, verde, metálico, aromático | salida: toronja, pimienta rosa, gálbano | corazón: ruibarbo, notas metálicas, piña, cedro | fondo: ámbar, haba tonka"
   },
   {
    "id": 87,
@@ -2752,7 +2808,8 @@
    },
    "agotado": false,
    "url": "https://alta-densidad-page.vercel.app/perfume/hugo-boss/boss-bottled-unlimited",
-   "top10": null
+   "top10": null,
+   "contexto": "Unlimited | $75.000 COP | Diseñador | Masculino | inspirado en Hugo Boss | acordes: verde, afrutado, dulce, aromático, cítrico | salida: menta, toronja, hojas de violeta | corazón: piña, canela, rosa | fondo: almizcle blanco, sándalo, ladáno"
   },
   {
    "id": 139,
@@ -2797,7 +2854,8 @@
    },
    "agotado": false,
    "url": "https://alta-densidad-page.vercel.app/perfume/jean-paul-gaultier/le-beau-le-parfum",
-   "top10": null
+   "top10": null,
+   "contexto": "Le beau le parfum | $110.000 COP | Diseñador | Masculino | inspirado en Jean Paul Gaultier | acordes: dulce, amaderado, coco, ámbar, avainillado | salida: piña, jengibre, madera de coco | corazón: haba tonka | fondo: sándalo, ámbar gris"
   },
   {
    "id": 140,
@@ -2841,7 +2899,8 @@
    },
    "agotado": false,
    "url": "https://alta-densidad-page.vercel.app/perfume/jean-paul-gaultier/le-male-le-parfum",
-   "top10": null
+   "top10": null,
+   "contexto": "Le male le parfum | $110.000 COP | Diseñador | Masculino | inspirado en Jean Paul Gaultier | acordes: cálido especiado, avainillado, lavanda, aromático, atalcado | salida: cardamomo | corazón: lavanda, iris | fondo: vainilla, notas amaderadas, ámbar"
   },
   {
    "id": 147,
@@ -2895,7 +2954,8 @@
    },
    "agotado": false,
    "url": "https://alta-densidad-page.vercel.app/perfume/lacoste/l-12-12-vert",
-   "top10": null
+   "top10": null,
+   "contexto": "L.12.12 Vert | $100.000 COP | Diseñador | Masculino | inspirado en Lacoste | acordes: cítrico, aromático, fresco especiado, cuero, ahumado | salida: pomelo, bergamota, verbena, melón | corazón: higo, iris, hojas de violeta, cardamomo | fondo: ciprés, madera de gaiac, sándalo, cedro"
   },
   {
    "id": 64,
@@ -2942,7 +3002,8 @@
    },
    "agotado": false,
    "url": "https://alta-densidad-page.vercel.app/perfume/lacoste/blanca",
-   "top10": 3
+   "top10": 3,
+   "contexto": "Lacoste blanca | $65.000 COP | Diseñador | Masculino | inspirado en Lacoste | acordes: amaderado, aromático, cítrico, floral amarillo, nardos | salida: toronja, romero, cardamomo | corazón: ylang-ylang, nardos | fondo: cedro de virginia, gamuza, vetiver, cuero"
   },
   {
    "id": 65,
@@ -2989,7 +3050,8 @@
    },
    "agotado": false,
    "url": "https://alta-densidad-page.vercel.app/perfume/lacoste/redl-12-12-rouge",
-   "top10": null
+   "top10": null,
+   "contexto": "RedL.12.12. Rouge | $65.000 COP | Diseñador | Masculino | inspirado en Lacoste | acordes: afrutado, fresco especiado, tropical, cálido especiado, ahumado | salida: mango, té rooibos, mandarina | corazón: cardamomo, pimienta, jengibre | fondo: acacia negra, notas amaderadas, benjuí"
   },
   {
    "id": 121,
@@ -3034,7 +3096,8 @@
    },
    "agotado": false,
    "url": "https://alta-densidad-page.vercel.app/perfume/lacoste/sparkling",
-   "top10": null
+   "top10": null,
+   "contexto": "Sparkling | $70.000 COP | Diseñador | Femenino | inspirado en Lacoste | acordes: dulce, caramelo, afrutado, almendrado, atalcado | salida: manzana roja, especias, zarzamora, mandarina | corazón: algodón de azúcar, lirio de los valles, macarrones dulces | fondo: almizcle, vetiver, madera de cachemira, pachulí"
   },
   {
    "id": 138,
@@ -3079,7 +3142,8 @@
    },
    "agotado": false,
    "url": "https://alta-densidad-page.vercel.app/perfume/lacoste/style-in-play",
-   "top10": null
+   "top10": null,
+   "contexto": "Style in Play | $80.000 COP | Diseñador | Masculino | inspirado en Lacoste | acordes: amaderado, aromático, afrutado, verde, fresco | salida: manzana verde, hojas de tuya | corazón: pino, jazmín, cedro | fondo: almizcle blanco, vetiver, pachulí"
   },
   {
    "id": 99,
@@ -3126,7 +3190,8 @@
    },
    "agotado": false,
    "url": "https://alta-densidad-page.vercel.app/perfume/lattafa/art-of-universe",
-   "top10": null
+   "top10": null,
+   "contexto": "Art of universe | $140.000 COP | Arabe | Unisex | inspirado en Lattafa | acordes: cítrico, afrutado, fresco especiado, dulce, almizclado | salida: mandarina, jengibre, bergamota, menta | corazón: pera, flor de azahar | fondo: almizcle, ámbar, cedro"
   },
   {
    "id": 32,
@@ -3174,7 +3239,8 @@
    },
    "agotado": false,
    "url": "https://alta-densidad-page.vercel.app/perfume/lattafa-perfumes/asad",
-   "top10": null
+   "top10": null,
+   "contexto": "Asad | $110.000 COP | Arabe | Masculino | inspirado en Lattafa | acordes: ámbar, fresco especiado, amaderado, cálido especiado, avainillado | salida: pimienta negra, tabaco, piña | corazón: pachulí, café, iris | fondo: vainilla, ámbar, madera seca, benjuí"
   },
   {
    "id": 34,
@@ -3219,7 +3285,8 @@
    },
    "agotado": false,
    "url": "https://alta-densidad-page.vercel.app/perfume/lattafa-perfumes/bade-e-al-oud-amethyst",
-   "top10": null
+   "top10": null,
+   "contexto": "Bade'e al oud amethyst | $110.000 COP | Arabe | Unisex | inspirado en Lattafa | acordes: rosa, oud, ámbar, especiado suave, floral | salida: pimienta rosa, bergamota | corazón: rosa turca, rosa de bulgaria, jazmín | fondo: madera de oud, ámbar, vainilla"
   },
   {
    "id": 66,
@@ -3265,7 +3332,8 @@
    },
    "agotado": false,
    "url": "https://alta-densidad-page.vercel.app/perfume/lattafa/bade-e-al-oud-oud-for-glory",
-   "top10": null
+   "top10": null,
+   "contexto": "Bade'e al oud for glory | $115.000 COP | Arabe | Unisex | inspirado en Lattafa | acordes: oud, cálido especiado, fresco especiado, pachulí, metálico | salida: azafrán, nuez moscada, lavanda | corazón: madera de oud, pachulí | fondo: madera de oud, pachulí, almizcle"
   },
   {
    "id": 33,
@@ -3312,7 +3380,8 @@
    },
    "agotado": false,
    "url": "https://alta-densidad-page.vercel.app/perfume/lattafa/bade-e-al-oud-honor-y-glory",
-   "top10": null
+   "top10": null,
+   "contexto": "Bade'e al oud honor & glory | $115.000 COP | Arabe | Unisex | inspirado en Lattafa | acordes: dulce, cálido especiado, afrutado, avainillado, amaderado | salida: piña, crème brûlée | corazón: canela, cúrcuma, pimienta negra, benjuí | fondo: vainilla, sándalo, cachemira, musgo"
   },
   {
    "id": 23,
@@ -3355,7 +3424,8 @@
    },
    "agotado": false,
    "url": "https://alta-densidad-page.vercel.app/perfume/lattafa/bade-e-al-oud-sublime",
-   "top10": 7
+   "top10": 7,
+   "contexto": "Bade'e al oud sublime | $110.000 COP | Arabe | Unisex | inspirado en Lattafa | acordes: afrutado, fresco, tropical, rosa, verde | salida: manzana, lichi, rosa | corazón: ciruela, jazmín | fondo: musgo, vainilla, pachulí"
   },
   {
    "id": 100,
@@ -3398,7 +3468,8 @@
    },
    "agotado": false,
    "url": "https://alta-densidad-page.vercel.app/perfume/lattafa-perfumes/eclaire",
-   "top10": null
+   "top10": null,
+   "contexto": "Eclaire | $115.000 COP | Arabe | Femenino | inspirado en Lattafa | acordes: dulce, avainillado, caramelo, lactónico, atalcado | salida: caramelo, leche, azúcar | corazón: miel, flores blancas | fondo: vainilla, praliné, almizcle"
   },
   {
    "id": 120,
@@ -3447,7 +3518,8 @@
    },
    "agotado": false,
    "url": "https://alta-densidad-page.vercel.app/perfume/lattafa-perfumes/emeer",
-   "top10": null
+   "top10": null,
+   "contexto": "Emeer | $130.000 COP | Arabe | Unisex | inspirado en Lattafa | acordes: aromático, cítrico, amaderado, ámbar, fresco especiado | salida: limón, bergamota, esclarea, bayas de enebro | corazón: té blanco, sándalo, cardamomo, incienso de olíbano | fondo: ámbar gris, cedro, cachemira, pachulí"
   },
   {
    "id": 112,
@@ -3494,7 +3566,8 @@
    },
    "agotado": false,
    "url": "https://alta-densidad-page.vercel.app/perfume/lattafa/her-confession",
-   "top10": null
+   "top10": null,
+   "contexto": "Her confession | $135.000 COP | Arabe | Femenino | inspirado en Lattafa | acordes: avainillado, floral blanco, nardos, ámbar, almizclado | salida: canela, mystika | corazón: nardos, jazmín, incienso, mahonial | fondo: vainilla, almizcle, haba tonka"
   },
   {
    "id": 110,
@@ -3545,7 +3618,8 @@
    },
    "agotado": false,
    "url": "https://alta-densidad-page.vercel.app/perfume/lattafa/his-confession",
-   "top10": null
+   "top10": null,
+   "contexto": "His Confession | $135.000 COP | Arabe | Masculino | inspirado en Lattafa | acordes: ámbar, avainillado, cálido especiado, atalcado, iris | salida: canela, lavanda, mandarina | corazón: iris, benjuí, ciprés, mahonia | fondo: vainilla, haba tonka, ámbar, incienso"
   },
   {
    "id": 63,
@@ -3594,7 +3668,8 @@
    },
    "agotado": false,
    "url": "https://alta-densidad-page.vercel.app/perfume/lattafa/khamrah",
-   "top10": null
+   "top10": null,
+   "contexto": "Khamrah | $110.000 COP | Arabe | Unisex | inspirado en Lattafa | acordes: dulce, cálido especiado, avainillado, ámbar, canela | salida: canela, nuez moscada, bergamota | corazón: dátiles, praliné, nardos, mahonial | fondo: vainilla, haba tonka, amberwood, mirra"
   },
   {
    "id": 104,
@@ -3640,7 +3715,8 @@
    },
    "agotado": false,
    "url": "https://alta-densidad-page.vercel.app/perfume/lattafa/khamrah-qahwa",
-   "top10": null
+   "top10": null,
+   "contexto": "Khamrah Qahwa | $110.000 COP | Arabe | Unisex | inspirado en Lattafa | acordes: cálido especiado, dulce, avainillado, canela, café | salida: canela, cardamomo, jengibre | corazón: praliné, frutas, flores blancas | fondo: vainilla, café, haba tonka, benjuí"
   },
   {
    "id": 69,
@@ -3684,7 +3760,8 @@
    },
    "agotado": false,
    "url": "https://alta-densidad-page.vercel.app/perfume/lattafa/mayar",
-   "top10": null
+   "top10": null,
+   "contexto": "Mayar | $115.000 COP | Arabe | Femenino | inspirado en Lattafa | acordes: afrutado, rosa, dulce, fresco, tropical | salida: lichi, frambuesa, hojas de violeta | corazón: rosa blanca, peonía, jazmín | fondo: almizcle, vainilla"
   },
   {
    "id": 70,
@@ -3727,7 +3804,8 @@
    },
    "agotado": false,
    "url": "https://alta-densidad-page.vercel.app/perfume/lattafa-perfumes/mayar-cherry-intense",
-   "top10": null
+   "top10": null,
+   "contexto": "Mayar cherry intense | $115.000 COP | Arabe | Femenino | inspirado en Lattafa | acordes: cacao, dulce, cálido especiado, afrutado, avainillado | salida: fresa, bergamota | corazón: mermelada de cereza, cacao | fondo: vainilla, ámbar, pachulí"
   },
   {
    "id": 71,
@@ -3777,7 +3855,8 @@
    },
    "agotado": false,
    "url": "https://alta-densidad-page.vercel.app/perfume/lattafa/mayar-natural-intense",
-   "top10": null
+   "top10": null,
+   "contexto": "Mayar natural intense | $115.000 COP | Arabe | Femenino | inspirado en Lattafa | acordes: floral, acuático, afrutado, ozónico, cítrico | salida: mandarina verde, higo, melón, agua de coco | corazón: flor de loto, nenúfar, jazmín | fondo: almizcle, ambroxan, sándalo, vainilla"
   },
   {
    "id": 39,
@@ -3820,7 +3899,8 @@
    },
    "agotado": false,
    "url": "https://alta-densidad-page.vercel.app/perfume/lattafa/noble-blush",
-   "top10": null
+   "top10": null,
+   "contexto": "Noble blush | $110.000 COP | Arabe | Femenino | inspirado en Lattafa | acordes: dulce, atalcado, almendrado, avainillado, almizclado | salida: leche de rosas | corazón: merengue, almendra | fondo: vainilla, almizcle, sándalo"
   },
   {
    "id": 91,
@@ -3864,7 +3944,8 @@
    },
    "agotado": false,
    "url": "https://alta-densidad-page.vercel.app/perfume/lattafa/yara",
-   "top10": 10
+   "top10": 10,
+   "contexto": "Yara | $100.000 COP | Arabe | Femenino | inspirado en Lattafa | acordes: dulce, avainillado, atalcado, tropical, almizclado | salida: orquídea, heliotropo, naranja tangerina | corazón: goloso, frutas tropicales | fondo: vainilla, almizcle, sándalo"
   },
   {
    "id": 46,
@@ -3911,7 +3992,8 @@
    },
    "agotado": false,
    "url": "https://alta-densidad-page.vercel.app/perfume/lattafa-perfumes/yara-candy",
-   "top10": null
+   "top10": null,
+   "contexto": "Yara candy | $110.000 COP | Arabe | Femenino | inspirado en Lattafa | acordes: avainillado, afrutado, atalcado, cítrico, aromático | salida: grosellas negras, mandarina verde | corazón: caramelo de fresa efervescente, gardenia | fondo: vainilla, almizcle, ámbar, sándalo"
   },
   {
    "id": 97,
@@ -3957,7 +4039,8 @@
    },
    "agotado": false,
    "url": "https://alta-densidad-page.vercel.app/perfume/lattafa-perfumes/yara-elixir",
-   "top10": null
+   "top10": null,
+   "contexto": "Yara elixir | $110.000 COP | Arabe | Femenino | inspirado en Lattafa | acordes: avainillado, caramelo, dulce, floral blanco, atalcado | salida: s'mores de fresa, grosellas negras | corazón: jazmín, flor de azahar | fondo: vainilla, caramelo, ámbar, almizcle"
   },
   {
    "id": 82,
@@ -3999,7 +4082,8 @@
    },
    "agotado": false,
    "url": "https://alta-densidad-page.vercel.app/perfume/le-labo/santal-33",
-   "top10": 1
+   "top10": 1,
+   "contexto": "Santal 33 | $75.000 COP | Diseñador | Unisex | inspirado en Le Labo | acordes: amaderado, atalcado, cuero, cálido especiado, violeta | salida: cardamomo, violeta, iris | corazón: papiro, cuero, cedro, sándalo | fondo: ambroxan, almizcle"
   },
   {
    "id": 102,
@@ -4043,7 +4127,8 @@
    },
    "agotado": false,
    "url": "https://alta-densidad-page.vercel.app/perfume/louis-vuitton",
-   "top10": null
+   "top10": null,
+   "contexto": "Imagination | $100.000 COP | Diseñador | Unisex | inspirado en Louis Vuitton | acordes: cítrico, fresco especiado, fresco, verde, ámbar | salida: cidra, bergamota, calabria, naranja siciliana | corazón: neroli de túnez, jengibre, canela | fondo: té negro, ambroxan, madera de gaiac, incienso de olíbano"
   },
   {
    "id": 58,
@@ -4089,7 +4174,8 @@
    },
    "agotado": false,
    "url": "https://alta-densidad-page.vercel.app/perfume/louis-vuitton/ombre-nomade",
-   "top10": null
+   "top10": null,
+   "contexto": "Ombre nomade | $90.000 COP | Diseñador | Unisex | inspirado en Louis Vuitton | acordes: ámbar, oud, cálido especiado, rosa, ahumado | salida: geranio de egipto, lavanda | corazón: rosa turca, oud de bangladesh, ámbar | fondo: benjuí de laos, madera de oud, almizcle"
   },
   {
    "id": 109,
@@ -4136,7 +4222,8 @@
    },
    "agotado": false,
    "url": "https://alta-densidad-page.vercel.app/perfume/maison-francis-kurkdjian/baccarat-rouge-540-maison-francis",
-   "top10": null
+   "top10": null,
+   "contexto": "Baccarat Rouge 540 | $110.000 COP | Diseñador | Unisex | inspirado en Maison Francis Kurkdjian | acordes: amaderado, ámbar, cálido especiado, metálico, fresco especiado | salida: azafrán, jazmín | corazón: amberwood, ámbar gris, hedione | fondo: resina de abeto, cedro, azúcar, ambroxan"
   },
   {
    "id": 31,
@@ -4183,7 +4270,8 @@
    },
    "agotado": false,
    "url": "https://alta-densidad-page.vercel.app/perfume/montale/arabians-tonka",
-   "top10": null
+   "top10": null,
+   "contexto": "Arabians tonka | $80.000 COP | Arabe | Unisex | inspirado en Montale | acordes: dulce, avainillado, ámbar, oud, cálido especiado | salida: azafrán, bergamota | corazón: madera de oud, rosa de bulgaria | fondo: haba tonka, caña de azúcar, ámbar, almizcle blanco"
   },
   {
    "id": 123,
@@ -4224,7 +4312,8 @@
    },
    "agotado": false,
    "url": "https://alta-densidad-page.vercel.app/perfume/montale/starry-nights",
-   "top10": null
+   "top10": null,
+   "contexto": "Starry nights | $75.000 COP | Arabe | Unisex | inspirado en Montale | acordes: floral, afrutado, ámbar, almizclado | salida: manzana, bergamota, limón | corazón: rosa, pachulí, jazmín | fondo: almizcle blanco, atalcadas, ámbar"
   },
   {
    "id": 86,
@@ -4271,7 +4360,8 @@
    },
    "agotado": false,
    "url": "https://alta-densidad-page.vercel.app/perfume/moschino/toy-2",
-   "top10": null
+   "top10": null,
+   "contexto": "Toy 2 | $70.000 COP | Diseñador | Femenino | inspirado en Moschino | acordes: afrutado, floral, fresco, cítrico, almizclado | salida: manzana, mandarina, magnolia | corazón: grosella blanca, peonía, jazmín | fondo: almizcle, sándalo, amberwood"
   },
   {
    "id": 84,
@@ -4317,7 +4407,8 @@
    },
    "agotado": false,
    "url": "https://alta-densidad-page.vercel.app/perfume/moschino/toy-2-bubble-gum",
-   "top10": null
+   "top10": null,
+   "contexto": "Toy 2 bubble gum | $80.000 COP | Diseñador | Femenino | inspirado en Moschino | acordes: afrutado, dulce, rosa, tropical, floral | salida: frutas confitadas, naranja, limón | corazón: goma de mascar, rosa, durazno, moras azules | fondo: almizcle, ambroxan, cedro"
   },
   {
    "id": 85,
@@ -4362,7 +4453,8 @@
    },
    "agotado": false,
    "url": "https://alta-densidad-page.vercel.app/perfume/moschino/toy-2-pearl",
-   "top10": null
+   "top10": null,
+   "contexto": "Toy 2 pearl | $80.000 COP | Diseñador | Femenino | inspirado en Moschino | acordes: aromático, cítrico, amaderado, fresco especiado, almizclado | salida: limón, sorbete, orégano | corazón: arena, fresia, jazmín | fondo: almizcle, ciprés, vetiver"
   },
   {
    "id": 127,
@@ -4413,7 +4505,8 @@
    },
    "agotado": false,
    "url": "https://alta-densidad-page.vercel.app/perfume/moschino/toy-boy",
-   "top10": null
+   "top10": null,
+   "contexto": "Toy Boy | $75.000 COP | Diseñador | Masculino | inspirado en Moschino | acordes: rosa, floral, amaderado, almizclado, especiado suave | salida: bergamota, pimienta rosa, nuez moscada, pera | corazón: clavo, rosa, flor de lino, magnolia | fondo: cachemira, vetiver, ámbar, almizcle"
   },
   {
    "id": 126,
@@ -4458,7 +4551,8 @@
    },
    "agotado": false,
    "url": "https://alta-densidad-page.vercel.app/perfume/nautica/voyage",
-   "top10": null
+   "top10": null,
+   "contexto": "Voyage | $70.000 COP | Diseñador | Masculino | inspirado en Nautica | acordes: verde, afrutado, floral, fresco, atalcado | salida: verdes, manzana | corazón: flor de loto, mimosa | fondo: almizcle, cedro, musgo de roble, ámbar"
   },
   {
    "id": 29,
@@ -4500,7 +4594,8 @@
    },
    "agotado": false,
    "url": "https://alta-densidad-page.vercel.app/perfume/orientica/amber-rouge",
-   "top10": null
+   "top10": null,
+   "contexto": "Amber rouge | $125.000 COP | Arabe | Unisex | inspirado en Orientica | acordes: ámbar, amaderado, cálido especiado, metálico, animálico | salida: azafrán, jazmín | corazón: amberwood, ámbar gris | fondo: cedro, resina de abeto"
   },
   {
    "id": 30,
@@ -4547,7 +4642,8 @@
    },
    "agotado": false,
    "url": "https://alta-densidad-page.vercel.app/perfume/orientica-premium/royal-amber",
-   "top10": null
+   "top10": null,
+   "contexto": "Royal amber | $120.000 COP | Arabe | Unisex | inspirado en Orientica | acordes: dulce, afrutado, almizclado, ámbar, atalcado | salida: bergamota, notas verdes | corazón: notas dulces, melón, piña, ámbar | fondo: almizcle, notas amaderadas, vainilla"
   },
   {
    "id": 89,
@@ -4593,7 +4689,8 @@
    },
    "agotado": false,
    "url": "https://alta-densidad-page.vercel.app/perfume/orientica-premium/velvet-gold",
-   "top10": null
+   "top10": null,
+   "contexto": "Velvet gold | $120.000 COP | Arabe | Unisex | inspirado en Orientica | acordes: atalcado, almizclado, caramelo, violeta, avainillado | salida: caramelo, violeta, pimienta rosa, bergamota | corazón: atalcadas, rosa, pachulí | fondo: vainilla, almizcle, notas de animal"
   },
   {
    "id": 81,
@@ -4640,7 +4737,8 @@
    },
    "agotado": false,
    "url": "https://alta-densidad-page.vercel.app/perfume/rabanne/1-million-parfum",
-   "top10": null
+   "top10": null,
+   "contexto": "1 Million | $70.000 COP | Diseñador | Masculino | inspirado en Paco Rabanne | acordes: floral blanco, nardos, ámbar, animálico, amaderado | salida: mandarina roja, pomelo, menta | corazón: canela amaderada, notas especiadas, rosa cálida | fondo: ámbar, cuero, notas amaderadas, pachulí de la india"
   },
   {
    "id": 24,
@@ -4685,7 +4783,8 @@
    },
    "agotado": false,
    "url": "https://alta-densidad-page.vercel.app/perfume/rabanne/black-xs-l-aphrodisiaque-for-men",
-   "top10": null
+   "top10": null,
+   "contexto": "Black XS L'Aphrodisiaque | $80.000 COP | Diseñador | Masculino | inspirado en Paco Rabanne | acordes: dulce, amielado, cálido especiado, cuero, canela | salida: canela, azafrán | corazón: miel, flor de azahar del naranjo, ciprés | fondo: praliné, cuero, almendra"
   },
   {
    "id": 61,
@@ -4732,7 +4831,8 @@
    },
    "agotado": false,
    "url": "https://alta-densidad-page.vercel.app/perfume/rabanne/invictus",
-   "top10": null
+   "top10": null,
+   "contexto": "Invictus | $85.000 COP | Diseñador | Masculino | inspirado en Paco Rabanne | acordes: cítrico, marino, aromático, fresco especiado, amaderado | salida: notas marinas, toronja, mandarina | corazón: hoja de laurel, jazmín | fondo: ámbar gris, madera de gaiac, musgo de roble, pachulí"
   },
   {
    "id": 129,
@@ -4786,7 +4886,8 @@
    },
    "agotado": false,
    "url": "https://alta-densidad-page.vercel.app/perfume/parfums-de-marly/layton",
-   "top10": null
+   "top10": null,
+   "contexto": "Layton | $85.000 COP | Diseñador | Unisex | inspirado en Parfums de Marly | acordes: cálido especiado, fresco especiado, amaderado, avainillado, aromático | salida: manzana, lavanda, bergamota, mandarina | corazón: geranio, violeta, jazmín | fondo: vainilla, cardamomo, sándalo, pimienta"
   },
   {
    "id": 141,
@@ -4828,7 +4929,8 @@
    },
    "agotado": false,
    "url": "https://alta-densidad-page.vercel.app/perfume/paris-corner/marshmallow-blush",
-   "top10": null
+   "top10": null,
+   "contexto": "Marshmallow Blush | $120.000 COP | Arabe | Unisex | inspirado en Paris Corner | acordes: dulce, afrutado, atalcado, almizclado, cítrico | salida: fresa, frambuesa, limón | corazón: ambroxan, flor de azahar, crema batida | fondo: malvavisco, almizcle, vainilla"
   },
   {
    "id": 20,
@@ -4879,7 +4981,8 @@
    },
    "agotado": false,
    "url": "https://alta-densidad-page.vercel.app/perfume/perry-ellis/3600",
-   "top10": null
+   "top10": null,
+   "contexto": "360° | $85.000 COP | Diseñador | Femenino | inspirado en Perry Ellis | acordes: floral blanco, floral, fresco, acuático, afrutado | salida: melón, azucena, osmanto, naranja tangerina | corazón: nenúfar, lirio de los valles, lavanda, salvia | fondo: almizcle, sándalo, vetiver, ámbar"
   },
   {
    "id": 122,
@@ -4920,7 +5023,8 @@
    },
    "agotado": false,
    "url": "https://alta-densidad-page.vercel.app/perfume/ralph-lauren/polo-blue",
-   "top10": null
+   "top10": null,
+   "contexto": "Polo blue | $85.000 COP | Diseñador | Femenino | inspirado en Ralph Lauren | acordes: floral, afrutado, cítrico, fresco, verde | salida: hojas del manzano, mandarina, osmanto japones | corazón: fresia amarilla, magnolia, boronia parda | fondo: almizcle, iris blanco"
   },
   {
    "id": 114,
@@ -4959,7 +5063,8 @@
    },
    "agotado": false,
    "url": "https://alta-densidad-page.vercel.app/perfume/rasasi/hawas-fire",
-   "top10": null
+   "top10": null,
+   "contexto": "HAWAS FIRE RASASI | $150.000 COP | Arabe | Masculino | inspirado en Rasasi | acordes: ámbar, aromático, mineral, marino, especiado suave | salida: esclarea | corazón: jazmín egipcio | fondo: ámbar gris"
   },
   {
    "id": 115,
@@ -5007,7 +5112,8 @@
    },
    "agotado": false,
    "url": "https://alta-densidad-page.vercel.app/perfume/rasasi/hawas-ice",
-   "top10": null
+   "top10": null,
+   "contexto": "Hawas ice | $150.000 COP | Arabe | Masculino | inspirado en Rasasi | acordes: afrutado, cítrico, dulce, fresco, aromático | salida: manzana, limón, bergamota, anís | corazón: ciruela, flor de azahar, cardamomo | fondo: almizcle, ámbar, trozos de madera, musgo"
   },
   {
    "id": 43,
@@ -5054,7 +5160,8 @@
    },
    "agotado": false,
    "url": "https://alta-densidad-page.vercel.app/perfume/valentino/valentino-donna-born-in-roma",
-   "top10": 8
+   "top10": 8,
+   "contexto": "Valentino donna Born in roma | $85.000 COP | Diseñador | Femenino | inspirado en Valentino | acordes: amaderado, avainillado, afrutado, floral blanco, especiado suave | salida: grosellas negras, pimienta rosa, bergamota | corazón: jazmín, jazmín sambac, té del jazmín | fondo: vainilla bourbon, cachemira, madera de gaiac"
   },
   {
    "id": 41,
@@ -5099,7 +5206,8 @@
    },
    "agotado": false,
    "url": "https://alta-densidad-page.vercel.app/perfume/valentino/valentino-uomo-born-in-roma",
-   "top10": null
+   "top10": null,
+   "contexto": "Valentino uomo born in roma | $85.000 COP | Diseñador | Masculino | inspirado en Valentino | acordes: mineral, amaderado, ozónico, aromático, acuático | salida: notas minerales, hojas de violeta, sal | corazón: salvia, jengibre | fondo: notas amaderadas, vetiver"
   },
   {
    "id": 53,
@@ -5148,7 +5256,8 @@
    },
    "agotado": false,
    "url": "https://alta-densidad-page.vercel.app/perfume/versace/eros",
-   "top10": null
+   "top10": null,
+   "contexto": "Eros | $75.000 COP | Diseñador | Masculino | inspirado en Versace | acordes: avainillado, aromático, verde, fresco especiado, ámbar | salida: menta, manzana verde, limón | corazón: haba tonka, ambroxan, geranio | fondo: vainilla de madagascar, cedro de virginia, cedro del atlas, vetiver"
   },
   {
    "id": 55,
@@ -5193,7 +5302,8 @@
    },
    "agotado": false,
    "url": "https://alta-densidad-page.vercel.app/perfume/versace/eros-energy",
-   "top10": null
+   "top10": null,
+   "contexto": "Eros energy | $80.000 COP | Diseñador | Masculino | inspirado en Versace | acordes: cítrico, aromático, fresco especiado, almizclado, amaderado | salida: limón, lima, toronja, naranja sanguina | corazón: pimienta rosa, ámbar blanco, grosellas negras | fondo: almizcle, musgo de roble, pachulí"
   },
   {
    "id": 54,
@@ -5243,7 +5353,8 @@
    },
    "agotado": false,
    "url": "https://alta-densidad-page.vercel.app/perfume/versace/eros-flame",
-   "top10": null
+   "top10": null,
+   "contexto": "Eros flame | $75.000 COP | Diseñador | Masculino | inspirado en Versace | acordes: cítrico, fresco especiado, avainillado, aromático, amaderado | salida: mandarina, pimienta de madagascar, limón, chinotto | corazón: geranio, rosa, pepperwood | fondo: vainilla, haba tonka, sándalo, cedro de texas"
   },
   {
    "id": 21,
@@ -5292,7 +5403,8 @@
    },
    "agotado": false,
    "url": "https://alta-densidad-page.vercel.app/perfume/victorinox/swiss-army",
-   "top10": null
+   "top10": null,
+   "contexto": "Swiss army | $70.000 COP | Diseñador | Masculino | inspirado en Victorinox | acordes: fresco especiado, aromático, verde, amaderado, cítrico | salida: menta, notas verdes, bergamota, yuzu | corazón: lavanda, romero, flor de las nieves, hojas de violeta | fondo: ciprés, abeto balsámico, cedro, almizcle"
   },
   {
    "id": 117,
@@ -5342,7 +5454,8 @@
    },
    "agotado": false,
    "url": "https://alta-densidad-page.vercel.app/perfume/xerjoff/alexandria-ii",
-   "top10": null
+   "top10": null,
+   "contexto": "Alexandria II | $125.000 COP | Arabe | Unisex | inspirado en Xerjoff | acordes: amaderado, ámbar, atalcado, cálido especiado, lavanda | salida: palisandro, lavanda, canela, manzana | corazón: rosa, cedro, lirio de los valles | fondo: madera de oud, sándalo, ámbar, vainilla"
   },
   {
    "id": 52,
@@ -5384,7 +5497,8 @@
    },
    "agotado": false,
    "url": "https://alta-densidad-page.vercel.app/perfume/xerjoff/erba-pura",
-   "top10": null
+   "top10": null,
+   "contexto": "Erba pura | $135.000 COP | Diseñador | Unisex | inspirado en Xerjoff | acordes: cítrico, afrutado, dulce, almizclado, atalcado | salida: naranja siciliana, bergamota de calabria, limon siciliano | corazón: frutas | fondo: almizcle blanco, vainilla de madagascar, ámbar"
   },
   {
    "id": 116,
@@ -5429,7 +5543,8 @@
    },
    "agotado": false,
    "url": "https://alta-densidad-page.vercel.app/perfume/xerjoff/renaissance",
-   "top10": null
+   "top10": null,
+   "contexto": "Renaissance | $125.000 COP | Arabe | Unisex | inspirado en Xerjoff | acordes: cítrico, verde, aromático, fresco especiado, amaderado | salida: limón de amalfi, naranja tangerina, bergamota, petit grain | corazón: menta, lirio de los valles, rosa | fondo: almizcle, cedro de virginia, pachulí, ámbar"
   }
  ],
  "kits": [
@@ -5742,5 +5857,20 @@
    50,
    100
   ]
+ },
+ "contextos": {
+  "kits": "KITS:\nTOY 2 MOSCHINO (3X30ml) | $60.000 COP | La colección Toy 2 de Moschino reúne tres fragancias que, aunque diferentes en estilo, se complementan de manera ideal para cubrir cada momento del día y cada faceta…\nVERSACE (2X60ml) | $55.000 COP | La línea Eros de Versace está inspirada en el dios griego del amor y representa pasión, fuerza y seducción.\nPACO RABANNE FEMENINO Y MASCULINO | $60.000 COP | AGOTADO | Aquí podrás comprar tus perfumes favoritos de Paco Rabanne – Phantom y Fame – en presentación de 60 ml con feromonas, eligiendo entre ambos o repitiendo la misma…\nBADEE AL OUD – LATTAFA (3X40ml) | $150.000 COP | Sueblime(Rojo)\nARMAF DELIGHTS – (3x50ml) | $150.000 COP | Un set de fragancias que combina la elegancia del perfume con la estética divertida y creativa de los postres.\nYARA & ASAD - LATTAFA (4X30ml) | $150.000 COP | Un set de lujo que reúne cuatro fragancias icónicas de la casa Lattafa, presentadas en un elegante estuche blanco con detalles dorados\nKIT LE LABO (5X30ml) | $170.000 COP | Un set artesanal que reúne cinco de las fragancias más icónicas de la casa Le Labo, reconocida por su estilo minimalista y su enfoque en la perfumería de autor.\nKIT KHAMRAH - LATTAFA (3X30ml) | $140.000 COP | Un set de lujo que reúne tres variantes exclusivas de la línea Khamrah, presentadas en un estuche negro con detalles dorados y diseño geométrico sofisticado.\nORIENTICA LUXURY- MINIATURE DISCOVERY SET (6X8ml) | $100.000 COP | Un set exclusivo que reúne cinco fragancias de alta gama en formato miniatura, ideal para descubrir la esencia de la perfumería de lujo árabe.Presentación premium\nKIT CLUB DE NUIT | $150.000 COP | Kit club de nuit mini collection\nKIT 9AM & 9PM – AFNAN (3x30ml) | $140.000 COP | Tres miniaturas de la línea 9 de Afnan en estuche de regalo\nKIT GIVE ME GOURMAND – LATTAFA (3x30ml) | $145.000 COP | Colección de miniaturas gourmand de Lattafa en estuche de regalo",
+  "crea_tu_perfume": "CREA TU PERFUME:\nEsencia Arabe: 30 ml $15.000 COP, 50 ml $25.000 COP, 60 ml $30.000 COP, 100 ml $40.000 COP\nEsencia Diseñador: 30 ml $15.000 COP, 50 ml $25.000 COP, 60 ml $30.000 COP, 100 ml $40.000 COP\nEnvase AMIRA: 30 ml $3.000 COP\nEnvase CARTIER: 30 ml $3.000 COP, 60 ml $4.500 COP\nEnvase CILINDRO: 100 ml $4.500 COP\nEnvase EROS: 60 ml $5.000 COP\nEnvase VICTORY: 60 ml $3.500 COP\nEnvase GOOD GIRL: 30 ml $10.000 COP\nEnvase CALAVERA: 50 ml $5.000 COP\nEnvase MINI YARA: 30 ml $8.000 COP\nEnvase VALENTINO: 30 ml $5.000 COP, 60 ml $7.000 COP\nEnvase SAUVAGE: 30 ml $5.000 COP\nEnvase MOSCHINO BEAR: 60 ml $10.000 COP\nRecargo feromonas: $2.000 COP"
+ },
+ "cultura": {
+  "piramide": "La pirámide olfativa describe cómo evoluciona un perfume en la piel ✨\n• Salida: lo primero que hueles, notas ligeras como cítricos que se van rápido.\n• Corazón: aparece después y le da la personalidad (flores, especias, frutas).\n• Fondo: lo que queda al final y más dura (maderas, ámbar, vainilla, almizcle).\nPor eso un perfume no huele igual al aplicarlo que horas después. ¿Quieres que te cuente la pirámide de alguno de nuestros perfumes?",
+  "maceracion": "La maceración es el reposo que se le da a un perfume después de mezclarlo, para que las notas se integren y el aroma se vuelva más redondo y estable. Es parte del proceso de elaboración; los detalles de cómo lo hacemos nosotros son reservados de la casa 🤫 ¿Te ayudo a elegir una fragancia?",
+  "fijador": "Un fijador es un ingrediente que hace que el aroma se evapore más despacio y dure más en la piel. Hay naturales, como resinas y bálsamos, y sintéticos, como el ambroxan o el almizcle. Las notas de fondo amaderadas y ambaradas también ayudan a fijar. Los que usamos nosotros son parte de nuestra fórmula reservada 😊",
+  "concentraciones": "Las concentraciones van de menor a mayor intensidad: eau de cologne, eau de toilette, eau de parfum y extrait de parfum (o parfum). Mientras más concentrado, más dura y más proyecta. Los nuestros son Extrait de Parfum, la categoría más alta ✨",
+  "turbio": "Un perfume se puede ver turbio por cambios bruscos de temperatura o por la mezcla de ingredientes que no se integraron bien. Si tu frasco llegó turbio o con algo extraño, escríbele a un asesor por WhatsApp ({wa}) para revisarlo 🙏 Guárdalo lejos del sol y del calor.",
+  "conservar": "Para conservar tu perfume: guárdalo en un lugar fresco y oscuro, lejos del sol, del calor y de la humedad (el baño no es el mejor sitio), y bien tapado. La luz y el calor oxidan las notas y cambian el aroma con el tiempo ✨",
+  "piel": "Un mismo perfume huele distinto en cada persona porque influyen el pH, la hidratación y la temperatura de la piel. En piel seca se evapora más rápido, por eso hidratarla ayuda a que dure más. Lo ideal es probarlo en tu piel y esperar a que salgan las notas de corazón 😊",
+  "acordes": "Un acorde es la combinación de varias notas que juntas crean una impresión olfativa: por ejemplo, el acorde gourmand evoca postres (vainilla, caramelo, chocolate) y el amaderado recuerda maderas como el cedro o el sándalo. En cada ficha del catálogo verás los acordes principales del perfume.",
+  "alcohol": "En perfumería se usa alcohol cosmético desodorizado, que no aporta olor propio y ayuda a que la fragancia se difunda al aplicarla. El tipo y las proporciones que usamos nosotros son parte de nuestra fórmula reservada 😊"
  }
 }
