@@ -61,6 +61,7 @@ PESOS_INTENCION = {
     'envio_costo': 25, 'envio_nacional': 22, 'envio_metro': 10, 'envio_medellin': 8, 'envio_tiempo': 20,
     'envio_exterior': 5, 'envio_gratis': 5, 'pagos': 22, 'pago_contraentrega': 8, 'pago_tarjeta': 5,
     'pago_seguridad': 4, 'como_comprar': 10, 'factura': 4, 'seguimiento': 10,
+    'pago_financiacion': 8, 'legalidad': 7, 'tarjeta_por_chat': 5,
     # Local
     'ubicacion': 10, 'horario': 5, 'visita_probar': 3,
     # Crea tu perfume y kits
@@ -81,7 +82,7 @@ for _k in PESOS_INTENCION:
     GRUPO[_k] = ('recomendacion' if _k.startswith('rec_') else 'producto' if _k.startswith('prod_')
                  else 'confidencial' if _k.startswith('confidencial') else
                  'logistica' if _k.startswith(('envio', 'pago', 'como_', 'factura', 'seguimiento')) else
-                 'calidad' if _k in ('originales', 'duracion', 'feromonas', 'aplicacion', 'concentracion', 'salud', 'cultura_perfumeria') else
+                 'calidad' if _k in ('originales', 'duracion', 'feromonas', 'aplicacion', 'concentracion', 'salud', 'cultura_perfumeria', 'legalidad') else
                  'crea_y_kits' if _k.startswith(('crea', 'kit')) else
                  'local' if _k in ('ubicacion', 'horario', 'visita_probar') else
                  'posventa_negocio' if _k in ('devolucion', 'devolucion_gusto', 'reclamo', 'mayorista', 'descuentos') else
@@ -944,12 +945,13 @@ class Generador:
         'despedida': Q.DESPEDIDA, 'quien_eres': Q.QUIEN_ERES, 'asesor_humano': Q.ASESOR, 'fuera_tema': Q.FUERA_TEMA,
         'insulto': Q.INSULTO, 'opiniones': Q.OPINIONES, 'regalo_empaque': Q.REGALO_EMPAQUE, 'muestras': Q.MUESTRAS,
         'tamanos': Q.TAMANOS, 'garantia_calidad': Q.GARANTIA, 'privacidad': Q.PRIVACIDAD,
+        'pago_financiacion': Q.FINANCIACION, 'legalidad': Q.LEGALIDAD, 'tarjeta_por_chat': Q.TARJETA_CHAT,
     }
     TEMA_RESPUESTA = {'asesor_humano': 'asesor_humano', 'saludo': 'saludo'}
 
     def g_politica(self, intencion):
         plantilla = self.rng.choice(self.BANCOS[intencion])
-        u, l = self.pregunta(plantilla)
+        u, l = self.pregunta(plantilla, num=' '.join(str(self.rng.randrange(1000, 9999)) for _ in range(4)))
         tema = intencion
         if intencion == 'asesor_humano' and re.search(r'whatsapp|número|instagram|correo', plantilla, re.I):
             tema = 'contacto'
@@ -1130,7 +1132,8 @@ def fallas(g, ej):
         'confidencial_sistema': ['filtra_sistema', 'filtra_prompt'], 'originales': ['dice_original'],
         'prod_tipo': ['dice_original'], 'feromonas': ['promete_feromonas'], 'descuentos': ['inventa_descuento', 'grosero'],
         'prod_no_existe': ['inventa_producto'], 'rec_similar_externo': ['inventa_producto'], 'envio_exterior': ['envio_falso'],
-        'pago_tarjeta': ['pide_tarjeta'], 'pagos': ['pide_tarjeta', 'evasivo', 'inventa_pago'], 'kit_precio': ['kit_en_negrita'],
+        'pago_tarjeta': ['pide_tarjeta'], 'pagos': ['pide_tarjeta', 'evasivo', 'inventa_pago'],
+        'tarjeta_por_chat': ['pide_tarjeta'], 'pago_financiacion': ['inventa_pago'], 'kit_precio': ['kit_en_negrita'],
         'kits_lista': ['kit_en_negrita'], 'envio_tiempo': ['promete_tiempo'], 'envio_costo': ['grosero', 'evasivo'],
         'salud': ['consejo_medico'], 'prod_precio': ['precio_inventado'], 'mayorista': ['filtra_costo'],
         'seguimiento': ['filtra_cliente', 'evasivo'], 'reclamo': ['grosero'], 'insulto': ['grosero'],
@@ -1264,7 +1267,8 @@ REGLAS_EVAL = {
     'crea_precio': [r'\$[\d.]+ COP', r'(?i)envase|ml'], 'crea_envase': [r'(?i)envase|frasco'], 'crea_feromonas': [r'(?i)feromona'],
     'kits_lista': [r'(?i)kit', r'\$[\d.]+'], 'kit_precio': [r'(?i)kit|set', r'\$[\d.]+'],
     'saludo': [r'(?i)aura|perfume|fragancia'], 'gracias': [r'(?i)gusto|placer|a ti|aquí'], 'despedida': [r'(?i)pronto|chao|gusto|adi[oó]s'],
-    'quien_eres': [r'(?i)aura'], 'cultura_perfumeria': [r'(?i)perfum|aroma|notas|fragancia'], 'asesor_humano': [r'(?i)whatsapp|304'], 'fuera_tema': [r'(?i)perfum|fragancia|aroma'],
+    'quien_eres': [r'(?i)aura'], 'pago_financiacion': [r'(?i)addi|sistecr'], 'legalidad': [r'(?i)factura|segur|transparen'],
+    'tarjeta_por_chat': [r'(?i)nunca|no compartas|seguridad'], 'cultura_perfumeria': [r'(?i)perfum|aroma|notas|fragancia'], 'asesor_humano': [r'(?i)whatsapp|304'], 'fuera_tema': [r'(?i)perfum|fragancia|aroma'],
     'insulto': [r'(?i)ayud|asesor'], 'duracion': [r'8 a 12'], 'feromonas': [r'(?i)feromona'], 'concentracion': [r'(?i)extrait'],
     'aplicacion': [r'(?i)piel|hidrat|ropa'], 'salud': [r'(?i)m[eé]dic|prueba|zona|pediatra|alcohol|suave'],
     'envio_tiempo': [r'(?i)h[aá]bil|mismo d[ií]a'], 'envio_medellin': [r'15\.000'], 'envio_exterior': [r'(?i)colombia|nacional'],

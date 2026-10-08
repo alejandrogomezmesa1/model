@@ -68,7 +68,7 @@ HECHOS PÚBLICOS
 - Perfumes inspirados en fragancias famosas (réplicas de alta calidad, 99 % de semejanza al aroma original), en concentración Extrait de Parfum y con feromonas. NO son los originales de la marca ni tenemos relación con esas marcas.
 - Duración: de 8 a 12 horas en piel, según el tipo de piel; hidratar la piel ayuda.
 - Envíos: Medellín $15.000 · Área Metropolitana $20.000 · resto de Colombia $22.000. Medellín: mismo día si se confirma antes de las 9 a.m.; si no, al siguiente día hábil. Nacional: 2 a 3 días hábiles.
-- Pagos: en la web con Mercado Pago (PSE, Nequi, tarjetas débito y crédito); o por WhatsApp con transferencia Bancolombia, Nequi o Daviplata con un asesor.
+- Pagos: en la web con Mercado Pago (PSE, Nequi, tarjetas débito y crédito); o por WhatsApp con un asesor: transferencia Bancolombia, Nequi o Daviplata, o financiación con Addi o Sistecrédito.
 - Devoluciones: solo por producto defectuoso, dañado o que no corresponde al pedido, al recibir o dentro de 2 días hábiles. Por higiene no hay devoluciones por gusto.
 - Crea tu perfume: el cliente elige envase, tamaño, fragancia y si lleva feromonas.
 - Dirección: {NEGOCIO['direccion']}. WhatsApp: {WA_NUMERO}. Web: {SITIO}.
@@ -131,11 +131,26 @@ RESPUESTAS = {
     ],
     'pagos': [
         ('💳 Puedes pagar de dos formas:\n• En la web, con Mercado Pago: PSE, Nequi y tarjetas débito o crédito.\n'
-         '• Por WhatsApp con un asesor: transferencia Bancolombia, Nequi o Daviplata.'),
+         '• Por WhatsApp con un asesor: transferencia Bancolombia, Nequi o Daviplata, o financiación con Addi o Sistecrédito.'),
         ('Aceptamos Mercado Pago en la web (PSE, Nequi, tarjetas débito y crédito) y, si prefieres, transferencia '
-         'Bancolombia, Nequi o Daviplata coordinando con un asesor por WhatsApp al {wa}.'),
+         'Bancolombia, Nequi o Daviplata, o financiación con Addi o Sistecrédito, coordinando con un asesor por WhatsApp al {wa}.'),
         ('Tienes varias opciones: pagar en línea con Mercado Pago (PSE, Nequi o tarjeta) o finalizar por WhatsApp y '
-         'pagar por transferencia Bancolombia, Nequi o Daviplata.'),
+         'pagar por transferencia Bancolombia, Nequi o Daviplata. Si prefieres a cuotas, también manejamos Addi y Sistecrédito con un asesor.'),
+    ],
+    'pago_financiacion': [
+        'Sí 🙌 Puedes financiar tu compra con Addi o Sistecrédito. Se coordina con un asesor por WhatsApp ({wa}): él te guía con la solicitud y el pedido.',
+        'Claro, manejamos financiación con Addi y Sistecrédito para que pagues a cuotas. Escríbele a un asesor por WhatsApp al {wa} y te ayuda con el proceso. Si tienes tarjeta de crédito, en la web también puedes diferir el pago con Mercado Pago.',
+    ],
+    'legalidad': [
+        ('Sí, puedes comprar con total tranquilidad 😊 Somos transparentes: te decimos siempre que nuestros perfumes son inspirados en las fragancias '
+         'originales, no los de la marca. Pagas con Mercado Pago, que protege tu compra, cada pedido lleva factura electrónica y tenemos punto físico '
+         'en Medellín ({direccion}) y atención por WhatsApp ({wa}).'),
+        ('Es una compra segura y transparente: vendemos perfumes inspirados (no originales de marca) y así lo decimos siempre, emitimos factura '
+         'electrónica, el pago en la web es con Mercado Pago y puedes visitarnos o escribirnos por WhatsApp ({wa}) cuando quieras.'),
+    ],
+    'tarjeta_por_chat': [
+        ('Por tu seguridad, nunca compartas los datos de tu tarjeta por chat 🔒 Nadie del equipo te los va a pedir. Puedes pagar en la web con '
+         'Mercado Pago (PSE, Nequi o tarjeta, en su página segura) o por WhatsApp ({wa}) con transferencia, Addi o Sistecrédito.'),
     ],
     'pago_contraentrega': [
         'En la web el pago se hace por Mercado Pago, y por WhatsApp con transferencia. Para revisar si tu pedido puede ir contraentrega, confírmalo directamente con un asesor al {wa} 🙌',

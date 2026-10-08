@@ -493,14 +493,9 @@ class KnowledgeBase:
         cur = self.conn.cursor()
         cur.execute("SELECT chosen_response FROM overrides WHERE target_key = ?", (norm_q,))
         row = cur.fetchone()
-        if row:
-            return row["chosen_response"]
-
-        cur.execute("SELECT target_key, chosen_response FROM overrides")
-        for r in cur.fetchall():
-            if r["target_key"] in norm_q or norm_q in r["target_key"]:
-                return r["chosen_response"]
-        return None
+        # Solo la pregunta exacta (normalizada). Antes también valía la coincidencia parcial y una pregunta
+        # corta como «king» o «rosa» devolvía una corrección vieja sin pasar por el modelo.
+        return row["chosen_response"] if row else None
 
     # =========================================================================
     # MOTOR DE BÚSQUEDA HÍBRIDO (EXACTO -> FUZZY -> VECTORIAL FALLBACK)
@@ -746,22 +741,32 @@ class KnowledgeBase:
             ("floral", ["floral", "florales", "flores", "rosa", "rosas", "jazmin", "nardos", "orquidea", "lavanda"], "Floral")
         ]
 
+        def menciona(t):
+            # Palabra exacta o, en las largas, su raíz con cualquier final: «citricosito», «dulcecito», «maderita»
+            if len(t) >= 5 and " " not in t:
+                return re.search(r'\b' + re.escape(t[:-1]) + r'\w*', q_norm)
+            return re.search(r'\b' + re.escape(t) + r'\b', q_norm)
+
         for fam_key, terms, display in FAMILIES:
-            if any(re.search(r'\b' + re.escape(t) + r'\b', q_norm) for t in terms):
+            if any(menciona(t) for t in terms):
                 cur = self.conn.cursor()
                 conditions = ["busqueda_norm LIKE ?" for _ in terms[:5]]
                 where_clause = " OR ".join(conditions)
                 params = [f"%{t}%" for t in terms[:5]]
 
-                # Respetar filtro de género si está presente
-                if any(g in q_norm for g in ["hombre", "masculino", "caballero"]):
-                    where_clause = f"({where_clause}) AND genero LIKE '%Masculino%'"
-                elif any(g in q_norm for g in ["mujer", "femenino", "dama"]):
-                    where_clause = f"({where_clause}) AND genero LIKE '%Femenino%'"
-                elif any(g in q_norm for g in ["unisex"]):
+                # Género pedido + unisex, el pedido primero. Sin género: primero los unisex (sirven para cualquiera)
+                genero = self.detectar_genero(q_norm)
+                if genero in ("Masculino", "Femenino"):
+                    where_clause = f"({where_clause}) AND (genero LIKE '%{genero}%' OR genero LIKE '%Unisex%')"
+                    prioridad = f"CASE WHEN genero LIKE '%{genero}%' THEN 0 ELSE 1 END"
+                elif genero == "Unisex":
                     where_clause = f"({where_clause}) AND genero LIKE '%Unisex%'"
+                    prioridad = "0"
+                else:
+                    prioridad = "CASE WHEN genero LIKE '%Unisex%' THEN 0 ELSE 1 END"
 
-                cur.execute(f"SELECT * FROM productos WHERE {where_clause} ORDER BY agotado ASC, COALESCE(top10, 99) ASC, precio ASC LIMIT 4", params)
+                cur.execute(f"SELECT * FROM productos WHERE {where_clause} ORDER BY agotado ASC, {prioridad}, "
+                            f"COALESCE(top10, 99) ASC, precio ASC LIMIT 4", params)
                 prods = [dict(r) for r in cur.fetchall()]
                 if prods:
                     lines = []

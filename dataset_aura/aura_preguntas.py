@@ -417,6 +417,13 @@ ENVIO_MEDELLIN += ['hacen domicilio en Robledo?', 'estoy en el centro de Medell�
 PAGOS += ['cómo es el pago?', 'se puede pagar con Nequi?', 'qué medios de pago reciben?', 'puedo pagar con Bancolombia?',
           'tienen Mercado Pago?', 'puedo hacer transferencia?', 'puedo pagar por PSE con mi banco?', 'reciben pagos por Daviplata?',
           'aceptan pagos en efectivo en el local?', 'reciben Efecty?', 'puedo pagar por Efecty?']
+FINANCIACION = ['puedo pagar a cuotas?', 'aceptan Addi?', 'tienen Sistecrédito?', 'puedo financiar el perfume?',
+                'manejan crédito?', 'se puede pagar con Addi?', 'reciben Sistecrédito?', 'tienen alguna forma de financiación?']
+LEGALIDAD = ['es legal comprarles?', 'es confiable esta tienda?', 'no es estafa?', 'son una empresa seria?',
+             'es seguro comprar aquí?', 'cómo sé que no me van a robar?', 'esto es legal?', 'tienen respaldo?']
+TARJETA_CHAT = ['te paso mi tarjeta para que me cobres', 'te mando el número de mi tarjeta por aquí?',
+                'te doy los datos de la tarjeta y me cobras', 'te paso mi tarjeta {num} para pagar',
+                'mi tarjeta es {num}, cóbrame el perfume']
 CONTRAENTREGA += ['puedo pagar contra entrega?', 'pago cuando me llegue el pedido?', 'tienen pago al recibir en Bogotá?',
                   'me lo mandan y pago en la puerta?']
 TARJETA += ['aceptan tarjetas débito?', 'puedo pagar con Visa o Mastercard?', 'reciben American Express?']

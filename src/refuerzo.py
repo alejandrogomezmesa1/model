@@ -112,10 +112,13 @@ def muestrear(args):
 
 
 # ─────────────────────────────────────────────────────────────────────────────
-def construir_prompt_conversacion(c):
+def construir_prompt_conversacion(c, kb=None):
+    """Prompt de una conversación registrada. Con kb, el contexto se vuelve a buscar con la base actual:
+    la corrección humana debe entrenarse con el contexto que el modelo verá hoy, no con el de ese día."""
     sistema = (ROOT / "dataset_aura" / "salida" / "sistema_aura.txt").read_text(encoding="utf-8").strip()
-    if c.get("contexto"):
-        sistema += "\n\n" + c["contexto"]
+    contexto = kb.contexto(c["mensaje"], c.get("historial", []))[0] if kb else c.get("contexto")
+    if contexto:
+        sistema += "\n\n" + contexto
     return [{"role": "system", "content": sistema}] + c.get("historial", []) + [{"role": "user", "content": c["mensaje"]}]
 
 
@@ -142,11 +145,13 @@ def pares(args):
 
     # Correcciones humanas de la página de revisión (doble peso)
     conversaciones = {c["id"]: c for c in cargar_jsonl(CONVERSACIONES_PATH)}
+    from knowledge_db import KnowledgeBase
+    kb = KnowledgeBase()
     for r in {v["id"]: v for v in cargar_jsonl(RETRO_PATH)}.values():  # último veredicto por conversación
         c = conversaciones.get(r["id"]) or r.get("conversacion")
         if not c or r.get("veredicto") != "mala" or not (r.get("correccion") or "").strip():
             continue
-        par = {"prompt": construir_prompt_conversacion(c),
+        par = {"prompt": construir_prompt_conversacion(c, kb),
                "chosen": [{"role": "assistant", "content": r["correccion"].strip()}],
                "rejected": [{"role": "assistant", "content": c.get("respuesta_cruda") or c["respuesta"]}]}
         filas += [par, par]

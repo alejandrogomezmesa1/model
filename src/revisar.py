@@ -66,6 +66,7 @@ class Veredicto(BaseModel):
     id: str
     veredicto: str
     correccion: str = ""
+    nota: str = ""
 
 
 @app.post("/api/veredicto")
@@ -76,7 +77,7 @@ def guardar(v: Veredicto):
         raise HTTPException(400, "Escribe cómo debió responder AURA")
     RETRO.parent.mkdir(parents=True, exist_ok=True)
     with open(RETRO, "a", encoding="utf-8") as f:
-        f.write(json.dumps({"id": v.id, "veredicto": v.veredicto, "correccion": v.correccion.strip(),
+        f.write(json.dumps({"id": v.id, "veredicto": v.veredicto, "correccion": v.correccion.strip(), "nota": v.nota.strip(),
                             "fecha": datetime.datetime.now().isoformat(timespec="seconds")}, ensure_ascii=False) + "\n")
     return {"ok": True}
 
@@ -150,18 +151,20 @@ function pintar() {
       <div class="q">Cliente: ${esc(c.mensaje)}</div>
       <div class="r">${esc(c.respuesta)}</div>
       ${fallas.length ? `<div class="fallas">Reglas que falla: ${fallas.join(', ')}</div>` : ''}
-      ${v ? `<div class="hecho">${v.veredicto === 'buena' ? '👍 Marcada como buena' : '👎 Corregida: ' + esc(v.correccion)}</div>` : ''}
+      ${v ? `<div class="hecho">${v.veredicto === 'buena' ? '👍 Marcada como buena' : '👎 Respuesta correcta: ' + esc(v.correccion)}${v.nota ? '<br>📝 Nota: ' + esc(v.nota) : ''}</div>` : ''}
       <div class="acciones"><button data-a="buena">👍 Buena</button><button data-a="mala">👎 Mala, corregir</button></div>
-      <div class="editor" hidden><p class="meta">Escribe cómo debió responder AURA (puedes editar la respuesta):</p>
-        <textarea>${esc(c.respuesta)}</textarea>
+      <div class="editor" hidden><p class="meta"><b>Respuesta exacta</b> que debió dar AURA, tal cual se la diría al cliente (esto es lo que se entrena):</p>
+        <textarea class="correccion">${esc(v?.correccion || c.respuesta)}</textarea>
+        <p class="meta"><b>Nota</b> (opcional, no se entrena): qué estuvo mal o qué dato del negocio hay que cambiar.</p>
+        <textarea class="nota" style="min-height:60px">${esc(v?.nota || '')}</textarea>
         <div class="acciones"><button class="primario" data-a="guardar">Guardar corrección</button><button data-a="cancelar">Cancelar</button></div></div>
     </div>`;
   }).join('');
 }
-async function enviar(id, veredicto, correccion = '') {
-  const r = await fetch('/api/veredicto', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ id, veredicto, correccion }) });
+async function enviar(id, veredicto, correccion = '', nota = '') {
+  const r = await fetch('/api/veredicto', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ id, veredicto, correccion, nota }) });
   if (!r.ok) { alert((await r.json()).detail); return; }
-  datos.find((c) => c.id === id).veredicto = { veredicto, correccion };
+  datos.find((c) => c.id === id).veredicto = { veredicto, correccion, nota };
   pintar();
 }
 $('#lista').addEventListener('click', (e) => {
@@ -170,7 +173,7 @@ $('#lista').addEventListener('click', (e) => {
   if (b.dataset.a === 'buena') enviar(id, 'buena');
   if (b.dataset.a === 'mala') ed.hidden = false;
   if (b.dataset.a === 'cancelar') ed.hidden = true;
-  if (b.dataset.a === 'guardar') enviar(id, 'mala', card.querySelector('textarea').value);
+  if (b.dataset.a === 'guardar') enviar(id, 'mala', card.querySelector('textarea.correccion').value, card.querySelector('textarea.nota').value);
 });
 $('#filtro').onchange = pintar; $('#origen').onchange = pintar;
 $('#generar').onclick = async () => {

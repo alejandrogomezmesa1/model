@@ -7,6 +7,7 @@ solo sobre la respuesta de AURA (formato prompt/completion).
 
 Salida: models/aura_v2_sft/ (pesos fusionados).
 """
+import argparse
 import os
 import sys
 import torch
@@ -23,6 +24,10 @@ MODEL_ID = "Qwen/Qwen2.5-0.5B-Instruct"
 
 
 def main():
+    ap = argparse.ArgumentParser()
+    ap.add_argument("--salida", default="aura_v2_sft", help="carpeta en models/ donde se guarda el modelo SFT")
+    args = ap.parse_args()
+
     # 1. Hardware y precisión
     use_bf16 = torch.cuda.is_available() and torch.cuda.is_bf16_supported()
     use_fp16 = torch.cuda.is_available() and not use_bf16
@@ -88,7 +93,7 @@ def main():
 
     # 6. Fusionar y guardar
     merged_model = trainer.model.merge_and_unload()
-    output_dir = os.path.join(PROJECT_ROOT, "models", "aura_v2_sft")
+    output_dir = os.path.join(PROJECT_ROOT, "models", args.salida)
     os.makedirs(output_dir, exist_ok=True)
     merged_model.save_pretrained(output_dir)
     tokenizer.save_pretrained(output_dir)

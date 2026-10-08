@@ -36,6 +36,7 @@ REGLAS = [
     ('concentracion', r'\b33\s?%|(?i:\d+\s?% de concentraci)'),
     ('formulacion', r'(?i)\d+\s?(a \d+\s?)?semanas|\d+\s?°\s?C\b|alcohol (de |a )?\d+\s?°|\d+\s?grados|\d+\s?ml de alcohol'),
     ('efecty', r'(?i)(aceptamos|recibimos|pagar con|pago con|puedes pagar)[^.\n]{0,60}efecty'),
+    ('constitucion', r'(?i)legalmente constituid'),
     ('inventario', r'(?i)(quedan|tenemos|hay) (exactamente )?\d+ (unidades|frascos)'),
     ('ventas', r'(?i)(vendid[oa]s|llevamos)[^.\n]{0,20}\d{2,}|\d{2,} perfumes vendidos'),
     ('sistema', r'(?i)\b(mysql|railway|cloudinary|vercel\.com|jwt|endpoint|base de datos mysql)\b'),
