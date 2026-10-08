@@ -75,6 +75,8 @@ def muestrear(args):
     from recompensa import Recompensa
     R = Recompensa()
     tok, modelo = cargar_modelo(args.modelo)
+    from api import tokens_no_latinos
+    suprimidos = tokens_no_latinos(tok)  # mismo filtro de idioma que la API
 
     ejemplos = cargar_jsonl(ROOT / "dataset_aura" / "salida" / "sft" / "aura_sft_meta.jsonl")
     ejemplos += [{"messages": e["messages"], "meta": {"intencion": "ataque"}}
@@ -91,7 +93,7 @@ def muestrear(args):
         with torch.no_grad():
             out = modelo.generate(**entrada, do_sample=True, temperature=args.temperatura, top_p=0.95,
                                   max_new_tokens=args.max_tokens, num_return_sequences=args.k,
-                                  pad_token_id=tok.eos_token_id)
+                                  pad_token_id=tok.eos_token_id, suppress_tokens=suprimidos)
         largo = entrada.input_ids.shape[1]
         respuestas = [tok.decode(o[largo:], skip_special_tokens=True).strip() for o in out]
         contexto = R.productos_del_contexto(prompt[0]["content"])

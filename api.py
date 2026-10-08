@@ -174,6 +174,23 @@ def load_model_and_kb():
 INFERENCE_LOCK = threading.Lock()
 
 
+# Qwen viene entrenado con mucho chino y a veces se pasa a ese idioma a mitad de respuesta. Se prohíben en la
+# generación todos los tokens con escrituras no latinas (CJK, cirílico, árabe, hebreo, devanagari, hangul…):
+# AURA solo responde en español, así que no pierde nada y el cambio de idioma se vuelve imposible.
+NO_LATINO_RE = re.compile(r"[Ͱ-ϿЀ-ԯ֐-ࣿऀ-෿฀-࿿ᄀ-ᇿ"
+                          r"⺀-⿿　-〿぀-ヿ㄀-ㇿ㐀-䶿一-鿿"
+                          r"ꀀ-꓏가-힯豈-﫿＀-｠｡-ￜ]")
+_SUPRIMIDOS = {}
+
+
+def tokens_no_latinos(tokenizer) -> list:
+    clave_tok = id(tokenizer)
+    if clave_tok not in _SUPRIMIDOS:
+        _SUPRIMIDOS[clave_tok] = [i for i in range(len(tokenizer))
+                                  if NO_LATINO_RE.search(tokenizer.decode([i]))]
+    return _SUPRIMIDOS[clave_tok]
+
+
 def run_turn(user_text: str, history: list, last_product: Optional[str] = None, gen_kwargs: Optional[dict] = None,
              traza: Optional[dict] = None):
     """traza (opcional) recibe el contexto RAG, el historial usado y la respuesta cruda, para el registro."""
@@ -218,6 +235,7 @@ def run_turn(user_text: str, history: list, last_product: Optional[str] = None, 
             top_p=top_p if temperature > 0 else None,
             repetition_penalty=1.05,
             pad_token_id=tokenizer.eos_token_id,
+            suppress_tokens=tokens_no_latinos(tokenizer),
         )
 
     input_len = inputs.input_ids.shape[1]
