@@ -35,6 +35,7 @@ sys.path.insert(0, str(ROOT))
 RL_DIR = ROOT / "data" / "rl"
 RETRO_PATH = ROOT / "data" / "retroalimentacion.jsonl"
 CONVERSACIONES_PATH = ROOT / "data" / "conversaciones.jsonl"
+EVAL_DEFECTO = ROOT / "dataset_aura" / "salida" / "eval" / "aura_eval.jsonl"
 
 
 def cargar_jsonl(ruta):
@@ -172,6 +173,55 @@ def pares(args):
 
 
 # ─────────────────────────────────────────────────────────────────────────────
+def preguntas_de_entrenamiento():
+    """Todas las preguntas que algún modelo vio al entrenar: dataset actual, dataset con el que se
+    entrenaron aura_v2/v3/v3b (commit bd31702) y los prompts de las rondas de refuerzo."""
+    from recompensa import clave
+    vistas = set()
+
+    def agregar_conversaciones(filas):
+        for e in filas:
+            for m in e.get("messages") or e.get("prompt") or []:
+                if m["role"] == "user":
+                    vistas.add(clave(m["content"]))
+            if e.get("meta", {}).get("pregunta_limpia"):
+                vistas.add(clave(e["meta"]["pregunta_limpia"]))
+
+    salida = ROOT / "dataset_aura" / "salida"
+    agregar_conversaciones(cargar_jsonl(salida / "sft" / "aura_sft_meta.jsonl"))
+    agregar_conversaciones(cargar_jsonl(salida / "alineacion" / "aura_rojo.jsonl"))
+    for ruta in ("sft/aura_sft_meta.jsonl", "alineacion/aura_rojo.jsonl"):
+        r = subprocess.run(["git", "show", f"bd31702:dataset_aura/salida/{ruta}"], cwd=ROOT, capture_output=True)
+        if r.returncode == 0:
+            agregar_conversaciones([json.loads(l) for l in r.stdout.decode("utf-8").splitlines() if l.strip()])
+    for muestras in RL_DIR.glob("*/muestras.jsonl"):
+        agregar_conversaciones(cargar_jsonl(muestras))
+    return vistas
+
+
+def crear_eval(args):
+    """Evaluación grande y limpia: casos generados con otras semillas, sin ninguna pregunta de entrenamiento."""
+    sys.path.insert(0, str(ROOT / "dataset_aura"))
+    import generar_dataset as G
+    from recompensa import clave
+    vistas = preguntas_de_entrenamiento()
+    datos = G.descargar(G.API_DEF, str(ROOT / "data" / "cache_tienda"))
+    casos, descartados = [], 0
+    for semilla in [int(s) for s in args.semillas.split(",")]:
+        for c in G.construir_eval(G.Generador(datos, semilla), n_por_intencion=args.n_por_intencion):
+            k = clave(c["mensaje"])
+            if k in vistas:
+                descartados += 1
+                continue
+            vistas.add(k)
+            casos.append(c)
+    for i, c in enumerate(casos, 1):
+        c["id"] = f"evalg-{i:04d}"
+    escribir_jsonl(args.casos, casos)
+    print(f"Evaluación limpia: {len(casos)} casos ({descartados} descartados por estar en algún entrenamiento) → {args.casos}")
+
+
+# ─────────────────────────────────────────────────────────────────────────────
 def evaluar(args):
     """Casos de evaluación con el flujo real de la API (KnowledgeBase.contexto + modelo + verificar_productos)."""
     import api
@@ -184,7 +234,7 @@ def evaluar(args):
                      model=modelo, tokenizer=tok, model_display=args.modelo)
     os.environ["AURA_REGISTRO"] = "0"
 
-    casos = cargar_jsonl(ROOT / "dataset_aura" / "salida" / "eval" / "aura_eval.jsonl")
+    casos = cargar_jsonl(args.casos)
     resultados, por_grupo, recompensas = [], {}, []
     for c in casos:
         traza = {}
@@ -210,7 +260,8 @@ def evaluar(args):
                "recompensa_media": round(sum(recompensas) / len(recompensas), 3),
                "por_grupo": por_grupo, "casos": resultados}
     RL_DIR.mkdir(parents=True, exist_ok=True)
-    ruta = RL_DIR / f"eval_{args.modelo}.json"
+    defecto = Path(args.casos).resolve() == EVAL_DEFECTO.resolve()
+    ruta = RL_DIR / (f"eval_{args.modelo}.json" if defecto else f"eval_{args.modelo}_{Path(args.casos).stem}.json")
     ruta.write_text(json.dumps(reporte, ensure_ascii=False, indent=1), encoding="utf-8")
     print(f"{args.modelo}: aprobados {aprobados}/{len(casos)} ({aprobados / len(casos):.1%}) · violaciones {violaciones} · "
           f"recompensa media {reporte['recompensa_media']}")
@@ -270,6 +321,11 @@ def main():
     p.add_argument("--semilla", type=int, default=1)
     e = sub.add_parser("evaluar")
     e.add_argument("--modelo", default="aura_v2")
+    e.add_argument("--casos", default=str(EVAL_DEFECTO), help="archivo de casos (por defecto, la evaluación del dataset)")
+    ce = sub.add_parser("crear_eval")
+    ce.add_argument("--semillas", default="101,102,103")
+    ce.add_argument("--n_por_intencion", type=int, default=2)
+    ce.add_argument("--casos", default=str(RL_DIR / "eval_limpia.jsonl"))
     c = sub.add_parser("ciclo")
     c.add_argument("--modelo", default="aura_v2")
     c.add_argument("--nuevo", required=True)
@@ -277,7 +333,7 @@ def main():
     c.add_argument("--k", type=int, default=4)
     c.add_argument("--semilla", type=int, default=1)
     args = ap.parse_args()
-    {"muestrear": muestrear, "pares": pares, "evaluar": evaluar, "ciclo": ciclo}[args.paso](args)
+    {"muestrear": muestrear, "pares": pares, "evaluar": evaluar, "crear_eval": crear_eval, "ciclo": ciclo}[args.paso](args)
 
 
 if __name__ == "__main__":
