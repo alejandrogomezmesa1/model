@@ -179,6 +179,24 @@ python dataset_aura/evaluar.py --openai http://127.0.0.1:8000 --modelo aura --ke
 ```
 Para comparar con otro modelo, arranca la API con `$env:AURA_MODELO="mi_modelo_perfumista_v1"`.
 
+### Mejora continua: refuerzo con recompensas y con tu retroalimentación
+
+1. **Registro de conversaciones.** La API guarda cada turno en `data/conversaciones.jsonl` (solo en este PC, fuera de Git; teléfonos, cédulas, tarjetas y correos ocultos). `AURA_REGISTRO=0` lo desactiva.
+2. **Revisión humana.** `./hf-locql/Scripts/python.exe src/revisar.py` abre http://127.0.0.1:8100: conversaciones de peor a mejor según la recompensa; marcas 👍 o 👎 y escribes cómo debió responder. «Generar 10 pruebas» manda preguntas a la API local para tener qué revisar. Se guarda en `data/retroalimentacion.jsonl`.
+3. **Ronda de refuerzo.** `src/refuerzo.py`:
+   ```powershell
+   & ./hf-locql/Scripts/python.exe src/refuerzo.py evaluar   --modelo aura_v2                    # línea base
+   & ./hf-locql/Scripts/python.exe src/refuerzo.py muestrear --modelo aura_v2 --n 300 --muestras data/rl/aura_v3/muestras.jsonl
+   & ./hf-locql/Scripts/python.exe src/refuerzo.py pares     --muestras data/rl/aura_v3/muestras.jsonl --pares data/rl/aura_v3/pares.jsonl
+   & ./hf-locql/Scripts/python.exe src/train_dpo.py --base aura_v2 --datos data/rl/aura_v3/pares.jsonl --salida aura_v3   # API detenida o en CPU
+   & ./hf-locql/Scripts/python.exe src/refuerzo.py evaluar   --modelo aura_v3                    # ¿mejoró?
+   ```
+   `refuerzo.py ciclo --modelo aura_v2 --nuevo aura_v3` hace todo seguido y solo recomienda el modelo nuevo si mejora.
+   - El modelo genera 4 respuestas por pregunta y `src/recompensa.py` las puntúa (productos y precios reales, género, tarifas de envío, filtraciones, idioma, parecido con la referencia…).
+   - Par de preferencia: la mejor respuesta del modelo (o la de referencia, si todas fallan) contra la peor. Tus correcciones entran con doble peso.
+   - Para entrenar, la GPU de 4 GB no alcanza con la API encendida: detenla o arráncala en CPU con `$env:CUDA_VISIBLE_DEVICES="-1"` mientras tanto.
+4. **Publicar** el modelo nuevo: reinicia la API con `$env:AURA_MODELO="aura_v3"`.
+
 ---
 
 ## 7. Guía de Uso: Asistente Interactivo en Terminal

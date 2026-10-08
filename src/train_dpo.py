@@ -8,6 +8,7 @@ formulación, decir «original», inventar productos, descuentos o medios de pag
 
 Salida: models/aura_v2/ (modelo final que carga api.py).
 """
+import argparse
 import os
 import sys
 import torch
@@ -56,16 +57,26 @@ class DPOTrainerRecortado(DPOTrainer):
 
 
 def main():
+    # Por defecto: fase 2 normal (aura_v2_sft + data/aura_dpo.jsonl → aura_v2). src/refuerzo.py lo llama con
+    # otro modelo base, los pares de la ronda de refuerzo y otro nombre de salida.
+    ap = argparse.ArgumentParser()
+    ap.add_argument("--base", default="aura_v2_sft", help="carpeta en models/ sobre la que se entrena")
+    ap.add_argument("--datos", default=os.path.join(PROJECT_ROOT, "data", "aura_dpo.jsonl"))
+    ap.add_argument("--salida", default="aura_v2", help="carpeta en models/ donde se guarda el resultado")
+    ap.add_argument("--lr", type=float, default=5e-6)
+    ap.add_argument("--epocas", type=float, default=1)
+    args = ap.parse_args()
+
     # 1. Hardware y precisión
     use_bf16 = torch.cuda.is_available() and torch.cuda.is_bf16_supported()
     device = "cuda" if torch.cuda.is_available() else "cpu"
     model_dtype = torch.bfloat16 if use_bf16 else torch.float32
 
     # 2. Modelo SFT de la fase 1
-    sft_dir = os.path.join(PROJECT_ROOT, "models", "aura_v2_sft")
+    sft_dir = os.path.join(PROJECT_ROOT, "models", args.base)
     if not os.path.isfile(os.path.join(sft_dir, "model.safetensors")):
-        raise SystemExit("Falta models/aura_v2_sft: corre primero src/train_sft.py")
-    print(f"DPO sobre el modelo SFT: {sft_dir}")
+        raise SystemExit(f"Falta models/{args.base}: corre primero src/train_sft.py")
+    print(f"DPO sobre el modelo: {sft_dir}")
 
     tokenizer = AutoTokenizer.from_pretrained(sft_dir)
     if tokenizer.pad_token is None:
@@ -73,9 +84,9 @@ def main():
     model = AutoModelForCausalLM.from_pretrained(sft_dir, dtype=model_dtype).to(device)
 
     # 3. Pares de preferencia (formato conversacional; TRL aplica el chat template)
-    dpo_path = os.path.join(PROJECT_ROOT, "data", "aura_dpo.jsonl")
+    dpo_path = args.datos
     if not os.path.exists(dpo_path):
-        raise SystemExit("Falta data/aura_dpo.jsonl: corre primero src/preparar_datos_aura.py")
+        raise SystemExit(f"Falta {dpo_path}: corre primero src/preparar_datos_aura.py (o src/refuerzo.py pares)")
     train_dataset = load_dataset("json", data_files=dpo_path, split="train")
     print(f"Dataset DPO: {len(train_dataset)} pares (chosen vs rejected)")
 
@@ -96,7 +107,7 @@ def main():
         # Los pares rechazados son fallas burdas y fáciles de separar: con lr 2e-5 y 2 épocas el margen
         # llegó a 8 y el modelo se degradó (mezcla de idiomas, alucinaciones). Por eso lr bajo, 1 época
         # y una pérdida SFT sobre la respuesta elegida que ancla el lenguaje (estilo RPO).
-        learning_rate=5e-6,
+        learning_rate=args.lr,
         loss_type=["sigmoid", "sft"],
         loss_weights=[1.0, 1.0],
         lr_scheduler_type="cosine",
@@ -109,7 +120,7 @@ def main():
         precompute_ref_batch_size=1,
         per_device_train_batch_size=1,
         gradient_accumulation_steps=8,
-        num_train_epochs=1,
+        num_train_epochs=args.epocas,
         bf16=use_bf16,
         logging_steps=5,
         report_to="none",
@@ -130,7 +141,7 @@ def main():
 
     # 6. Fusionar y guardar el modelo final
     final_model = trainer.model.merge_and_unload()
-    final_dir = os.path.join(PROJECT_ROOT, "models", "aura_v2")
+    final_dir = os.path.join(PROJECT_ROOT, "models", args.salida)
     os.makedirs(final_dir, exist_ok=True)
     final_model.save_pretrained(final_dir)
     tokenizer.save_pretrained(final_dir)

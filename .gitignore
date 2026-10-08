@@ -47,3 +47,6 @@ $RECYCLE.BIN/
 
 # Catálogo descargado por generar_dataset.py --cache
 data/cache_tienda/
+
+# Rondas de refuerzo (muestras, pares y reportes; se regeneran con src/refuerzo.py)
+data/rl/

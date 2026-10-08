@@ -19,6 +19,7 @@ import time
 import uuid
 import json
 import secrets
+import hashlib
 import datetime
 import threading
 import unicodedata
@@ -173,8 +174,11 @@ def load_model_and_kb():
 INFERENCE_LOCK = threading.Lock()
 
 
-def run_turn(user_text: str, history: list, last_product: Optional[str] = None, gen_kwargs: Optional[dict] = None):
+def run_turn(user_text: str, history: list, last_product: Optional[str] = None, gen_kwargs: Optional[dict] = None,
+             traza: Optional[dict] = None):
+    """traza (opcional) recibe el contexto RAG, el historial usado y la respuesta cruda, para el registro."""
     gen_kwargs = gen_kwargs or {}
+    traza = traza if traza is not None else {}
     kb = STATE["kb"]
     model = STATE["model"]
     tokenizer = STATE["tokenizer"]
@@ -192,6 +196,7 @@ def run_turn(user_text: str, history: list, last_product: Optional[str] = None, 
         last_product = productos[0]["nombre"]
 
     trimmed_history = history[-4:]
+    traza.update(contexto=contexto, historial=trimmed_history)
     current_messages = [{"role": "system", "content": system_context}] + trimmed_history + [{"role": "user", "content": user_text}]
 
     prompt_formatted = tokenizer.apply_chat_template(
@@ -220,6 +225,7 @@ def run_turn(user_text: str, history: list, last_product: Optional[str] = None, 
     raw_response = tokenizer.decode(response_tokens, skip_special_tokens=True).strip()
 
     # Mismo control que el backend de la tienda: productos inexistentes fuera, precios oficiales, kits sin negrita
+    traza["respuesta_cruda"] = raw_response
     response_text = verificar_productos(raw_response, STATE["catalogo"], STATE["kits"])
     if not response_text:
         response_text = ("Disculpa, no tengo esa información a la mano 🙏 Un asesor te ayuda por WhatsApp al "
@@ -386,11 +392,53 @@ def _get_or_create_session(session_id: Optional[str]) -> tuple:
     return session_id, sess
 
 
+# =============================================================================
+# REGISTRO LOCAL DE CONVERSACIONES (para revisarlas y reentrenar; nunca sale del PC)
+# data/conversaciones.jsonl está fuera de Git. AURA_REGISTRO=0 lo desactiva.
+# =============================================================================
+REGISTRO_PATH = BASE_DIR / "data" / "conversaciones.jsonl"
+REGISTRO_LOCK = threading.Lock()
+EMAIL_RE = re.compile(r"[\w.+-]+@[\w-]+\.[\w.]+")
+NUMERO_LARGO_RE = re.compile(r"\+?\d[\d\s.\-]{5,}\d")
+
+
+def ocultar_datos(texto: str) -> str:
+    """Oculta correos y números de 7 o más dígitos (teléfonos, cédulas, tarjetas); los precios tienen menos."""
+    texto = EMAIL_RE.sub("[correo]", texto or "")
+    return NUMERO_LARGO_RE.sub(lambda m: "[número]" if len(re.sub(r"\D", "", m.group(0))) >= 7 else m.group(0), texto)
+
+
+def registrar_conversacion(session_id: str, mensaje: str, respuesta: str, traza: dict, segundos: float):
+    if os.environ.get("AURA_REGISTRO", "1") == "0":
+        return
+    fila = {
+        "id": uuid.uuid4().hex[:12],
+        "fecha": datetime.datetime.now().isoformat(timespec="seconds"),
+        "origen": "prueba" if str(session_id).startswith(("panel-prueba", "eval-")) else "cliente",
+        "sesion": hashlib.sha256(str(session_id).encode()).hexdigest()[:10],
+        "modelo": STATE.get("model_display"),
+        "mensaje": ocultar_datos(mensaje),
+        "historial": [{"role": m["role"], "content": ocultar_datos(m["content"])} for m in traza.get("historial", [])],
+        "contexto": traza.get("contexto", ""),
+        "respuesta_cruda": traza.get("respuesta_cruda"),
+        "respuesta": respuesta,
+        "segundos": round(segundos, 2),
+    }
+    try:
+        with REGISTRO_LOCK, open(REGISTRO_PATH, "a", encoding="utf-8") as f:
+            f.write(json.dumps(fila, ensure_ascii=False) + "\n")
+    except Exception as e:
+        print(f"No se pudo registrar la conversación: {e}")
+
+
 def _run_and_record(session_id: str, sess: dict, user_text: str, gen_kwargs: dict) -> tuple:
+    traza = {}
+    t0 = time.time()
     with INFERENCE_LOCK:
         response_text, res_type, last_product = run_turn(
-            user_text, sess["history"], sess.get("last_product"), gen_kwargs
+            user_text, sess["history"], sess.get("last_product"), gen_kwargs, traza
         )
+    registrar_conversacion(session_id, user_text, response_text, traza, time.time() - t0)
     sess["history"].append({"role": "user", "content": user_text})
     sess["history"].append({"role": "assistant", "content": response_text})
     sess["last_product"] = last_product
