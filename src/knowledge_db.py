@@ -306,7 +306,34 @@ class KnowledgeBase:
         bloques, productos = [], []
         genero = self.detectar_genero(q_norm, history)
 
-        res = self.search(query, history)
+        # «Dame otros 3», «que sean distintos a estos que me repites»: fuera lo que AURA ya mostró
+        mostrados = set()
+        pide_otros = re.search(r"\b(otr[oa]s|distint[oa]s?|diferentes?|mas opciones|repit\w*|repetid\w*)\b", q_norm)
+        if pide_otros and history:
+            for m in history:
+                if m.get("role") == "assistant":
+                    mostrados |= {normalize_text(n) for n in re.findall(r"\*\*(.+?)\*\*", m.get("content", ""))}
+        limite = max_productos + len(mostrados)
+
+        res = self.search(query, history, limite=limite, genero=genero)
+        if mostrados and (res.get("source") == "vector_fallback" or res.get("type") in ("none", "greeting")):
+            # La queja sola no dice qué buscar: se repite el último pedido del cliente que sí lo decía
+            for m in reversed(history):
+                if m.get("role") == "user":
+                    anterior = self.search(m.get("content", ""), history, limite=limite, genero=genero)
+                    if anterior.get("type") in ("multi_product", "recommendation", "similar", "brand_catalog"):
+                        res = anterior
+                        break
+        # «Pero solo de hombre» después de «algo similar a la Santal» o «perfumes amaderados»: se repite
+        # esa búsqueda con el género nuevo en lugar de dar los favoritos genéricos de ese género
+        if history and self._solo_genero(q_norm) and (
+                res.get("type") in ("none", "recommendation") or res.get("source") == "vector_fallback"):
+            for m in reversed(history):
+                if m.get("role") == "user" and self._pide_estilo(normalize_text(m.get("content", ""))):
+                    anterior = self.search(m.get("content", ""), None, limite=limite, genero=genero)
+                    if anterior.get("type") == "similar" or str(anterior.get("source", "")).startswith("olfactory_"):
+                        res = anterior
+                    break
         # Pedidos por género sin perfume, marca ni familia concretos («perfumes de hombre») caen en el
         # respaldo vectorial, que no sabe de género: se responden con los favoritos de ese género.
         # Si además pide un estilo («algo fresco para hombre»), se conservan las coincidencias del vector
@@ -321,7 +348,8 @@ class KnowledgeBase:
         if res.get("source") == "vector_fallback" and re.search(
                 r"\b(envio\w*|domicilio|pag\w+|nequi|pse|tarjeta|devol\w*|reclam\w*|factura|pedido|direccion|ubicad\w*|"
                 r"horario|whatsapp|asesor|macera\w*|fijador\w*|piramide|alcohol|turbi\w*|guard\w*|concentracion|"
-                r"originales?|replicas?|feromonas?|duran?|descuentos?|cupon\w*|hola|gracias|quien eres)\b", q_norm):
+                r"originales?|replicas?|feromonas?|duran?|descuentos?|cupon\w*|hola|gracias|quien eres|"
+                r"legal\w*|segur[oa]s?|confiab\w*|confianza|estafa\w*)\b", q_norm):
             data = None
         if isinstance(data, dict):
             data = [data]
@@ -330,16 +358,21 @@ class KnowledgeBase:
                 if isinstance(d, dict) and d.get("id") is None and d.get("nombre"):
                     # Filas del top 10 no traen id: se resuelven por nombre
                     d = self._producto_por_nombre(d["nombre"])
-                if isinstance(d, dict) and d.get("contexto") and d["id"] not in {p["id"] for p in productos}:
+                if isinstance(d, dict) and d.get("contexto") and d["id"] not in {p["id"] for p in productos} \
+                        and normalize_text(d["nombre"]) not in mostrados:
                     productos.append(d)
+        if res.get("type") == "brand_catalog":
+            # «Háblame de Lacoste»: el género solo filtra si lo dice esta pregunta, no uno heredado del historial
+            genero = self.detectar_genero(q_norm)
         if genero and res.get("type") != "product_card":
             # Nunca se le pasan al modelo perfumes del género contrario: un modelo pequeño los recomienda igual.
             # Si el cliente nombró un perfume concreto (product_card), se respeta aunque sea de otro género.
             productos = [p for p in productos if self._genero_compatible(p.get("genero"), genero)]
             if len(productos) < 3:
-                extra = self.get_recommendations(GENERO_PALABRA[genero]).get("data") or []
+                extra = self.get_recommendations(GENERO_PALABRA[genero], limite=limite).get("data") or []
                 productos += [p for p in extra if p["id"] not in {x["id"] for x in productos}
-                              and self._genero_compatible(p.get("genero"), genero)]
+                              and self._genero_compatible(p.get("genero"), genero)
+                              and normalize_text(p["nombre"]) not in mostrados]
         productos = productos[:max_productos]
         if productos:
             bloques.append("CATÁLOGO RELEVANTE:\n" + "\n".join(p["contexto"] for p in productos))
@@ -372,6 +405,17 @@ class KnowledgeBase:
         return bool(palabras)
 
     @staticmethod
+    def _solo_genero(q_norm: str) -> bool:
+        """True si la pregunta solo precisa el género («pero solo de hombre», «y para mujer?»)."""
+        resto = q_norm
+        for _, patron in PATRONES_GENERO:
+            resto = re.sub(patron, " ", resto)
+        if resto == q_norm:  # no nombra ningún género
+            return False
+        relleno = {"pero", "solo", "solamente", "unicamente", "mejor", "ahora", "entonces", "sean", "sea", "y", "pues", "porfa"}
+        return not [w for w in resto.split() if w not in STOPWORDS and w not in relleno]
+
+    @staticmethod
     def _genero_compatible(genero_producto, genero_pedido) -> bool:
         g = (genero_producto or "").lower()
         if genero_pedido == "Unisex":
@@ -395,6 +439,12 @@ class KnowledgeBase:
         cur = self.conn.cursor()
         cur.execute("SELECT nombre, precio FROM productos")
         return {normalize_text(r["nombre"]): (r["nombre"], r["precio"]) for r in cur.fetchall()}
+
+    def urls_productos(self) -> set:
+        """Enlaces reales de las fichas de perfume, para borrar los que el modelo invente."""
+        cur = self.conn.cursor()
+        cur.execute("SELECT url FROM productos WHERE url IS NOT NULL AND url <> ''")
+        return {r["url"] for r in cur.fetchall()}
 
     def nombres_kits(self) -> set:
         cur = self.conn.cursor()
@@ -500,7 +550,7 @@ class KnowledgeBase:
     # =========================================================================
     # MOTOR DE BÚSQUEDA HÍBRIDO (EXACTO -> FUZZY -> VECTORIAL FALLBACK)
     # =========================================================================
-    def search(self, query: str, history: list = None) -> dict:
+    def search(self, query: str, history: list = None, limite: int = 4, genero=None) -> dict:
         """
         Flujo de búsqueda en 4 etapas:
         1. Overrides prioritarios.
@@ -524,7 +574,7 @@ class KnowledgeBase:
                 "rendered": "¡Hola! 👋 Soy AURA, tu asesora olfativa de Fragancias de Alta Densidad. ¿Buscas un perfume para ti o para regalar? Cuéntame qué aromas te gustan y te recomiendo."
             }
 
-        q_words = [w for w in q_norm.split() if w not in STOPWORDS and len(w) > 1]
+        q_words = [w for w in q_norm.split() if w not in STOPWORDS and (len(w) > 1 or w.isdigit())]
 
         # Contexto previo para respuestas breves ("Si", "Claro", "Ok")
         if not q_words and history:
@@ -538,12 +588,17 @@ class KnowledgeBase:
                             q_norm = p_norm
                             break
 
+        # «Similar a la Santal»: perfumes de acordes parecidos (antes que la recomendación genérica)
+        parecidos = self.similares(q_norm, limite=max(limite - 1, 4), genero=genero)
+        if parecidos:
+            return parecidos
+
         # 3. Intenciones de recomendación abierta / catálogo general
         RECOMMEND_KEYWORDS = {"recomiendas", "recomiendame", "recomiendan", "recomienda", "recomendacion", "recomendaciones", "sugerencia", "sugerencias", "sugieres"}
         is_rec = any(w in q_norm for w in RECOMMEND_KEYWORDS) or bool(re.search(r'\bque\s+(?:perfumes?|fragancias?)?\s*(?:me\s+)?(?:recomiendas|recomiendame|recomienda|comprar|elegir|tienen|manejan)\b', q_norm))
-        if is_rec and not any(w in q_norm for w in ["citrico", "dulce", "amaderado", "acuatico", "floral", "especias"]):
+        if is_rec and not self._familias_pedidas(q_norm):
             if not self.find_brand(q_norm):
-                return self.get_recommendations(q_norm)
+                return self.get_recommendations(q_norm, limite=limite)
 
         # 4. Intenciones de catálogo con filtro de género inteligente (ej: 'cual es el top', 'top 10', 'mas vendidos')
         is_top_query = bool(re.search(r'\b(top|top10|top\s*10|mas\s+vendidos?|mas\s+populares?|mejores|bestsellers?)\b', q_norm))
@@ -582,7 +637,7 @@ class KnowledgeBase:
             return {"type": "kits", "data": kits, "rendered": self.render_kits(kits)}
 
         # 4. Resolver de Familias Olfativas y Notas (Cítrico, Dulce, Especias, Acuático, Amaderado, Floral)
-        olfactory_match = self.match_olfactory_family(q_norm)
+        olfactory_match = self.match_olfactory_family(q_norm, limite=limite, genero=genero)
         if olfactory_match:
             return olfactory_match
 
@@ -612,7 +667,11 @@ class KnowledgeBase:
             )
             # token_set_ratio da 100 a «Light blue» y a «Light blue living stromboli» si el cliente escribe
             # «light blue»: entre los empatados gana el nombre más parecido a lo escrito
-            best_match = max(candidatos, key=lambda c: (c[1], fuzz.ratio(q_clean, rf_utils.default_process(c[0])))) if candidatos else None
+            # Si el cliente escribe un número («thank u next 2»), gana el nombre que lo trae («Thank u next 2.0»)
+            numeros = set(re.findall(r'\d+', q_clean))
+            con_numeros = lambda nombre: numeros <= set(re.findall(r'\d+', nombre))  # noqa: E731
+            best_match = max(candidatos, key=lambda c: (c[1] >= 75 and con_numeros(c[0]), c[1],
+                                                        fuzz.ratio(q_clean, rf_utils.default_process(c[0])))) if candidatos else None
             if best_match and best_match[1] >= 75.0:
                 matched_name, score, idx = best_match
                 matched_id = self._product_ids_cache[idx]
@@ -730,61 +789,144 @@ class KnowledgeBase:
         cur.execute(f"SELECT * FROM productos WHERE {placeholders_or} LIMIT 4", params)
         return [dict(r) for r in cur.fetchall()]
 
-    def match_olfactory_family(self, q_norm: str) -> dict:
-        """Identifica familias olfativas y notas aromáticas y recupera los productos oficiales de BD."""
-        FAMILIES = [
-            ("citrico", ["citrico", "citricos", "citrica", "citricas", "limon", "limones", "bergamota", "mandarina", "naranja", "pomelo", "toronja"], "Cítrico y Refrescante"),
-            ("dulce", ["dulce", "dulces", "gourmand", "vainilla", "caramelo", "bombon", "malvavisco", "azucar", "miel", "chocolate", "frutal dulce"], "Dulce y Gourmand"),
-            ("especiado", ["especias", "especiado", "especiada", "especiados", "canela", "cardamomo", "pimienta", "clavo", "nuez moscada"], "Especiado Cálido"),
-            ("amaderado", ["amaderado", "amaderada", "amaderados", "madera", "maderas", "cedro", "sandalo", "oud", "vetiver"], "Amaderado Elegante"),
-            ("acuatico", ["acuatico", "acuatica", "marino", "marina", "marinos", "brisa marina", "fresco marino"], "Acuático y Marino"),
-            ("floral", ["floral", "florales", "flores", "rosa", "rosas", "jazmin", "nardos", "orquidea", "lavanda"], "Floral")
-        ]
+    # Familias que el cliente puede pedir: (clave, palabras del cliente, acordes que la representan, título).
+    # La última es una ocasión («para enamorar», «una cita»): se resuelve con acordes cálidos y envolventes.
+    FAMILIAS = [
+        ("citrico", ["citrico", "citricos", "citrica", "citricas", "limon", "limones", "bergamota", "mandarina", "naranja", "pomelo", "toronja"],
+         ["citrico"], "Cítrico y Refrescante"),
+        ("afrutado", ["afrutado", "afrutada", "afrutados", "afrutadas", "frutal", "frutales", "frutas", "frutos"],
+         ["afrutado", "frutal gourmand", "tropical"], "Afrutado"),
+        ("dulce", ["dulce", "dulces", "gourmand", "vainilla", "caramelo", "bombon", "malvavisco", "azucar", "miel", "chocolate"],
+         ["dulce", "avainillado", "caramelo", "amielado", "frutal gourmand"], "Dulce y Gourmand"),
+        ("especiado", ["especias", "especiado", "especiada", "especiados", "canela", "cardamomo", "pimienta", "clavo", "nuez moscada"],
+         ["calido especiado", "fresco especiado", "especiado suave", "canela"], "Especiado Cálido"),
+        ("amaderado", ["amaderado", "amaderada", "amaderados", "madera", "maderas", "cedro", "sandalo", "oud", "vetiver"],
+         ["amaderado", "oud"], "Amaderado Elegante"),
+        ("acuatico", ["acuatico", "acuatica", "marino", "marina", "marinos", "brisa marina", "fresco marino"],
+         ["acuatico", "marino"], "Acuático y Marino"),
+        ("floral", ["floral", "florales", "flores", "rosa", "rosas", "jazmin", "nardos", "orquidea", "lavanda"],
+         ["floral", "floral blanco", "rosa", "nardos"], "Floral"),
+        ("fresco", ["fresco", "frescos", "fresca", "frescas", "refrescante", "ligero", "ligera", "ligeros"],
+         ["fresco", "fresco especiado", "citrico", "acuatico", "verde", "marino"], "Fresco"),
+        ("seductor", ["enamorar", "enamorarla", "enamorarlo", "seducir", "seductor", "seductora", "conquistar", "cita", "citas",
+                      "romantico", "romantica", "sensual"],
+         ["avainillado", "ambar", "calido especiado", "dulce", "amaderado"], "Cálido y Seductor"),
+    ]
+    # Colores que no son familia: «lacoste rosada» no pide perfumes florales
+    NO_FAMILIA = {"rosada", "rosado", "rosadas", "rosados"}
+
+    def _familias_pedidas(self, q_norm: str) -> list:
+        palabras = [w for w in q_norm.split() if w not in self.NO_FAMILIA]
+        texto = " ".join(palabras)
 
         def menciona(t):
             # Palabra exacta o, en las largas, su raíz con cualquier final: «citricosito», «dulcecito», «maderita»
             if len(t) >= 5 and " " not in t:
-                return re.search(r'\b' + re.escape(t[:-1]) + r'\w*', q_norm)
-            return re.search(r'\b' + re.escape(t) + r'\b', q_norm)
+                return re.search(r'\b' + re.escape(t[:-1]) + r'\w*', texto)
+            return re.search(r'\b' + re.escape(t) + r'\b', texto)
 
-        for fam_key, terms, display in FAMILIES:
-            if any(menciona(t) for t in terms):
-                cur = self.conn.cursor()
-                conditions = ["busqueda_norm LIKE ?" for _ in terms[:5]]
-                where_clause = " OR ".join(conditions)
-                params = [f"%{t}%" for t in terms[:5]]
+        return [f for f in self.FAMILIAS if any(menciona(t) for t in f[1])]
 
-                # Género pedido + unisex, el pedido primero. Sin género: primero los unisex (sirven para cualquiera)
-                genero = self.detectar_genero(q_norm)
-                if genero in ("Masculino", "Femenino"):
-                    where_clause = f"({where_clause}) AND (genero LIKE '%{genero}%' OR genero LIKE '%Unisex%')"
-                    prioridad = f"CASE WHEN genero LIKE '%{genero}%' THEN 0 ELSE 1 END"
-                elif genero == "Unisex":
-                    where_clause = f"({where_clause}) AND genero LIKE '%Unisex%'"
-                    prioridad = "0"
-                else:
-                    prioridad = "CASE WHEN genero LIKE '%Unisex%' THEN 0 ELSE 1 END"
+    @staticmethod
+    def _acordes(p: dict) -> list:
+        """Acordes del perfume en orden de intensidad (el primero es el dominante)."""
+        m = re.search(r'Acordes: ([^.]*)\.', p.get("descripcion_olfativa") or "")
+        return [normalize_text(a) for a in m.group(1).split(",")] if m else []
 
-                cur.execute(f"SELECT * FROM productos WHERE {where_clause} ORDER BY agotado ASC, {prioridad}, "
-                            f"COALESCE(top10, 99) ASC, precio ASC LIMIT 4", params)
-                prods = [dict(r) for r in cur.fetchall()]
-                if prods:
-                    lines = []
-                    for p in prods:
-                        precio_fmt = f"${p.get('precio', 0):,.0f} COP".replace(",", ".")
-                        lines.append(f"- **{p['nombre']}** ({p.get('marca', '')}): {precio_fmt} ({p.get('ml', '100ml')}) - {p.get('descripcion_olfativa', '')[:85]}...")
-                    rendered = (
-                        f"FRAGANCIAS CON PERFIL {display.upper()} EN ALTA DENSIDAD:\n" +
-                        "\n".join(lines) +
-                        f"\n\n¿Te gustaría conocer en detalle las notas olfativas o fijación de alguna de ellas?"
-                    )
-                    return {
-                        "type": "multi_product",
-                        "data": prods,
-                        "rendered": rendered,
-                        "source": f"olfactory_{fam_key}"
-                    }
-        return None
+    def _fuerza(self, p: dict, familia) -> float:
+        """Cuánto pesa una familia en el perfume: 6 si es el acorde dominante, 1 si es el sexto; 0,5 si solo aparece en notas."""
+        acordes = self._acordes(p)
+        posiciones = [i for i, a in enumerate(acordes) if any(a == t or a.startswith(t) for t in familia[2])]
+        if posiciones:
+            return 6 - min(posiciones)
+        return 0.5 if any(re.search(r'\b' + re.escape(t) + r'\b', p.get("busqueda_norm") or "") for t in familia[1]) else 0
+
+    def _todos_los_productos(self) -> list:
+        cur = self.conn.cursor()
+        cur.execute("SELECT * FROM productos")
+        return [dict(r) for r in cur.fetchall()]
+
+    @staticmethod
+    def _orden_genero(p: dict, genero) -> int:
+        g = (p.get("genero") or "").lower()
+        if genero in ("Masculino", "Femenino"):
+            return 0 if genero.lower() in g else 1
+        return 0 if "unisex" in g else 1
+
+    def match_olfactory_family(self, q_norm: str, limite: int = 4, genero=None) -> dict:
+        """Perfumes de las familias pedidas, ordenados por cuánto pesa la familia en cada uno.
+
+        Con varias familias («cítricos afrutados») van primero los que tienen todas. Género pedido + unisex,
+        el pedido primero; sin género, primero los unisex (sirven para cualquiera).
+        """
+        familias = self._familias_pedidas(q_norm)
+        if not familias:
+            return None
+        genero = genero or self.detectar_genero(q_norm)
+        candidatos = []
+        for p in self._todos_los_productos():
+            if genero and not self._genero_compatible(p.get("genero"), genero):
+                continue
+            fuerzas = [self._fuerza(p, f) for f in familias]
+            if max(fuerzas) < 1:
+                continue
+            todas = all(x >= 1 for x in fuerzas)
+            candidatos.append((p["agotado"], not todas, self._orden_genero(p, genero), -sum(fuerzas),
+                               p.get("top10") or 99, p["precio"], p))
+        if not candidatos:
+            return None
+        prods = [c[-1] for c in sorted(candidatos, key=lambda c: c[:-1])[:limite]]
+        display = " / ".join(f[3] for f in familias)
+        lines = []
+        for p in prods:
+            precio_fmt = f"${p.get('precio', 0):,.0f} COP".replace(",", ".")
+            lines.append(f"- **{p['nombre']}** ({p.get('marca', '')}): {precio_fmt} ({p.get('ml', '100ml')}) - {p.get('descripcion_olfativa', '')[:85]}...")
+        rendered = (
+            f"FRAGANCIAS CON PERFIL {display.upper()} EN ALTA DENSIDAD:\n" +
+            "\n".join(lines) +
+            f"\n\n¿Te gustaría conocer en detalle las notas olfativas o fijación de alguna de ellas?"
+        )
+        return {
+            "type": "multi_product",
+            "data": prods,
+            "rendered": rendered,
+            "source": "olfactory_" + "_".join(f[0] for f in familias)
+        }
+
+    # «Similar a la Santal», «parecido al Aventus», «algo como el Khamrah»
+    PATRON_SIMILAR = re.compile(r'\b(similar\w*|parecid\w*|se parezca\w*|parecer\w*|estilo (?:de |del )?|tipo |como (?:el|la) )')
+
+    def similares(self, q_norm: str, limite: int = 5, genero=None) -> dict:
+        """Si el cliente pide algo parecido a un perfume del catálogo, los de acordes más cercanos (sin ese perfume)."""
+        m = self.PATRON_SIMILAR.search(q_norm)
+        if not m or not HAS_RAPIDFUZZ:
+            return None
+        resto = " ".join(w for w in q_norm[m.end():].split() if w not in STOPWORDS and len(w) > 1)
+        if not resto:
+            return None
+        mejor = process.extractOne(resto, self._product_names_cache, scorer=fuzz.token_set_ratio,
+                                   processor=rf_utils.default_process)
+        if not mejor or mejor[1] < 75:
+            return None
+        ref = self.get_product_by_id(self._product_ids_cache[mejor[2]])
+        if not ref:
+            return None
+        genero = genero or self.detectar_genero(q_norm)
+        peso_ref = {a: 6 - i for i, a in enumerate(self._acordes(ref))}
+        candidatos = []
+        for p in self._todos_los_productos():
+            if p["id"] == ref["id"] or (genero and not self._genero_compatible(p.get("genero"), genero)):
+                continue
+            parecido = sum(peso_ref[a] * (6 - i) for i, a in enumerate(self._acordes(p)) if a in peso_ref)
+            if parecido:
+                candidatos.append((p["agotado"], self._orden_genero(p, genero) if genero in ("Masculino", "Femenino") else 0,
+                                   -parecido, p.get("top10") or 99, p))
+        prods = [c[-1] for c in sorted(candidatos, key=lambda c: c[:-1])[:limite]]
+        if not prods:
+            return None
+        # El perfume de referencia va al final del contexto: el modelo lo puede nombrar sin recomendarlo de primero
+        return {"type": "similar", "data": prods + [ref], "referencia": ref["nombre"],
+                "rendered": None, "source": "similares"}
 
     def find_brand(self, q_norm: str) -> str:
         for key, display in KNOWN_BRANDS:
@@ -876,7 +1018,7 @@ class KnowledgeBase:
         cur.execute("SELECT * FROM kits LIMIT 6")
         return [dict(r) for r in cur.fetchall()]
 
-    def get_recommendations(self, q_norm: str) -> dict:
+    def get_recommendations(self, q_norm: str, limite: int = 4) -> dict:
         """Recomendación abierta con datos de SQLite: favoritos del Top 10 primero, filtrando por género si se pide."""
         cur = self.conn.cursor()
         # El género pedido va primero; los unisex solo completan la lista
@@ -889,8 +1031,8 @@ class KnowledgeBase:
         else:
             filtro, titulo, primero = "", "FRAGANCIAS FAVORITAS DE ALTA DENSIDAD", ""
         cur.execute(f"SELECT * FROM productos {filtro} ORDER BY agotado ASC, "
-                    f"CASE WHEN ? <> '' AND genero LIKE ? THEN 0 ELSE 1 END, COALESCE(top10, 99) ASC, id ASC LIMIT 4",
-                    (primero, f"%{primero}%"))
+                    f"CASE WHEN ? <> '' AND genero LIKE ? THEN 0 ELSE 1 END, COALESCE(top10, 99) ASC, id ASC LIMIT ?",
+                    (primero, f"%{primero}%", limite))
         prods = [dict(r) for r in cur.fetchall()]
         lines = [f"- **{p['nombre']}** ({p.get('marca', '')}): ${p.get('precio', 0):,.0f} COP ({p.get('ml', '100ml')})".replace(",", ".") for p in prods]
         rendered = f"{titulo}:\n" + "\n".join(lines) + f"\n\nTodas en Extrait de Parfum, con fijación de {DURACION_PIEL}."

@@ -134,6 +134,7 @@ def load_model_and_kb():
         kb.build_from_sources()
     STATE["catalogo"] = kb.catalogo_precios()
     STATE["kits"] = kb.nombres_kits()
+    STATE["urls"] = kb.urls_productos()
 
     # AURA_MODELO elige la carpeta de models/ (sirve para comparar el modelo nuevo contra el anterior);
     # sin ella se usa el primero que exista de esta lista.
@@ -244,7 +245,7 @@ def run_turn(user_text: str, history: list, last_product: Optional[str] = None, 
 
     # Mismo control que el backend de la tienda: productos inexistentes fuera, precios oficiales, kits sin negrita
     traza["respuesta_cruda"] = raw_response
-    response_text = verificar_productos(raw_response, STATE["catalogo"], STATE["kits"])
+    response_text = verificar_productos(raw_response, STATE["catalogo"], STATE["kits"], STATE.get("urls"))
     if not response_text:
         response_text = ("Disculpa, no tengo esa información a la mano 🙏 Un asesor te ayuda por WhatsApp al "
                          "+57 304 647 7694. ¿Te recomiendo algún perfume mientras tanto?")

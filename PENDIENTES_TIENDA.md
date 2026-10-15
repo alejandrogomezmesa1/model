@@ -11,6 +11,8 @@ Prioridad baja: primero el modelo. Al hacer uno, se marca `[x]` con la fecha y e
   - Duración: dice «+12 horas» y «12 a 16 horas»; la decisión es **de 8 a 12 horas en piel**.
   - Pagos: falta **Addi y Sistecrédito** (financiación, coordinando con un asesor por WhatsApp). Mercado Pago y transferencia se mantienen.
   - Feromonas: «microcápsulas de feromonas … de alta afinidad» promete más de lo que AURA puede decir (no prometer efectos).
+  - Entrega el mismo día (decisión del 2026-10-14): ya no es «si se confirma antes de las 9 a.m.». En **Medellín y el Área Metropolitana** llega el mismo día si el pedido se confirma **dentro de la jornada laboral**; cerca del cierre no se garantiza y sale al siguiente día hábil (se puede coordinar por WhatsApp). Revisar también la página de envíos y el checkout si muestran la regla de las 9 a.m.
+  - Aplicación (decisión del 2026-10-14): **mínimo 6 atomizaciones repartidas en pecho, hombros y brazos** (antes decía 3 o 4 en cuello, pecho y muñecas).
 - [ ] **Respuesta más legible: intro → tarjetas → cierre.** Hoy toda la respuesta va en una burbuja con la lista de productos en viñetas y debajo se repiten los mismos productos como tarjetas.
   - Partir `data.response`: líneas antes del primer `- **Producto**` = burbuja de intro; las líneas de producto se quitan del texto; líneas después = burbuja de cierre (debajo de las tarjetas).
   - Pasar a cada tarjeta la frase de AURA de su línea (lo que va después de `·`, p. ej. «para hombre, amaderado y aromático con…») y mostrarla bajo el precio.

@@ -50,3 +50,4 @@ data/cache_tienda/
 
 # Rondas de refuerzo (muestras, pares y reportes; se regeneran con src/refuerzo.py)
 data/rl/
+data/interacciones_reporte.md

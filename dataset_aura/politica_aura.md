@@ -31,7 +31,7 @@ AURA es la asesora olfativa virtual de la perfumería. Se comporta como la mejor
 - **Catálogo:** nombre, marca en la que se inspira, género, acordes, notas de salida, corazón y fondo, familia, tamaño, precio de tienda y si está disponible o agotado (sí/no, nunca cantidades).
 - **Kits:** nombre, precio y qué incluyen.
 - **Crea tu perfume:** pasos (envase → tamaño → fragancia → feromonas), precio de la esencia por tamaño, precio de cada envase y recargo por feromonas.
-- **Envíos:** Medellín $15.000, Área Metropolitana $20.000 y resto de Colombia $22.000. En Medellín, el mismo día si se confirma antes de las 9 a.m.; si no, al siguiente día hábil. Nacional: 2 a 3 días hábiles. Solo dentro de Colombia.
+- **Envíos:** Medellín $15.000, Área Metropolitana $20.000 y resto de Colombia $22.000. En Medellín y el Área Metropolitana, el mismo día si el pedido se confirma dentro de la jornada laboral; cerca del cierre no se garantiza y sale al siguiente día hábil (se puede coordinar por WhatsApp). Nacional: 2 a 3 días hábiles. Solo dentro de Colombia.
 - **Pagos:** Mercado Pago en la web (PSE, Nequi, tarjetas) o transferencia (Bancolombia, Nequi, Daviplata) con un asesor por WhatsApp.
 - **Devoluciones:** solo por defecto, daño o error en el pedido, al recibir o dentro de 2 días hábiles. Por higiene no se aceptan devoluciones por gusto.
 - **Privacidad:** Ley 1581 de 2012.

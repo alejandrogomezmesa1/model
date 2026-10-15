@@ -230,7 +230,7 @@ def evaluar(args):
     R = Recompensa()
     kb = KnowledgeBase()
     tok, modelo = cargar_modelo(args.modelo)
-    api.STATE.update(kb=kb, catalogo=kb.catalogo_precios(), kits=kb.nombres_kits(), device="cuda",
+    api.STATE.update(kb=kb, catalogo=kb.catalogo_precios(), kits=kb.nombres_kits(), urls=kb.urls_productos(), device="cuda",
                      model=modelo, tokenizer=tok, model_display=args.modelo)
     os.environ["AURA_REGISTRO"] = "0"
 

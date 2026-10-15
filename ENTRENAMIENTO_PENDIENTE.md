@@ -51,3 +51,29 @@ Reportes: `dataset_aura/salida/eval/reporte_20261007_1339.json` (nuevo) y `repor
 - Decidir si se publica `aura_v2`. La API lo carga por defecto; para volver al anterior: `$env:AURA_MODELO="mi_modelo_perfumista_v1"`.
 - Debilidades del modelo de 0,5B vistas en la evaluación: a veces responde un tema vecino (p. ej. responde «originales» a «envío gratis»), cede en algunos ataques de inyección y dijo que un perfume es apto para niños. Siguiente paso recomendado: más variaciones por intención (`--semilla` distinta y unir), más pares DPO para salud y ataques, o un modelo base más grande (1,5B cabe en 4 GB con LoRA).
 - `chat.py` (chat de terminal) todavía usa su propio prompt y las respuestas extractivas antiguas.
+
+## Revisión de los logs y aura_v7 (2026-10-14)
+
+- Revisión turno a turno de los 88 turnos registrados (`data/revision_interacciones.json`, reporte en
+  `data/interacciones_reporte.md`) → `src/curar_interacciones.py` arma 58 SFT y 54 pares DPO validados con la recompensa.
+- Decisiones de negocio: entrega el mismo día en Medellín y Área Metropolitana **dentro de la jornada laboral**
+  (ya no «antes de las 9 a.m.»); **mínimo 6 atomizaciones en pecho, hombros y brazos**; Área Metropolitana sigue en $20.000.
+  Dataset base regenerado con la caché del catálogo (solo cambian esos textos).
+- RAG: familias ordenadas por peso del acorde y combinables, «similar a X», «otros / distintos» excluye lo ya mostrado,
+  números en el nombre («thank u next 2» → 2.0), marca sin heredar el género del historial, sin relleno en legalidad.
+  Se quitaron dos overrides falsos que la API respondía tal cual; `test_regression.py` ya no escribe en la base real.
+  La API borra enlaces a fichas de perfume inventados.
+- aura_v7 = DPO sobre aura_v3b (`src/mezcla_dpo_interacciones.py`: interacciones ×2 + 51 pares de política + 150 de repaso,
+  lr 1e-5, 2 épocas).
+
+Evaluación limpia (341 casos), todo con el prompt y el RAG nuevos:
+
+| | aura_v3b | aura_v7 |
+|---|---|---|
+| Aprobados | **245** (antes 239 con el RAG viejo) | 239 |
+| Violaciones | **0** | 1 (tarjeta por chat) |
+| Recompensa media | **−0,333** | −0,412 |
+
+aura_v7 **no se promueve**: mete la regla de envíos en respuestas que no tienen que ver (poema, seguimiento del pedido).
+Los arreglos del RAG solos suben aura_v3b de 239 a 245. Siguiente intento: aura_v7b sin los pares de política
+(la regla ya está en el prompt), más repaso del set rojo y lr 5e-6.

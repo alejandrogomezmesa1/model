@@ -134,14 +134,35 @@ def validate_and_sanitize(response_text: str, retrieved_record = None) -> str:
 LINEA_PRODUCTO = re.compile(r'^(\s*[-*•]\s*)\*\*(.+?)\*\*([^\n]*)$', re.M)
 
 
-def verificar_productos(texto: str, catalogo: dict, kits: set) -> str:
+URL_PERFUME = re.compile(r'https?://alta-densidad-page\.vercel\.app/perfume/[^\s)\]]*')
+
+
+def quitar_urls_inventadas(texto: str, urls_validas: set) -> str:
+    """El contexto no trae enlaces, así que el modelo inventa fichas (/perfume/santal-33 en vez de
+    /perfume/le-labo/santal-33). Se borra todo enlace a /perfume/ que no sea la ficha real de un producto,
+    y la línea entera si solo quedaba un «Lo encuentras aquí:»."""
+    lineas = []
+    for linea in texto.split("\n"):
+        nueva = URL_PERFUME.sub(lambda m: m.group(0) if m.group(0).rstrip(".,;:!?") in urls_validas else "", linea)
+        if nueva != linea:
+            nueva = nueva.rstrip()
+            if len(nueva) < 40 and nueva.endswith(":"):
+                continue
+        lineas.append(nueva)
+    return "\n".join(lineas)
+
+
+def verificar_productos(texto: str, catalogo: dict, kits: set, urls_validas: set = None) -> str:
     """Igual que verificarRespuesta del backend de la tienda, para las líneas «- **Nombre**: $precio COP · …».
 
     catalogo: {nombre normalizado: (nombre exacto, precio)}; kits: nombres normalizados de kits.
     - Producto que no existe en la tienda → se borra la línea.
     - Producto existente → nombre exacto y precio oficial.
     - Kit en negrita → se le quita la negrita (los kits no son productos para el backend).
+    - Con urls_validas: enlaces a fichas de perfume que no existen → fuera.
     """
+    if urls_validas is not None:
+        texto = quitar_urls_inventadas(texto, urls_validas)
     def corregir(m):
         viñeta, nombre, resto = m.group(1), m.group(2).strip().rstrip(':'), m.group(3)
         clave = normalize(nombre)

@@ -67,7 +67,7 @@ SISTEMA_AURA = f"""Eres AURA, asesora olfativa de Fragancias de Alta Densidad (M
 HECHOS PÚBLICOS
 - Perfumes inspirados en fragancias famosas (réplicas de alta calidad, 99 % de semejanza al aroma original), en concentración Extrait de Parfum y con feromonas. NO son los originales de la marca ni tenemos relación con esas marcas.
 - Duración: de 8 a 12 horas en piel, según el tipo de piel; hidratar la piel ayuda.
-- Envíos: Medellín $15.000 · Área Metropolitana $20.000 · resto de Colombia $22.000. Medellín: mismo día si se confirma antes de las 9 a.m.; si no, al siguiente día hábil. Nacional: 2 a 3 días hábiles.
+- Envíos: Medellín $15.000 · Área Metropolitana $20.000 · resto de Colombia $22.000. Medellín y Área Metropolitana: mismo día si el pedido se confirma dentro de la jornada laboral; cerca del cierre no se garantiza y sale al siguiente día hábil (se puede coordinar por WhatsApp). Nacional: 2 a 3 días hábiles.
 - Pagos: en la web con Mercado Pago (PSE, Nequi, tarjetas débito y crédito); o por WhatsApp con un asesor: transferencia Bancolombia, Nequi o Daviplata, o financiación con Addi o Sistecrédito.
 - Devoluciones: solo por producto defectuoso, dañado o que no corresponde al pedido, al recibir o dentro de 2 días hábiles. Por higiene no hay devoluciones por gusto.
 - Crea tu perfume: el cliente elige envase, tamaño, fragancia y si lleva feromonas.
@@ -101,16 +101,16 @@ RESPUESTAS = {
          '$22.000 COP. Lo ves sumado automáticamente en el paso de envío de la bolsa.'),
     ],
     'envio_tiempo': [
-        ('⏱️ En Medellín, si confirmas tu pedido antes de las 9 a.m. te llega el mismo día; si es después, sale '
-         'para el siguiente día hábil. Al resto de Colombia tarda de 2 a 3 días hábiles con transportadora.'),
-        ('Los tiempos son: Medellín y Área Metropolitana, máximo un día hábil después de confirmar el pedido '
-         '(el mismo día si lo confirmas antes de las 9 a.m.). Envíos nacionales: 2 a 3 días hábiles.'),
-        ('Despachamos rápido: los pedidos confirmados antes de las 9 a.m. en Medellín se entregan ese mismo día. '
-         'Para otras ciudades cuenta de 2 a 3 días hábiles según la transportadora.'),
+        ('⏱️ En Medellín y el Área Metropolitana, si confirmas tu pedido dentro de la jornada laboral te llega el mismo día; '
+         'si es cerca del cierre no lo podemos garantizar y sale al siguiente día hábil. Al resto de Colombia tarda de 2 a 3 días hábiles con transportadora.'),
+        ('Los tiempos son: Medellín y Área Metropolitana, el mismo día si confirmas el pedido dentro de la jornada laboral '
+         '(si es cerca del cierre, al siguiente día hábil). Envíos nacionales: 2 a 3 días hábiles.'),
+        ('Despachamos rápido: en Medellín y sus alrededores, los pedidos confirmados dentro de la jornada laboral se entregan ese mismo día. '
+         'Si pides cerca del cierre, coordínalo con un asesor por WhatsApp ({wa}). Para otras ciudades cuenta de 2 a 3 días hábiles.'),
     ],
     'envio_metro': [
-        'Sí, llegamos a {municipio} 🙌 Por estar en el Área Metropolitana el envío vale $20.000 COP y se entrega en máximo un día hábil después de confirmar el pedido.',
-        'Claro que sí. {municipio} está en el Área Metropolitana: el envío cuesta $20.000 COP y normalmente llega al día hábil siguiente (o el mismo día si confirmas antes de las 9 a.m.).',
+        'Sí, llegamos a {municipio} 🙌 Por estar en el Área Metropolitana el envío vale $20.000 COP y llega el mismo día si confirmas dentro de la jornada laboral; si es cerca del cierre, al siguiente día hábil.',
+        'Claro que sí. {municipio} está en el Área Metropolitana: el envío cuesta $20.000 COP y llega el mismo día si confirmas el pedido dentro de la jornada laboral.',
     ],
     'envio_nacional': [
         'Sí, enviamos a {ciudad} 📦 El envío nacional vale $22.000 COP y tarda de 2 a 3 días hábiles con {transportadoras}.',
@@ -118,8 +118,8 @@ RESPUESTAS = {
         'Con gusto te lo mandamos a {ciudad}: el envío es de $22.000 COP y la entrega toma entre 2 y 3 días hábiles.',
     ],
     'envio_medellin': [
-        'En Medellín el envío vale $15.000 COP. Si confirmas tu pedido antes de las 9 a.m. te llega hoy mismo; si no, al siguiente día hábil 🛵',
-        'Para Medellín son $15.000 COP de envío y la entrega es el mismo día si el pedido se confirma antes de las 9 a.m.',
+        'En Medellín el envío vale $15.000 COP. Si confirmas tu pedido dentro de la jornada laboral te llega hoy mismo; si es cerca del cierre, al siguiente día hábil 🛵',
+        'Para Medellín son $15.000 COP de envío y la entrega es el mismo día si el pedido se confirma dentro de la jornada laboral. Si pides cerca del cierre, escríbenos por WhatsApp ({wa}) y lo coordinamos.',
     ],
     'envio_exterior': [
         'Por ahora solo hacemos envíos dentro de Colombia 🇨🇴 Si alguien te lo puede recibir aquí, con gusto te lo despachamos a esa dirección. Para casos especiales escríbele a un asesor por WhatsApp: {wa}.',
@@ -227,9 +227,9 @@ RESPUESTAS = {
          'así que un truco es aplicarlo sobre piel hidratada.'),
     ],
     'aplicacion': [
-        ('Para que te dure más ✨\n• Aplícalo sobre piel limpia e hidratada (una crema sin olor ayuda mucho).\n• En puntos de pulso: cuello, muñecas, detrás de las orejas y pecho.\n'
+        ('Para que te dure más ✨\n• Aplícalo sobre piel limpia e hidratada (una crema sin olor ayuda mucho).\n• Aplica mínimo 6 atomizaciones repartidas en pecho, hombros y brazos.\n'
          '• No frotes las muñecas: rompe las notas de salida.\n• Unas gotas en la ropa duran días.'),
-        ('Mi consejo: hidrata la piel, aplica 3 o 4 atomizaciones en cuello, pecho y muñecas sin frotar, y una en la ropa. Así la fragancia se fija mejor y proyecta más tiempo.'),
+        ('Mi consejo: hidrata la piel, aplica mínimo 6 atomizaciones repartidas en pecho, hombros y brazos, sin frotar. Así la fragancia se fija mejor y proyecta más tiempo.'),
     ],
     'feromonas': [
         ('Todas nuestras fragancias llevan feromonas sintéticas: no tienen olor y se agregan como un plus que busca potenciar la atracción y la proyección del perfume con el calor de la piel. '
@@ -238,7 +238,7 @@ RESPUESTAS = {
          'no hacen milagros ni actúan igual en todos, pero suman a una fragancia que ya es intensa y duradera.'),
     ],
     'concentracion': [
-        'Nuestros perfumes se elaboran en concentración Extrait de Parfum, la más alta de la perfumería. Por eso con pocas atomizaciones tienes muy buena proyección y fijación.',
+        'Nuestros perfumes se elaboran en concentración Extrait de Parfum, la más alta de la perfumería. Por eso tienes muy buena proyección y fijación.',
         'Trabajamos en Extrait de Parfum, que es la concentración más alta (más que eau de parfum y eau de toilette). Eso se traduce en más duración en piel y en ropa.',
     ],
     'salud': [
@@ -374,7 +374,7 @@ CULTURA = {
         ('Las concentraciones van de menor a mayor intensidad: eau de cologne, eau de toilette, eau de parfum y extrait de parfum (o parfum). '
          'Mientras más concentrado, más dura y más proyecta. Los nuestros son Extrait de Parfum, la categoría más alta ✨'),
         ('La diferencia entre colonia, EDT, EDP y extrait está en qué tan concentrado es el aroma: la colonia es la más ligera y el extrait la más intensa y duradera. '
-         'Nuestras fragancias están en Extrait de Parfum, por eso con pocas atomizaciones rinden mucho.'),
+         'Nuestras fragancias están en Extrait de Parfum, por eso rinden mucho y duran de 8 a 12 horas en piel.'),
     ],
     'turbio': [
         ('Un perfume se puede ver turbio por cambios bruscos de temperatura o por la mezcla de ingredientes que no se integraron bien. '

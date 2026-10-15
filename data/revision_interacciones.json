@@ -1,0 +1,1019 @@
+{
+ "_descripcion": "Revisión turno a turno de los logs del chatbot (data/conversaciones.jsonl y data/interacciones_chat.jsonl). puntaje 1-5 (5 = se puede usar tal cual). ideal = cómo debió responder (null si la respuesta registrada ya es la ideal). contexto = productos que debe traer el CATÁLOGO RELEVANTE del ejemplo cuando el RAG actual no los trae (null = el contexto de la base actual). incluir = false para comandos del chat de terminal y duplicados. La procesa src/curar_interacciones.py.",
+ "_fecha": "2026-10-14",
+ "turnos": [
+  {
+   "id": "819aa26ea976",
+   "puntaje": 3,
+   "problemas": [
+    "incoherente",
+    "recomendacion_floja"
+   ],
+   "comentario": "Revisión humana: buena. Abre con «Me encanta ayudar con regalos 🎁» sin que nadie hable de regalo; Light blue (cítrico fresco) no encaja con «enamorar»; King repite «notas afrutadas». Se mejora sin par DPO para no contradecir el 👍.",
+   "contexto": [
+    "Santal 33",
+    "Khamrah",
+    "Baccarat Rouge 540",
+    "Light blue",
+    "King"
+   ],
+   "ideal": "Para enamorar funcionan muy bien los aromas cálidos y envolventes: dejan huella sin saturar ✨\nEstas opciones unisex le quedan bien a cualquiera:\n- **Santal 33**: $75.000 COP · inspirado en Le Labo · unisex, amaderado y atalcado con sándalo, cuero y cardamomo\n- **Khamrah**: $110.000 COP · inspirado en Lattafa · unisex, dulce y cálido especiado con dátiles, canela y vainilla\n- **Baccarat Rouge 540**: $110.000 COP · inspirado en Maison Francis Kurkdjian · unisex, amaderado y ambarado con azafrán, jazmín y cedro\n¿Es para ti o para regalar, y para hombre o para mujer? Así te afino la recomendación."
+  },
+  {
+   "id": "3e96bd3d64f7",
+   "puntaje": 1,
+   "problemas": [
+    "no_entiende_coloquial",
+    "producto_no_encaja",
+    "repite_productos",
+    "incoherente",
+    "formato_ilegible"
+   ],
+   "comentario": "No entiende «citricosito»; mete Thank u, next (dulce de coco), repite Invictus y abre con «¡Buena elección de ocasión!». Se usa la corrección humana: unisex cítricos primero y luego pregunta el género.",
+   "ideal": "¡Buenos días! Los cítricos son una delicia, frescos y perfectos para el día 🍋 Estas opciones unisex le quedan bien a cualquiera:\n- **Silver mountain water**: $70.000 COP · inspirado en Creed · unisex, cítrico y verde con bergamota y mandarina\n- **Starry nights**: $75.000 COP · inspirado en Montale · unisex, floral y afrutado con manzana, bergamota y limón\n- **9AM dive**: $85.000 COP · inspirado en Afnan · unisex, afrutado y verde con limón, pimienta rosa y menta\n¿Es para hombre o para mujer? Así te muestro también opciones pensadas para ti 😊",
+   "contexto": [
+    "Silver mountain water",
+    "Starry nights",
+    "9AM dive",
+    "Imagination"
+   ]
+  },
+  {
+   "id": "c69be56c709f",
+   "puntaje": 1,
+   "problemas": [
+    "incoherente",
+    "dato_inventado"
+   ],
+   "comentario": "Responde de privacidad de datos e inventa «$100 COP de desglose». Se usa la corrección humana final (sin «legalmente constituida», que el validador prohíbe desde bad2574).",
+   "ideal": "Sí, puedes comprar con total tranquilidad 😊 Somos transparentes: te decimos siempre que nuestros perfumes son inspirados en las fragancias originales, no los de la marca. Pagas con Mercado Pago, que protege tu compra, cada pedido lleva factura electrónica y tenemos punto físico en Medellín (Calle 77c # 91b - 74, Robledo) y atención por WhatsApp (+57 304 647 7694)."
+  },
+  {
+   "id": "688f9a3a1774",
+   "puntaje": 1,
+   "problemas": [
+    "dato_negocio_incorrecto"
+   ],
+   "comentario": "Da la tarifa y el tiempo de Medellín ($15.000, mismo día) para Cali. Se usa la corrección humana.",
+   "ideal": "¡Hola! Sí, enviamos a Cali 📦 El envío nacional vale $22.000 COP y tarda de 2 a 3 días hábiles con Servientrega o Interrapidísimo."
+  },
+  {
+   "id": "b76decd7ce24",
+   "puntaje": 3,
+   "problemas": [
+    "url_inventada"
+   ],
+   "comentario": "Revisión humana: buena. Precio correcto, pero el enlace /perfume/santal-33 no existe (el real es /perfume/le-labo/santal-33): el contexto no trae URLs, así que el modelo las inventa. Se mejora sin par DPO.",
+   "ideal": "El Santal 33 está inspirado en el de Le Labo: unisex, amaderado y atalcado, con cardamomo, cuero y sándalo ✨\n- **Santal 33**: $75.000 COP · 100 ml\nLo puedes pedir en la web o por WhatsApp (+57 304 647 7694)."
+  },
+  {
+   "id": "c8647efa9c15",
+   "puntaje": 3,
+   "problemas": [
+    "sin_empatia",
+    "dato_dudoso"
+   ],
+   "mensaje": "qué servicio tan malo porfa",
+   "comentario": "Revisión humana: buena. Correcto derivar al WhatsApp, pero arranca con «no manejo reclamos» sin disculparse, y lo del historial de compras en la web no está en la política. Mensaje con la tilde dañada en el registro: se corrige.",
+   "ideal": "Lamento mucho que hayas tenido una mala experiencia 🙏 Si es por un pedido (demora, producto dañado o que no corresponde), escríbele a un asesor por WhatsApp (+57 304 647 7694) con tu número de pedido y te lo resuelven directamente. Y si quieres, cuéntame qué pasó y te oriento."
+  },
+  {
+   "id": "16201041895b",
+   "puntaje": 5,
+   "problemas": [],
+   "comentario": "Revisión humana: buena. Tres opciones masculinas reales, precios correctos y cierre útil.",
+   "ideal": null
+  },
+  {
+   "id": "b5549ddc5e17",
+   "puntaje": 1,
+   "problemas": [
+    "seguridad_pago",
+    "dato_inventado"
+   ],
+   "comentario": "Acepta datos de tarjeta por chat («Claro, con gusto») e inventa lo del número de orden. Se usa la corrección humana.",
+   "ideal": "Por tu seguridad, nunca compartas los datos de tu tarjeta por chat 🔒 Nadie del equipo te los va a pedir. Puedes pagar en la web con Mercado Pago (PSE, Nequi o tarjeta, en su página segura) o por WhatsApp (+57 304 647 7694) con transferencia, Addi o Sistecrédito."
+  },
+  {
+   "id": "455cdffc560a",
+   "puntaje": 5,
+   "problemas": [],
+   "comentario": "Revisión humana: buena. Tarifa y tiempo nacionales correctos.",
+   "ideal": null
+  },
+  {
+   "id": "43f350f4a25d",
+   "puntaje": 3,
+   "problemas": [
+    "politica_desactualizada"
+   ],
+   "comentario": "Era la respuesta correcta con la regla anterior (antes de las 9 a.m.). Desde el 2026-10-14 la entrega el mismo día depende de confirmar dentro de la jornada laboral.",
+   "ideal": "El envío en Medellín vale $15.000 COP 🛵 Si confirmas tu pedido dentro de la jornada laboral te llega hoy mismo; si es cerca del cierre, sale al siguiente día hábil. Si lo necesitas con urgencia, escríbenos por WhatsApp (+57 304 647 7694) y lo coordinamos."
+  },
+  {
+   "id": "75b466ca9600",
+   "puntaje": 2,
+   "problemas": [
+    "evasiva"
+   ],
+   "mejor": "43f350f4a25d",
+   "comentario": "Dice que el envío «se calcula al finalizar» cuando la tarifa es fija y conocida."
+  },
+  {
+   "id": "d314d5b2a292",
+   "puntaje": 2,
+   "problemas": [
+    "dato_negocio_incorrecto"
+   ],
+   "mejor": "43f350f4a25d",
+   "comentario": "«Llega al día hábil siguiente a las 9 a.m.»: confunde la hora de confirmación con la de entrega (y la regla ya no es la de las 9 a.m.)."
+  },
+  {
+   "id": "3191572f3798",
+   "puntaje": 2,
+   "problemas": [
+    "confusa"
+   ],
+   "mejor": "43f350f4a25d",
+   "comentario": "Mezcla «se calcula» con «sumando $15.000» y habla de «precio personalizado»."
+  },
+  {
+   "id": "b025b3afb0bc",
+   "puntaje": 4,
+   "problemas": [
+    "incompleta"
+   ],
+   "incluir": false,
+   "comentario": "Tarifa correcta pero sin tiempos de entrega. Igual a 42352075f67c, 70c2ab22f74f, f5b03fe3a1af y 628b42f0317b (pruebas repetidas): no se usa."
+  },
+  {
+   "id": "42352075f67c",
+   "puntaje": 4,
+   "problemas": [
+    "incompleta"
+   ],
+   "incluir": false,
+   "comentario": "Duplicado de b025b3afb0bc."
+  },
+  {
+   "id": "70c2ab22f74f",
+   "puntaje": 4,
+   "problemas": [
+    "incompleta"
+   ],
+   "incluir": false,
+   "comentario": "Duplicado de b025b3afb0bc."
+  },
+  {
+   "id": "f5b03fe3a1af",
+   "puntaje": 4,
+   "problemas": [
+    "incompleta"
+   ],
+   "incluir": false,
+   "comentario": "Duplicado de b025b3afb0bc."
+  },
+  {
+   "id": "628b42f0317b",
+   "puntaje": 4,
+   "problemas": [
+    "incompleta"
+   ],
+   "incluir": false,
+   "comentario": "Duplicado de b025b3afb0bc."
+  },
+  {
+   "id": "6f7649649344",
+   "puntaje": 3,
+   "problemas": [
+    "pregunta_genero_ya_dicho"
+   ],
+   "comentario": "Buenas opciones femeninas, pero cierra preguntando «¿Es para hombre o para mujer?» cuando el cliente ya dijo mujer. «con goloso» suena raro.",
+   "ideal": "Te dejo opciones para mujer que encantan a nuestros clientes:\n- **Light blue**: $70.000 COP · inspirado en Dolce & Gabbana · para mujer, cítrico y amaderado con limón siciliano, bambú y cedro\n- **Yara**: $100.000 COP · inspirado en Lattafa · para mujer, dulce y avainillado con orquídea, frutas tropicales y vainilla\n- **La Bomba**: $100.000 COP · inspirado en Carolina Herrera · para mujer, floral y tropical con pitahaya, frangipani y vainilla\n- **212 Sexy**: $70.000 COP · inspirado en Carolina Herrera · para mujer, dulce y atalcado con algodón de azúcar, vainilla y pimienta rosa\n¿Te gustan más los aromas dulces, florales o frescos? Así te afino la recomendación 😊"
+  },
+  {
+   "id": "5221e4128c51",
+   "puntaje": 3,
+   "problemas": [
+    "pregunta_genero_ya_dicho"
+   ],
+   "comentario": "Lista masculina correcta, pero vuelve a preguntar si es para hombre o mujer.",
+   "ideal": "Te dejo opciones para hombre que encantan a nuestros clientes:\n- **Lacoste blanca**: $65.000 COP · inspirado en Lacoste · para hombre, amaderado y aromático con toronja, ylang-ylang y cedro de virginia\n- **Aventus**: $70.000 COP · inspirado en Creed · para hombre, afrutado y amaderado con piña, bergamota y abedul\n- **212 VIP Black**: $70.000 COP · inspirado en Carolina Herrera · para hombre, aromático y avainillado con absenta, lavanda y vainilla\n- **King**: $110.000 COP · inspirado en Bharara · para hombre, cítrico y afrutado con naranja, bergamota y vainilla\n¿Los prefieres frescos para el día o más intensos para la noche?"
+  },
+  {
+   "id": "17e632a3675e",
+   "puntaje": 1,
+   "problemas": [
+    "repite_productos",
+    "producto_no_encaja",
+    "pregunta_genero_ya_dicho"
+   ],
+   "comentario": "Repite tres veces Amber oud gold edition, que además es dulce y afrutado, no amaderado. El RAG trae Amber oud gold y Silver mountain water para «amaderados»: se fija el contexto correcto.",
+   "contexto": [
+    "Santal 33",
+    "Bleu de Chanel",
+    "Boss bottled night",
+    "Baccarat Rouge 540",
+    "Amber oud gold edition"
+   ],
+   "ideal": "Si te gustan los amaderados, estas tienen carácter y muy buena estela 🌲\n- **Santal 33**: $75.000 COP · inspirado en Le Labo · unisex, amaderado y atalcado con sándalo, cedro y cuero\n- **Bleu de Chanel**: $80.000 COP · inspirado en Chanel · para hombre, cítrico y amaderado con toronja, incienso y cedro\n- **Boss bottled night**: $80.000 COP · inspirado en Hugo Boss · para hombre, amaderado y atalcado con lavanda, abedul y violeta\n- **Baccarat Rouge 540**: $110.000 COP · inspirado en Maison Francis Kurkdjian · unisex, amaderado y ambarado con azafrán, jazmín y cedro\n¿Lo buscas más fresco para el día o más intenso para la noche?"
+  },
+  {
+   "id": "1790b65b6674",
+   "puntaje": 2,
+   "problemas": [
+    "producto_no_encaja",
+    "incompleta",
+    "pregunta_genero_ya_dicho"
+   ],
+   "comentario": "Solo dos opciones y RedL.12.12. Rouge no es dulce (afrutado, fresco especiado). Vuelve a preguntar el género que ya se dijo en la misma frase.",
+   "contexto": [
+    "9pm",
+    "212 VIP Black",
+    "Black XS L'Aphrodisiaque",
+    "Le beau le parfum",
+    "King",
+    "Aventus"
+   ],
+   "ideal": "Para hombre, los dulces con vainilla, canela o miel tienen mucha presencia ✨\n- **9pm**: $100.000 COP · inspirado en Afnan · para hombre, avainillado y cálido especiado con manzana, canela y vainilla\n- **212 VIP Black**: $70.000 COP · inspirado en Carolina Herrera · para hombre, aromático y avainillado con absenta, lavanda y vainilla\n- **Black XS L'Aphrodisiaque**: $80.000 COP · inspirado en Paco Rabanne · para hombre, dulce y amielado con canela, miel y praliné\n- **Le beau le parfum**: $110.000 COP · inspirado en Jean Paul Gaultier · para hombre, dulce y amaderado con piña, coco y haba tonka\n¿Quieres que te cuente más de alguno?"
+  },
+  {
+   "id": "f6683b6e8403",
+   "puntaje": 5,
+   "problemas": [],
+   "comentario": "Ficha completa y correcta del Santal 33.",
+   "ideal": null
+  },
+  {
+   "id": "139c7d99c565",
+   "puntaje": 2,
+   "problemas": [
+    "no_responde_lo_pedido",
+    "url_inventada"
+   ],
+   "comentario": "Preguntan por el más vendido y responde de inventario. Las ventas son internas: lo correcto es el Top 10 público con las favoritas. Como venía hablando de perfumes de hombre, se muestran favoritas masculinas y unisex.",
+   "contexto": [
+    "Santal 33",
+    "Light blue",
+    "Lacoste blanca",
+    "King",
+    "Aventus",
+    "Amber oud gold edition"
+   ],
+   "ideal": "Las cifras de ventas son internas, pero te cuento cuáles son las favoritas de nuestros clientes ⭐ (Top 10 completo en https://alta-densidad-page.vercel.app/top10):\n- **Santal 33**: $75.000 COP · inspirado en Le Labo · unisex, amaderado y atalcado con sándalo, cuero y cardamomo\n- **Lacoste blanca**: $65.000 COP · inspirado en Lacoste · para hombre, amaderado y aromático con toronja, romero y cedro\n- **King**: $110.000 COP · inspirado en Bharara · para hombre, cítrico y afrutado con naranja, bergamota y vainilla\n- **Aventus**: $70.000 COP · inspirado en Creed · para hombre, afrutado y amaderado con piña, bergamota y abedul\n¿Quieres que te recomiende según tu gusto?"
+  },
+  {
+   "id": "f008eb0acf56",
+   "puntaje": 5,
+   "problemas": [],
+   "comentario": "Corta, cálida y correcta.",
+   "ideal": null
+  },
+  {
+   "id": "91c224824801",
+   "puntaje": 3,
+   "problemas": [
+    "no_aclara"
+   ],
+   "comentario": "No existe «Cloud 2»: responde Cloud sin aclararlo. El enlace coincide con el real por suerte.",
+   "ideal": "De Cloud manejamos la versión clásica; no tenemos una Cloud 2 ✨\n- **Cloud**: $80.000 COP · inspirado en Ariana Grande · para mujer, dulce y cremoso con crema batida, coco y praliné\n¿Te cuento de otras opciones dulces?"
+  },
+  {
+   "id": "1bb5ff744800",
+   "puntaje": 2,
+   "problemas": [
+    "producto_equivocado",
+    "incoherente",
+    "url_inventada"
+   ],
+   "comentario": "Pide «thank u next 2» y existe Thank u next 2.0 ($85.000), pero responde la clásica con «¡A ti! ✨» y un enlace inventado (/perfume/femina/...). El RAG no trae la 2.0: se fija el contexto.",
+   "contexto": [
+    "Thank u next 2.0",
+    "Thank u, next"
+   ],
+   "ideal": "¡Sí la tenemos! ✨\n- **Thank u next 2.0**: $85.000 COP · inspirado en Ariana Grande · para mujer, afrutado y dulce con fresa salvaje, granada y malvavisco\n- **Thank u, next**: $80.000 COP · la versión clásica, dulce con coco, frambuesa y macarrones\n¿Cuál te llama más?"
+  },
+  {
+   "id": "bb566e7f59e4",
+   "puntaje": 1,
+   "problemas": [
+    "producto_equivocado",
+    "dato_inventado",
+    "incoherente"
+   ],
+   "comentario": "«La otra» es la 2.0 y responde Cloud, con 80 ml, familia equivocada, «Aria Grande» y «no manejo los detalles internos de las compras».",
+   "ideal": "¡Ah, la 2.0! Claro que sí 😊\n- **Thank u next 2.0**: $85.000 COP · inspirado en Ariana Grande · para mujer, afrutado y dulce con manzana, fresa salvaje y malvavisco\nEs más afrutada y atalcada que la clásica. ¿Te gustaría pedirla?"
+  },
+  {
+   "id": "c95d9fb49f03",
+   "puntaje": 2,
+   "problemas": [
+    "dato_inventado"
+   ],
+   "comentario": "Dice que la 2.0 no está en stock; en el catálogo está disponible.",
+   "ideal": "¡Sí existe y la tenemos! Disculpa la confusión 🙏\n- **Thank u next 2.0**: $85.000 COP · inspirado en Ariana Grande · para mujer, afrutado y dulce con fresa salvaje, jazmín y malvavisco\n¿Quieres que te ayude a pedirla?"
+  },
+  {
+   "id": "fe59d8a54b50",
+   "puntaje": 3,
+   "problemas": [
+    "recomendacion_floja"
+   ],
+   "comentario": "Aventus es más afrutado que cítrico y King más dulce; hay cítricos masculinos más claros en el catálogo.",
+   "contexto": [
+    "Bleu de Chanel",
+    "Acqua di Gio",
+    "Invictus",
+    "Eros energy",
+    "Lacoste blanca",
+    "Aventus"
+   ],
+   "ideal": "Si buscas algo cítrico, estos son frescos y con mucha energía 🍋\n- **Bleu de Chanel**: $80.000 COP · inspirado en Chanel · para hombre, cítrico y amaderado con toronja, limón y cedro\n- **Acqua di Gio**: $85.000 COP · inspirado en Giorgio Armani · para hombre, cítrico y marino con lima, bergamota y romero\n- **Invictus**: $85.000 COP · inspirado en Paco Rabanne · para hombre, cítrico y marino con toronja, mandarina y laurel\n- **Eros energy**: $80.000 COP · inspirado en Versace · para hombre, cítrico y aromático con limón, naranja sanguina y pimienta rosa\n¿Quieres que te cuente más de alguno?"
+  },
+  {
+   "id": "04f84541d631",
+   "puntaje": 1,
+   "problemas": [
+    "repite_productos",
+    "ignora_historial"
+   ],
+   "comentario": "Pide «otros 3» y devuelve exactamente los mismos tres. Se pone en el contexto también los ya mostrados para que aprenda a excluirlos.",
+   "contexto": [
+    "Club de nuit intense man",
+    "Hawas ice",
+    "Odyssey mega man",
+    "Aventus",
+    "King",
+    "Lacoste blanca"
+   ],
+   "ideal": "¡Claro! Otros tres cítricos y afrutados para hombre, distintos a los anteriores:\n- **Club de nuit intense man**: $105.000 COP · inspirado en Armaf · para hombre, cítrico y afrutado con limón, piña y abedul\n- **Hawas ice**: $150.000 COP · inspirado en Rasasi · para hombre, afrutado y cítrico con manzana, limón y ciruela\n- **Odyssey mega man**: $115.000 COP · inspirado en Armaf · para hombre, cítrico y aromático con limón, naranja y piña\n¿Te cuento más de alguno?"
+  },
+  {
+   "id": "67c0dbbafe0a",
+   "puntaje": 1,
+   "problemas": [
+    "falso_rechazo",
+    "ignora_historial"
+   ],
+   "comentario": "Toma la queja por la repetición como un intento de cambiarle el rol («Sigo siendo AURA…»). Debe disculparse y dar opciones nuevas.",
+   "contexto": [
+    "Club de nuit intense man",
+    "Hawas ice",
+    "Odyssey mega man",
+    "Aventus",
+    "King",
+    "Lacoste blanca"
+   ],
+   "ideal": "¡Tienes razón, disculpa la repetición! 🙏 Aquí van tres distintas, cítricas y afrutadas para hombre:\n- **Club de nuit intense man**: $105.000 COP · inspirado en Armaf · para hombre, cítrico y afrutado con limón, piña y abedul\n- **Hawas ice**: $150.000 COP · inspirado en Rasasi · para hombre, afrutado y cítrico con manzana, limón y ciruela\n- **Odyssey mega man**: $115.000 COP · inspirado en Armaf · para hombre, cítrico y aromático con limón, naranja y piña\n¿Alguna te llama la atención?"
+  },
+  {
+   "id": "139ea6cff72e",
+   "puntaje": 1,
+   "problemas": [
+    "incoherente",
+    "no_entiende_coloquial"
+   ],
+   "comentario": "«Un saludo de 75.000 COP se arma en el envío de $75.000 COP»: sin sentido. «Costos» en lenguaje coloquial es el precio.",
+   "ideal": "¡Claro! Este es su precio:\n- **Santal 33**: $75.000 COP · inspirado en Le Labo · unisex, amaderado y atalcado con cardamomo, cuero y sándalo\n¿Te ayudo a pedirlo?"
+  },
+  {
+   "id": "ca92a5ded85b",
+   "puntaje": 3,
+   "problemas": [
+    "url_inventada"
+   ],
+   "comentario": "Precio correcto, pero con el enlace inventado /perfume/santal-33.",
+   "ideal": "- **Santal 33**: $75.000 COP · 100 ml\nEs unisex, amaderado y atalcado, inspirado en el de Le Labo. ¿Te ayudo a pedirlo?"
+  },
+  {
+   "id": "86c11685043b",
+   "puntaje": 1,
+   "problemas": [
+    "incoherente",
+    "dato_inventado"
+   ],
+   "comentario": "Inventa «el precio se vueltea en $77.000 COP con feromonas» y menciona un tal «Salud y la Higiene del Perfume». Debe negarse con amabilidad y repetir el precio de venta.",
+   "ideal": "El costo de producción y los márgenes son información interna, así que no los puedo compartir 🙏 Lo que sí te confirmo es el precio de venta del Santal 33: $75.000 COP. ¿Te ayudo con algo más sobre él?"
+  },
+  {
+   "id": "7e10356aa797",
+   "puntaje": 4,
+   "problemas": [
+    "generica"
+   ],
+   "comentario": "Se niega bien, pero con la frase de siempre. Mejor reconocer que es una prueba y ofrecer opciones concretas.",
+   "ideal": "Aunque sea una prueba, no comparto costos operativos ni información interna del negocio 🙏 Con gusto te ayudo con precios de venta, notas, envíos o recomendaciones. ¿Qué necesitas?"
+  },
+  {
+   "id": "f5708603374e",
+   "puntaje": 2,
+   "problemas": [
+    "no_responde_lo_pedido"
+   ],
+   "comentario": "Pregunta por precio mayorista y responde con la descripción del producto. Las condiciones de mayoristas las da el equipo comercial por WhatsApp.",
+   "ideal": "Las compras al por mayor y las condiciones para revendedores las maneja el equipo comercial por WhatsApp (+57 304 647 7694) 🙌 Al detal, el Santal 33 vale $75.000 COP."
+  },
+  {
+   "id": "41ad2c6fce98",
+   "puntaje": 2,
+   "problemas": [
+    "producto_no_encaja"
+   ],
+   "comentario": "Pide algo similar al Santal 33 y recomienda el mismo Santal, Light blue (cítrico femenino) y King (cítrico dulce). El RAG devuelve el top genérico: se fija el contexto.",
+   "contexto": [
+    "Santal 33",
+    "Baccarat Rouge 540",
+    "Alexandria II",
+    "Ombre nomade",
+    "Light blue",
+    "King"
+   ],
+   "ideal": "Si te gusta el Santal 33 (amaderado, cremoso y con cuero), estas van en la misma línea ✨\n- **Baccarat Rouge 540**: $110.000 COP · inspirado en Maison Francis Kurkdjian · unisex, amaderado y ambarado con azafrán, jazmín y cedro\n- **Alexandria II**: $125.000 COP · inspirado en Xerjoff · unisex, amaderado y atalcado con lavanda, sándalo y oud\n- **Ombre nomade**: $90.000 COP · inspirado en Louis Vuitton · unisex, ambarado y con oud, rosa y benjuí\n¿Es para hombre o para mujer?"
+  },
+  {
+   "id": "e5cfa4d53208",
+   "puntaje": 1,
+   "problemas": [
+    "genero_contrario",
+    "repite_productos",
+    "formato_ilegible"
+   ],
+   "comentario": "Pide solo de hombre y repite la lista anterior con Light blue (femenino), con la primera línea pegada al texto.",
+   "contexto": [
+    "Boss bottled night",
+    "Bleu de Chanel",
+    "Valentino uomo born in roma",
+    "Santal 33",
+    "Lacoste blanca"
+   ],
+   "ideal": "Claro, para hombre y en la línea amaderada del Santal 33:\n- **Boss bottled night**: $80.000 COP · inspirado en Hugo Boss · para hombre, amaderado y atalcado con violeta, lavanda y abedul\n- **Bleu de Chanel**: $80.000 COP · inspirado en Chanel · para hombre, cítrico y amaderado con toronja, incienso y cedro\n- **Valentino uomo born in roma**: $85.000 COP · inspirado en Valentino · para hombre, mineral y amaderado con salvia, jengibre y vetiver\nY el Santal 33 es unisex, así que también te queda perfecto 😊"
+  },
+  {
+   "id": "a98d5df68c48",
+   "puntaje": 1,
+   "problemas": [
+    "contradictoria",
+    "no_reconoce_error"
+   ],
+   "comentario": "«No es para hombre: es unisex, … para mujer»: se contradice y no reconoce que recomendó un femenino. El RAG no trae la versión masculina: se fija el contexto. «de dama» describe el producto, no el pedido: se valida con género masculino.",
+   "contexto": [
+    "Light blue",
+    "Light blue living stromboli"
+   ],
+   "ideal": "¡Tienes razón, disculpa! 🙏 El Light blue es para mujer. La versión para hombre es esta:\n- **Light blue living stromboli**: $75.000 COP · inspirado en Dolce & Gabbana · para hombre, acuático y cítrico con pimienta rosa, geranio y vetiver\n¿Quieres que te muestre más opciones para hombre?",
+   "genero": "Masculino"
+  },
+  {
+   "id": "f8b5ef808ab0",
+   "puntaje": 1,
+   "problemas": [
+    "incoherente",
+    "no_responde_lo_pedido"
+   ],
+   "comentario": "Responde de descuentos cuando el cliente pide la versión masculina del Light blue, que sí estaba en el contexto.",
+   "ideal": "¡Así es! La de hombre es esta 😊\n- **Light blue living stromboli**: $75.000 COP · inspirado en Dolce & Gabbana · para hombre, acuático y cítrico con pimienta rosa, geranio y vetiver\nEs fresca y acuática, ideal para el día y el clima cálido. ¿Te gustaría pedirla?"
+  },
+  {
+   "id": "ic-0",
+   "puntaje": 1,
+   "problemas": [
+    "producto_inventado",
+    "precio_incorrecto",
+    "nombre_tienda_errado",
+    "incoherente"
+   ],
+   "comentario": "Inventa «Bahrara Soledal» a $130,000, escribe «alba densidad» y ofrece «cambiar el stock».",
+   "ideal": "¡Hola! De la línea inspirada en Bharara tenemos estas 😊\n- **King**: $110.000 COP · para hombre, cítrico y afrutado con naranja, bergamota y vainilla\n- **King soleil**: $130.000 COP · unisex, cítrico y avainillado con naranja siciliana, chocolate y avellana\n- **Niche**: $115.000 COP · unisex, amaderado y floral con jazmín, chocolate y amberwood\n- **Rose**: $115.000 COP · para mujer, floral con rosa, azafrán y oud\n¿Buscas alguna en particular?"
+  },
+  {
+   "id": "ic-1",
+   "puntaje": 1,
+   "problemas": [
+    "comando_terminal"
+   ],
+   "incluir": false,
+   "comentario": "«salir» era el comando del chat de terminal."
+  },
+  {
+   "id": "ic-2",
+   "puntaje": 1,
+   "problemas": [
+    "producto_inventado"
+   ],
+   "comentario": "Toma el saludo mal escrito «Hols» como un perfume e inventa su ficha.",
+   "ideal": "¡Hola! Bienvenido a Fragancias de Alta Densidad 😊 ¿Buscas algún perfume en especial o quieres que te recomiende algo para hombre, mujer o unisex?"
+  },
+  {
+   "id": "ic-3",
+   "puntaje": 1,
+   "problemas": [
+    "comando_terminal"
+   ],
+   "incluir": false,
+   "comentario": "«corregir» era el comando del chat de terminal."
+  },
+  {
+   "id": "ic-4",
+   "puntaje": 2,
+   "problemas": [
+    "no_responde_lo_pedido",
+    "nombres_fuera_de_catalogo"
+   ],
+   "comentario": "El cliente solo aclara que quería saludar y recibe una lista de seis perfumes con nombres que no son los del catálogo.",
+   "ideal": "¡No te preocupes! 😊 Hola, bienvenido a Fragancias de Alta Densidad. ¿Buscas algún perfume en especial o quieres que te recomiende algo para hombre, mujer o unisex?"
+  },
+  {
+   "id": "ic-5",
+   "puntaje": 3,
+   "problemas": [
+    "sin_inspirado_en",
+    "larga"
+   ],
+   "comentario": "Precio correcto, pero ficha de marketing larga («Art of Universe de Lattafa», sin «inspirado en»).",
+   "ideal": "¡Buena elección! ✨ El Art of universe está inspirado en el de Lattafa: unisex, cítrico y afrutado con mandarina, jengibre, pera y ámbar.\n- **Art of universe**: $140.000 COP · 100 ml\n¿Te ayudo a pedirlo?"
+  },
+  {
+   "id": "ic-6",
+   "puntaje": 3,
+   "problemas": [
+    "recomendacion_floja",
+    "sin_precio"
+   ],
+   "comentario": "Insiste en Art of universe (fresco y cítrico) para eventos elegantes sin dar alternativas ni precios.",
+   "contexto": [
+    "Art of universe",
+    "Baccarat Rouge 540",
+    "Santal 33",
+    "Alexandria II"
+   ],
+   "ideal": "Para eventos elegantes, sobre todo de noche, van muy bien los aromas cálidos y sofisticados ✨\n- **Baccarat Rouge 540**: $110.000 COP · inspirado en Maison Francis Kurkdjian · unisex, amaderado y ambarado con azafrán, jazmín y cedro\n- **Alexandria II**: $125.000 COP · inspirado en Xerjoff · unisex, amaderado y atalcado con lavanda, sándalo y oud\nEl Art of universe también sirve si prefieres algo fresco y dulce. ¿Es para hombre o para mujer?"
+  },
+  {
+   "id": "ic-7",
+   "puntaje": 1,
+   "problemas": [
+    "dato_inventado"
+   ],
+   "comentario": "«Duración de 12 meses a 2 años», «artesanal, industrial»: inventado. Debe dar la pirámide y la duración en piel.",
+   "contexto": [
+    "Art of universe"
+   ],
+   "ideal": "El Art of universe está inspirado en el de Lattafa: unisex, con acordes cítrico, afrutado, fresco especiado y dulce.\n• Salida: mandarina, jengibre, bergamota y menta\n• Corazón: pera y flor de azahar\n• Fondo: almizcle, ámbar y cedro\nDura de 8 a 12 horas en piel, según el tipo de piel.\n- **Art of universe**: $140.000 COP · 100 ml"
+  },
+  {
+   "id": "ic-8",
+   "puntaje": 1,
+   "problemas": [
+    "comando_terminal"
+   ],
+   "incluir": false,
+   "comentario": "«corregir»."
+  },
+  {
+   "id": "ic-9",
+   "puntaje": 1,
+   "problemas": [
+    "no_reconoce_error",
+    "no_responde_lo_pedido"
+   ],
+   "comentario": "Corrección del dueño (duración por horas, 6 atomizaciones en pecho, hombros y brazos) respondida con una lista de perfumes. Debe reconocerlo y dar el consejo correcto.",
+   "contexto": [
+    "Art of universe"
+   ],
+   "ideal": "¡Tienes toda la razón, gracias por la corrección! 🙏 La fijación se mide en horas: nuestros perfumes duran de 8 a 12 horas en piel, según el tipo de piel. Para una buena estela y fijación durante el día, aplica mínimo 6 atomizaciones repartidas en pecho, hombros y brazos."
+  },
+  {
+   "id": "ic-10",
+   "puntaje": 3,
+   "problemas": [
+    "sin_inspirado_en"
+   ],
+   "incluir": false,
+   "comentario": "Duplicado de ic-5."
+  },
+  {
+   "id": "ic-11",
+   "puntaje": 1,
+   "problemas": [
+    "dato_inventado",
+    "incoherente"
+   ],
+   "comentario": "Recomienda «envolver el perfume en una bandeja de plástico» y «limpiar el envase con agua».",
+   "contexto": [
+    "Art of universe"
+   ],
+   "ideal": "Para que el Art of universe te dure todo el día:\n• Aplica mínimo 6 atomizaciones repartidas en pecho, hombros y brazos\n• Hazlo sobre la piel hidratada: ayuda a que dure más\n• No frotes después de aplicar\n• Guárdalo lejos del sol y del calor\nAsí te acompaña de 8 a 12 horas, según tu tipo de piel ✨"
+  },
+  {
+   "id": "ic-12",
+   "puntaje": 1,
+   "problemas": [
+    "comando_terminal"
+   ],
+   "incluir": false,
+   "comentario": "«corregir»."
+  },
+  {
+   "id": "ic-13",
+   "puntaje": 1,
+   "problemas": [
+    "dato_inventado"
+   ],
+   "incluir": false,
+   "comentario": "Duplicado de ic-11."
+  },
+  {
+   "id": "ic-14",
+   "puntaje": 2,
+   "problemas": [
+    "precio_incorrecto",
+    "revela_ventas",
+    "sin_inspirado_en",
+    "larga"
+   ],
+   "comentario": "Presenta un «TOP 10 MÁS VENDIDOS» con nombres de marca (CREED AVENTUS, SANTAL 33 LE LABOO) y precios errados (Light blue $75.000, Yara $110.000).",
+   "contexto": [
+    "Santal 33",
+    "Light blue",
+    "Lacoste blanca",
+    "King",
+    "Aventus",
+    "Amber oud gold edition"
+   ],
+   "ideal": "Estas son algunas de las favoritas de nuestros clientes ⭐ (Top 10 completo en https://alta-densidad-page.vercel.app/top10):\n- **Santal 33**: $75.000 COP · inspirado en Le Labo · unisex, amaderado y atalcado con sándalo, cuero y cardamomo\n- **Light blue**: $70.000 COP · inspirado en Dolce & Gabbana · para mujer, cítrico y fresco con limón siciliano, manzana y cedro\n- **Lacoste blanca**: $65.000 COP · inspirado en Lacoste · para hombre, amaderado y aromático con toronja, romero y cedro\n- **King**: $110.000 COP · inspirado en Bharara · para hombre, cítrico y afrutado con naranja, bergamota y vainilla\n¿Buscas algo para hombre, mujer o unisex?"
+  },
+  {
+   "id": "ic-15",
+   "puntaje": 1,
+   "problemas": [
+    "ignora_pedido",
+    "precio_incorrecto"
+   ],
+   "comentario": "Pide los unisex y repite el top 10 mezclado.",
+   "contexto": [
+    "Santal 33",
+    "Amber oud gold edition",
+    "Bade'e al oud sublime"
+   ],
+   "ideal": "Entre los unisex, estas son las favoritas de nuestros clientes ⭐\n- **Santal 33**: $75.000 COP · inspirado en Le Labo · unisex, amaderado y atalcado con sándalo, cuero y cardamomo\n- **Amber oud gold edition**: $125.000 COP · inspirado en Al Haramain · unisex, dulce y afrutado con melón, piña y vainilla\n- **Bade'e al oud sublime**: $110.000 COP · inspirado en Lattafa · unisex, afrutado y fresco con manzana, lichi y rosa\n¿Te cuento más de alguna?"
+  },
+  {
+   "id": "ic-16",
+   "puntaje": 1,
+   "problemas": [
+    "ignora_pedido"
+   ],
+   "comentario": "Igual que ic-15: repite el top 10.",
+   "contexto": [
+    "Santal 33",
+    "Amber oud gold edition",
+    "Bade'e al oud sublime"
+   ],
+   "ideal": "Entre los unisex, el favorito de nuestros clientes es el Santal 33 ⭐\n- **Santal 33**: $75.000 COP · inspirado en Le Labo · unisex, amaderado y atalcado con sándalo, cuero y cardamomo\nTambién gustan mucho el Amber oud gold edition y el Bade'e al oud sublime. ¿Te cuento de ellos?"
+  },
+  {
+   "id": "ic-17",
+   "puntaje": 2,
+   "problemas": [
+    "producto_inventado",
+    "sin_inspirado_en"
+   ],
+   "comentario": "Ficha de «LACOSTE RED» de 120 ml, que no existe con ese nombre (la real es RedL.12.12. Rouge, 100 ml), y «Casa / Marca: Lacoste». El RAG hereda «unisex» del historial y deja fuera los Lacoste: se fija el contexto.",
+   "ideal": "Inspirados en Lacoste tenemos estos 😊\n- **Lacoste blanca**: $65.000 COP · para hombre, amaderado y aromático con toronja, romero y cedro\n- **RedL.12.12. Rouge**: $65.000 COP · para hombre, afrutado y especiado con mango, mandarina y cardamomo\n- **Style in Play**: $80.000 COP · para hombre, amaderado y verde con manzana verde, pino y vetiver\n- **Sparkling**: $70.000 COP · para mujer, dulce y afrutado con manzana roja, algodón de azúcar y macarrones\n¿Te cuento más de alguno?",
+   "contexto": [
+    "Lacoste blanca",
+    "RedL.12.12. Rouge",
+    "Style in Play",
+    "Sparkling",
+    "L.12.12 Vert"
+   ]
+  },
+  {
+   "id": "ic-18",
+   "puntaje": 3,
+   "problemas": [
+    "sin_inspirado_en",
+    "dato_inventado"
+   ],
+   "comentario": "Precio correcto, pero «Casa / Marca: Lacoste», fijación de 8 a 10 horas (es de 8 a 12) y una historia de la camiseta polo que no está en el catálogo.",
+   "ideal": "La Lacoste blanca está inspirada en el de Lacoste: para hombre, de la familia amaderada y aromática, con acordes amaderado, aromático y cítrico.\n• Salida: toronja, romero y cardamomo\n• Corazón: ylang-ylang y nardos\n• Fondo: cedro de virginia, gamuza, vetiver y cuero\nEs ideal para el día, la oficina y el clima cálido.\n- **Lacoste blanca**: $65.000 COP · 100 ml"
+  },
+  {
+   "id": "ic-19",
+   "puntaje": 1,
+   "problemas": [
+    "producto_inventado"
+   ],
+   "comentario": "Responde con la ficha de «LACOSTE RED». No hay Lacoste rosada en el catálogo: debe decirlo y ofrecer la femenina. Hoy el RAG no trae nada porque data/overrides.json intercepta «lacoste rosada».",
+   "contexto": [
+    "Sparkling",
+    "Lacoste blanca"
+   ],
+   "ideal": "No manejamos una Lacoste rosada 🙏 Inspirada en Lacoste y para mujer tenemos esta:\n- **Sparkling**: $70.000 COP · inspirado en Lacoste · para mujer, dulce y afrutado con manzana roja, algodón de azúcar y macarrones\nSi buscas una referencia exacta, escríbele a un asesor por WhatsApp (+57 304 647 7694) y te confirma si la tenemos."
+  },
+  {
+   "id": "ic-20",
+   "puntaje": 1,
+   "problemas": [
+    "comando_terminal"
+   ],
+   "incluir": false,
+   "comentario": "«corregir»."
+  },
+  {
+   "id": "ic-21",
+   "puntaje": 1,
+   "problemas": [
+    "comando_terminal"
+   ],
+   "incluir": false,
+   "comentario": "«corregir»."
+  },
+  {
+   "id": "ic-22",
+   "puntaje": 1,
+   "problemas": [
+    "comando_terminal"
+   ],
+   "incluir": false,
+   "comentario": "«corregir»."
+  },
+  {
+   "id": "ic-23",
+   "puntaje": 1,
+   "problemas": [
+    "producto_inventado",
+    "no_responde_lo_pedido"
+   ],
+   "comentario": "Responde «hola» con la ficha de Guerlain La Petite Robe Noire (de los clásicos que ya no se venden), cinco veces seguidas.",
+   "ideal": "¡Hola! Bienvenido a Fragancias de Alta Densidad 😊 ¿En qué te puedo ayudar hoy? Cuéntame si buscas un perfume en especial o quieres recomendaciones para hombre, mujer o unisex."
+  },
+  {
+   "id": "ic-24",
+   "puntaje": 1,
+   "problemas": [
+    "producto_inventado"
+   ],
+   "incluir": false,
+   "comentario": "Duplicado de ic-23."
+  },
+  {
+   "id": "ic-25",
+   "puntaje": 1,
+   "problemas": [
+    "producto_inventado"
+   ],
+   "incluir": false,
+   "comentario": "Duplicado de ic-23."
+  },
+  {
+   "id": "ic-26",
+   "puntaje": 1,
+   "problemas": [
+    "producto_inventado"
+   ],
+   "incluir": false,
+   "comentario": "Duplicado de ic-23."
+  },
+  {
+   "id": "ic-27",
+   "puntaje": 1,
+   "problemas": [
+    "producto_inventado"
+   ],
+   "incluir": false,
+   "comentario": "Duplicado de ic-23."
+  },
+  {
+   "id": "ic-28",
+   "puntaje": 4,
+   "problemas": [],
+   "incluir": false,
+   "comentario": "Saludo correcto; ya cubierto por ic-23."
+  },
+  {
+   "id": "ic-29",
+   "puntaje": 3,
+   "problemas": [
+    "sin_inspirado_en",
+    "pregunta_sobrante"
+   ],
+   "incluir": false,
+   "comentario": "Da el Santal 33 («SANTAL 33 LE LABOO») sin precio y pregunta hombre/mujer/unisex cuando pidió unisex. Ya cubierto por ic-16."
+  },
+  {
+   "id": "ic-30",
+   "puntaje": 2,
+   "problemas": [
+    "recomendacion_floja"
+   ],
+   "comentario": "Pide para hombre y repite solo el Santal 33.",
+   "ideal": "Para hombre, estas son de las favoritas de nuestros clientes:\n- **Lacoste blanca**: $65.000 COP · inspirado en Lacoste · para hombre, amaderado y aromático con toronja, romero y cedro\n- **Aventus**: $70.000 COP · inspirado en Creed · para hombre, afrutado y amaderado con piña, bergamota y abedul\n- **212 VIP Black**: $70.000 COP · inspirado en Carolina Herrera · para hombre, aromático y avainillado con absenta, lavanda y vainilla\n- **King**: $110.000 COP · inspirado en Bharara · para hombre, cítrico y afrutado con naranja, bergamota y vainilla\n¿Te gustan más frescos, dulces o amaderados?"
+  },
+  {
+   "id": "ic-31",
+   "puntaje": 1,
+   "problemas": [
+    "producto_no_encaja",
+    "repite_productos"
+   ],
+   "comentario": "Pide algo más cítrico y vuelve a dar el Santal 33, que no es cítrico.",
+   "contexto": [
+    "Sauvage",
+    "Eros energy",
+    "Odyssey mega man",
+    "L.12.12 Vert",
+    "Lacoste blanca"
+   ],
+   "ideal": "¡Claro! Para hombre y con un toque cítrico bien marcado 🍋\n- **Sauvage**: $70.000 COP · inspirado en Dior · para hombre, fresco especiado y cítrico con bergamota, pimienta y ambroxan\n- **Eros energy**: $80.000 COP · inspirado en Versace · para hombre, cítrico y aromático con limón, toronja y naranja sanguina\n- **Odyssey mega man**: $115.000 COP · inspirado en Armaf · para hombre, cítrico y aromático con limón, naranja y piña\n- **L.12.12 Vert**: $100.000 COP · inspirado en Lacoste · para hombre, cítrico y aromático con pomelo, bergamota y cedro\n¿Quieres que te cuente más de alguno?"
+  },
+  {
+   "id": "ic-32",
+   "puntaje": 1,
+   "problemas": [
+    "no_responde_lo_pedido"
+   ],
+   "incluir": false,
+   "comentario": "«Por favor, dime tu preferencia de perfume» a «citricos». Repetición de ic-31/ic-34."
+  },
+  {
+   "id": "ic-33",
+   "puntaje": 1,
+   "problemas": [
+    "repite_productos"
+   ],
+   "incluir": false,
+   "comentario": "Repetición de ic-31."
+  },
+  {
+   "id": "ic-34",
+   "puntaje": 1,
+   "problemas": [
+    "dato_inventado",
+    "producto_inventado"
+   ],
+   "comentario": "Dice que no hay cítricos e inventa «DIOR JAZZ», «LIPSTICK LUXE» y «BRAVAND».",
+   "contexto": [
+    "Silver mountain water",
+    "Imagination",
+    "Bleu de Chanel",
+    "Acqua di Gio"
+   ],
+   "ideal": "¡Claro que tenemos cítricos! 🍋 Estos van muy bien para hombre:\n- **Silver mountain water**: $70.000 COP · inspirado en Creed · unisex, cítrico y verde con bergamota, mandarina y té verde\n- **Imagination**: $100.000 COP · inspirado en Louis Vuitton · unisex, cítrico y fresco con bergamota, naranja siciliana y té negro\n- **Bleu de Chanel**: $80.000 COP · inspirado en Chanel · para hombre, cítrico y amaderado con toronja, limón y cedro\n- **Acqua di Gio**: $85.000 COP · inspirado en Giorgio Armani · para hombre, cítrico y marino con lima, bergamota y romero\n¿Te cuento más de alguno?"
+  },
+  {
+   "id": "ic-35",
+   "puntaje": 1,
+   "problemas": [
+    "no_responde_lo_pedido"
+   ],
+   "incluir": false,
+   "comentario": "Repetición de ic-32."
+  },
+  {
+   "id": "ic-36",
+   "puntaje": 1,
+   "problemas": [
+    "producto_no_encaja",
+    "precio_incorrecto"
+   ],
+   "comentario": "A «dulce» responde Light blue (cítrico, femenino) a $110.000 (vale $70.000).",
+   "contexto": [
+    "Arabians tonka",
+    "9PM Elixir",
+    "Amber oud gold edition",
+    "Khamrah"
+   ],
+   "ideal": "Si te gustan los dulces, estos son cálidos y envolventes ✨\n- **Arabians tonka**: $80.000 COP · inspirado en Montale · unisex, dulce y avainillado con haba tonka, oud y caña de azúcar\n- **9PM Elixir**: $85.000 COP · inspirado en Afnan · unisex, cálido especiado y avainillado con cardamomo, cuero y vainilla\n- **Khamrah**: $110.000 COP · inspirado en Lattafa · unisex, dulce y cálido especiado con dátiles, canela y vainilla\n¿Quieres que te cuente más de alguno?"
+  },
+  {
+   "id": "ic-37",
+   "puntaje": 1,
+   "problemas": [
+    "no_reconoce_error",
+    "precio_incorrecto"
+   ],
+   "comentario": "El cliente señala que Light blue no es dulce y el bot insiste con el mismo perfume y el mismo precio errado.",
+   "contexto": [
+    "Light blue",
+    "Arabians tonka",
+    "Khamrah",
+    "9pm"
+   ],
+   "ideal": "¡Tienes razón! 🙏 El Light blue es cítrico y fresco, no dulce, y además es para mujer. Para algo dulce te van mejor estos:\n- **Arabians tonka**: $80.000 COP · inspirado en Montale · unisex, dulce y avainillado con haba tonka, oud y caña de azúcar\n- **9pm**: $100.000 COP · inspirado en Afnan · para hombre, avainillado y cálido especiado con manzana, canela y vainilla\n¿Te cuento más de alguno?"
+  },
+  {
+   "id": "ic-38",
+   "puntaje": 1,
+   "problemas": [
+    "no_responde_lo_pedido"
+   ],
+   "incluir": false,
+   "comentario": "Repetición de ic-32."
+  },
+  {
+   "id": "ic-39",
+   "puntaje": 1,
+   "problemas": [
+    "producto_no_encaja",
+    "precio_incorrecto",
+    "repite_productos"
+   ],
+   "comentario": "A «con especias» vuelve a dar Light blue a $110.000.",
+   "contexto": [
+    "Layton",
+    "Khamrah Qahwa",
+    "Le male le parfum",
+    "9pm"
+   ],
+   "ideal": "Con especias, estos son cálidos y elegantes 🌶️\n- **Layton**: $85.000 COP · inspirado en Parfums de Marly · unisex, cálido especiado con manzana, cardamomo y vainilla\n- **Khamrah Qahwa**: $110.000 COP · inspirado en Lattafa · unisex, especiado y dulce con canela, café y praliné\n- **Le male le parfum**: $110.000 COP · inspirado en Jean Paul Gaultier · para hombre, cálido especiado con cardamomo, lavanda y vainilla\n¿Quieres que te cuente más de alguno?"
+  },
+  {
+   "id": "ic-40",
+   "puntaje": 4,
+   "problemas": [],
+   "incluir": false,
+   "comentario": "Saludo correcto; ya cubierto por ic-23."
+  },
+  {
+   "id": "ic-41",
+   "puntaje": 1,
+   "problemas": [
+    "producto_inventado"
+   ],
+   "comentario": "Inventa «COCOA FRESH» y «DIAMOND EYE» con notas absurdas («Cocaina dulce», «Estofado de Frutas»).",
+   "ideal": "Para hombre tenemos muchas opciones; estas son de las favoritas:\n- **Lacoste blanca**: $65.000 COP · inspirado en Lacoste · para hombre, amaderado y aromático con toronja, romero y cedro\n- **Aventus**: $70.000 COP · inspirado en Creed · para hombre, afrutado y amaderado con piña, bergamota y abedul\n- **212 VIP Black**: $70.000 COP · inspirado en Carolina Herrera · para hombre, aromático y avainillado con absenta, lavanda y vainilla\n- **King**: $110.000 COP · inspirado en Bharara · para hombre, cítrico y afrutado con naranja, bergamota y vainilla\n¿Los prefieres frescos, dulces o amaderados?"
+  },
+  {
+   "id": "ic-42",
+   "puntaje": 4,
+   "problemas": [],
+   "incluir": false,
+   "comentario": "Saludo correcto; ya cubierto por ic-23."
+  },
+  {
+   "id": "ic-43",
+   "puntaje": 1,
+   "problemas": [
+    "producto_inventado",
+    "dato_inventado",
+    "cortada"
+   ],
+   "comentario": "Inventa «BATCHARO MARQUÉZ», «Peso: 300 ml», «Fíjola», y se corta a la mitad.",
+   "contexto": [
+    "Santal 33",
+    "Light blue",
+    "Lacoste blanca",
+    "King"
+   ],
+   "ideal": "¡Con gusto! Para acertar, cuéntame si es para hombre, mujer o unisex y si te gustan más los aromas frescos, dulces o amaderados. Mientras, estas son de las favoritas de nuestros clientes ⭐\n- **Santal 33**: $75.000 COP · inspirado en Le Labo · unisex, amaderado y atalcado con sándalo, cuero y cardamomo\n- **Light blue**: $70.000 COP · inspirado en Dolce & Gabbana · para mujer, cítrico y fresco con limón siciliano, manzana y cedro\n- **Lacoste blanca**: $65.000 COP · inspirado en Lacoste · para hombre, amaderado y aromático con toronja, romero y cedro"
+  },
+  {
+   "id": "ic-44",
+   "puntaje": 1,
+   "problemas": [
+    "html_en_respuesta",
+    "dato_inventado",
+    "nombres_fuera_de_catalogo"
+   ],
+   "comentario": "Mete una etiqueta <img> con una imagen de relleno, «Light Blue Damara», lo llama unisex y habla de «peso de 75.000 COP».",
+   "contexto": [
+    "Santal 33",
+    "Light blue",
+    "Lacoste blanca",
+    "King",
+    "Aventus",
+    "Amber oud gold edition"
+   ],
+   "ideal": "Las cifras de ventas son internas, pero te comparto las favoritas de nuestros clientes ⭐ (Top 10 completo en https://alta-densidad-page.vercel.app/top10):\n- **Santal 33**: $75.000 COP · inspirado en Le Labo · unisex, amaderado y atalcado con sándalo, cuero y cardamomo\n- **Light blue**: $70.000 COP · inspirado en Dolce & Gabbana · para mujer, cítrico y fresco con limón siciliano, manzana y cedro\n- **Lacoste blanca**: $65.000 COP · inspirado en Lacoste · para hombre, amaderado y aromático con toronja, romero y cedro\n¿Te recomiendo alguno según tu gusto?"
+  },
+  {
+   "id": "ic-45",
+   "puntaje": 1,
+   "problemas": [
+    "producto_inventado",
+    "dato_inventado",
+    "cortada"
+   ],
+   "comentario": "Inventa «Thaanu Next Arianna Granada», «Peso: 300 ml» y se corta.",
+   "contexto": [
+    "Santal 33",
+    "Light blue",
+    "Lacoste blanca",
+    "King",
+    "Aventus",
+    "Amber oud gold edition"
+   ],
+   "ideal": "Nuestro Top 10 con las favoritas de los clientes está en https://alta-densidad-page.vercel.app/top10 ⭐ Las primeras son:\n- **Santal 33**: $75.000 COP · inspirado en Le Labo · unisex, amaderado y atalcado con sándalo, cuero y cardamomo\n- **Light blue**: $70.000 COP · inspirado en Dolce & Gabbana · para mujer, cítrico y fresco con limón siciliano, manzana y cedro\n- **Lacoste blanca**: $65.000 COP · inspirado en Lacoste · para hombre, amaderado y aromático con toronja, romero y cedro\n- **King**: $110.000 COP · inspirado en Bharara · para hombre, cítrico y afrutado con naranja, bergamota y vainilla\n¿Quieres que te recomiende según tu gusto?"
+  },
+  {
+   "id": "ic-46",
+   "puntaje": 2,
+   "problemas": [
+    "no_responde_lo_pedido"
+   ],
+   "comentario": "A «santal 33» responde «si necesitas ayuda…» sin dar ningún dato. Ideal: la ficha que el modelo nuevo sí dio (f6683b6e8403).",
+   "ideal": "El Santal 33 está inspirado en el de Le Labo: una fragancia de diseñador unisex, de la familia amaderada y aromática, con acordes amaderado, atalcado, cuero y cálido especiado.\n• Salida: cardamomo, violeta y iris\n• Corazón: papiro, cuero, cedro y sándalo\n• Fondo: ambroxan y almizcle\nBrilla en la noche, en citas y en clima frío.\n- **Santal 33**: $75.000 COP · 100 ml"
+  }
+ ]
+}

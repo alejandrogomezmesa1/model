@@ -15,6 +15,8 @@ import sys
 import os
 import re
 import json
+import shutil
+import tempfile
 
 # Inclusión de paths
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "src")))
@@ -28,7 +30,15 @@ def run_tests():
     print("SUITE DE REGRESIÓN: EVALUACIÓN DE 8 REQUERIMIENTOS ARQUITECTÓNICOS")
     print("=" * 75)
 
-    kb = KnowledgeBase()
+    # Copia temporal de la base: la prueba de 'corregir:' guarda un override, y en la base real la API
+    # se lo respondería tal cual a cualquier cliente que escriba esa pregunta
+    tmp = tempfile.mkdtemp(prefix="aura_regresion_")
+    real_db = os.path.join(os.path.dirname(__file__), "data", "perfumes_db.sqlite")
+    tmp_db = os.path.join(tmp, "perfumes_db.sqlite")
+    if os.path.exists(real_db):
+        shutil.copy(real_db, tmp_db)
+    kb = KnowledgeBase(db_path=tmp_db)
+    kb.overrides_path = os.path.join(tmp, "overrides.json")
     cur = kb.conn.cursor()
     cur.execute("SELECT count(*) as count FROM productos")
     if cur.fetchone()["count"] == 0:
