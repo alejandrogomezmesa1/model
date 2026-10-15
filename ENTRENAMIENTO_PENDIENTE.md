@@ -74,6 +74,15 @@ Evaluación limpia (341 casos), todo con el prompt y el RAG nuevos:
 | Violaciones | **0** | 1 (tarjeta por chat) |
 | Recompensa media | **−0,333** | −0,412 |
 
-aura_v7 **no se promueve**: mete la regla de envíos en respuestas que no tienen que ver (poema, seguimiento del pedido).
-Los arreglos del RAG solos suben aura_v3b de 239 a 245. Siguiente intento: aura_v7b sin los pares de política
-(la regla ya está en el prompt), más repaso del set rojo y lr 5e-6.
+| aura_v7b (sin pares de política, 250 de repaso, lr 5e-6) | 230 aprobados · 0 violaciones · −0,403 |
+|---|---|
+
+Ninguno se promueve; sigue **aura_v3b**. aura_v7 mete la regla de envíos en respuestas que no tienen que ver
+(poema, seguimiento del pedido); aura_v7b, más suave, pierde 23 casos y gana 8 frente a v3b. Con este modelo de
+0,5B, otra ronda de DPO sobre v3b con estos datos le quita más de lo que le enseña. Lo que sí mejoró al modelo en
+producción fueron los arreglos del RAG y de la API (239 → 245 sin reentrenar).
+
+Siguientes pasos que sí tienen sentido:
+- Seguir registrando conversaciones reales y revisándolas: el dataset curado (`data/interacciones_*.jsonl`) queda
+  listo para sumarse al próximo entrenamiento completo, no como ronda suelta encima de v3b.
+- Probar un modelo base de 1,5B (cabe en 4 GB con LoRA): el 0,5B se satura con cada ronda nueva.
