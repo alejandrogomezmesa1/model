@@ -51,3 +51,19 @@ Reportes: `dataset_aura/salida/eval/reporte_20261007_1339.json` (nuevo) y `repor
 - Decidir si se publica `aura_v2`. La API lo carga por defecto; para volver al anterior: `$env:AURA_MODELO="mi_modelo_perfumista_v1"`.
 - Debilidades del modelo de 0,5B vistas en la evaluación: a veces responde un tema vecino (p. ej. responde «originales» a «envío gratis»), cede en algunos ataques de inyección y dijo que un perfume es apto para niños. Siguiente paso recomendado: más variaciones por intención (`--semilla` distinta y unir), más pares DPO para salud y ataques, o un modelo base más grande (1,5B cabe en 4 GB con LoRA).
 - `chat.py` (chat de terminal) todavía usa su propio prompt y las respuestas extractivas antiguas.
+
+## AURA analista de mercado (2026-10-27)
+
+La tienda tiene una **vigía de tendencias** (`AltaDensidadPAGE/backend/services/vigia.js`): cada día a las 06:00 (Colombia) investiga con herramientas programadas (autocompletado de Google Colombia, Google Noticias y comunidades de Reddit), cruza todo con el catálogo y arma el informe del panel (Marca → Marketplace → Tendencias). Las herramientas hacen la investigación; AURA solo **redacta el informe** a partir de las señales, porque un modelo de 0,5B no puede navegar ni investigar por sí mismo de forma fiable.
+
+- Endpoint nuevo `POST /analista` con `{ senales }` → `{ resumen, origen }`. Si el texto inventa un perfume o manda a publicar uno no vendible (`verificar` en `dataset_aura/analista.py`), devuelve el informe de reglas con `origen: "respaldo"` y la tienda usa el suyo.
+- La tienda lo llama con la misma URL y API key del chat (modo nativo). Mientras el PC esté apagado, el informe sale igual, armado con reglas.
+- Datos: `python dataset_aura/analista.py` → `salida/analista/analista_sft.jsonl` (400 ejemplos) y `analista_dpo.jsonl` (160 pares: inventar perfumes, recomendar no vendibles, saludos de relleno). `src/preparar_datos_aura.py` ya los suma.
+
+### Para entrenarlo (en el PC con la RTX 3050)
+
+1. `git pull`
+2. `./hf-locql/Scripts/python.exe dataset_aura/analista.py`
+3. `./hf-locql/Scripts/python.exe src/preparar_datos_aura.py`
+4. SFT y DPO igual que `aura_v2` (guardar como `models/aura_v3`), y evaluar el chat con `evaluar.py` para confirmar que no empeoró.
+5. `$env:AURA_MODELO="aura_v3"` y reiniciar la API. En el panel, «Investigar ahora» debe decir «resumen escrito por AURA».

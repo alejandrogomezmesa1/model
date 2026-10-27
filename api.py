@@ -41,6 +41,7 @@ sys.path.insert(0, str(BASE_DIR))
 
 from knowledge_db import KnowledgeBase, normalize_text
 from post_validator import verificar_productos
+from dataset_aura.analista import SISTEMA_ANALISTA, contexto as contexto_analista, informe_ideal, verificar as verificar_informe
 
 
 # =============================================================================
@@ -449,6 +450,38 @@ def native_chat(req: NativeChatRequest):
         "res_type": "text",
         "products": products,
     }
+
+
+# =============================================================================
+# ANALISTA DE MERCADO (vigía de tendencias de la tienda)
+# =============================================================================
+# La tienda investiga el mercado con sus herramientas (búsquedas de Google Colombia, noticias y
+# comunidades) y manda aquí las SEÑALES ya cruzadas con el catálogo. AURA redacta el informe interno.
+# Si el texto inventa un perfume o manda a publicar uno no vendible, se devuelve el informe de
+# reglas con origen «respaldo» (la tienda entonces usa el suyo).
+class AnalistaRequest(BaseModel):
+    senales: Dict[str, Any]
+
+
+@app.post("/analista", dependencies=[Depends(verify_api_key)])
+def analista(req: AnalistaRequest):
+    senales = req.senales or {}
+    if not isinstance(senales.get("perfumes", []), list):
+        raise HTTPException(status_code=400, detail="senales.perfumes debe ser una lista")
+    tokenizer, model = STATE["tokenizer"], STATE["model"]
+    mensajes = [{"role": "system", "content": SISTEMA_ANALISTA}, {"role": "user", "content": contexto_analista(senales)}]
+    prompt = tokenizer.apply_chat_template(mensajes, tokenize=False, add_generation_prompt=True)
+    with INFERENCE_LOCK:
+        inputs = tokenizer(prompt, return_tensors="pt").to(STATE["device"])
+        with torch.no_grad():
+            salida = model.generate(**inputs, max_new_tokens=320, do_sample=False, repetition_penalty=1.05,
+                                    pad_token_id=tokenizer.eos_token_id)
+    texto = tokenizer.decode(salida[0][inputs.input_ids.shape[1]:], skip_special_tokens=True).strip()
+    nombres = [nombre for nombre, _ in STATE["catalogo"].values()]
+    problemas = verificar_informe(texto, senales, nombres)
+    if problemas:
+        return {"resumen": informe_ideal(senales), "origen": "respaldo", "problemas": problemas}
+    return {"resumen": texto, "origen": "modelo"}
 
 
 @app.delete("/session/{session_id}", dependencies=[Depends(verify_api_key)])

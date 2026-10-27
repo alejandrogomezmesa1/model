@@ -5,6 +5,7 @@ Convierte el dataset de AURA (dataset_aura/salida) al formato de entrenamiento d
   prompt/completion: la pérdida se calcula solo sobre la última respuesta de AURA, no sobre
   el prompt de sistema (que ocupa ~735 tokens y es igual en todos los ejemplos).
 - DPO: aura_dpo.jsonl → data/aura_dpo.jsonl (prompt conversacional + chosen/rejected).
+- Analista de mercado: salida/analista/*.jsonl (si existen) se suman a SFT y DPO.
 
 Comprueba que cada ejemplo empiece con el mismo prompt de sistema que usa la API
 (dataset_aura/salida/sistema_aura.txt), para entrenar con el formato real de inferencia.
@@ -53,6 +54,19 @@ def main():
     for i, p in enumerate(cargar(SALIDA / "alineacion" / "aura_dpo.jsonl")):
         revisar_sistema(p["prompt"], f"dpo:{i}")
         dpo.append({"prompt": p["prompt"], "chosen": p["chosen"], "rejected": p["rejected"]})
+
+    # Analista de mercado (dataset_aura/analista.py): otro prompt de sistema, mismo formato
+    sys.path.insert(0, str(ROOT))
+    from dataset_aura.analista import SISTEMA_ANALISTA
+    carpeta = SALIDA / "analista"
+    if (carpeta / "analista_sft.jsonl").exists():
+        for i, e in enumerate(cargar(carpeta / "analista_sft.jsonl")):
+            msgs = e["messages"]
+            if msgs[0]["content"] != SISTEMA_ANALISTA:
+                raise SystemExit(f"analista:{i}: el prompt no coincide con SISTEMA_ANALISTA; corre dataset_aura/analista.py")
+            sft.append({"prompt": msgs[:-1], "completion": [msgs[-1]]})
+        for p in cargar(carpeta / "analista_dpo.jsonl"):
+            dpo.append({"prompt": p["prompt"], "chosen": p["chosen"], "rejected": p["rejected"]})
 
     escribir(DATA / "aura_sft.jsonl", sft)
     escribir(DATA / "aura_dpo.jsonl", dpo)
