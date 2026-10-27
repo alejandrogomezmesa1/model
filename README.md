@@ -12,7 +12,8 @@ Sistema de inteligencia artificial especializado en el dominio de la **alta perf
 5. [Bases de Datos y Conocimiento](#5-bases-de-datos-y-conocimiento)
 6. [Pipeline de Entrenamiento: SFT + DPO (Aprendizaje por Refuerzo)](#6-pipeline-de-entrenamiento-sft--dpo-aprendizaje-por-refuerzo)
 7. [Guía de Uso: Asistente Interactivo en Terminal](#7-guía-de-uso-asistente-interactivo-en-terminal)
-8. [Hoja de Ruta y Próximos Pasos](#8-hoja-de-ruta-y-próximos-pasos)
+8. [Servidor Local y API Pública con Autoarranque (Windows)](#8-servidor-local-y-api-pública-con-autoarranque-windows)
+9. [Hoja de Ruta y Próximos Pasos](#9-hoja-de-ruta-y-próximos-pasos)
 
 ---
 
@@ -238,7 +239,28 @@ Para interactuar con el modelo en cualquier momento, abre PowerShell en la raíz
 
 ---
 
-## 8. Hoja de Ruta y Próximos Pasos
+## 8. Servidor Local y API Pública con Autoarranque (Windows)
+
+El sistema cuenta con una infraestructura de servidor 24/7 de alta resiliencia diseñada para operar de forma desatendida. Cada vez que el equipo se reinicia o se enciende, el servidor inicia automáticamente en segundo plano la API de FastAPI con aceleración GPU (NVIDIA RTX 3050 CUDA) y el túnel seguro de ngrok.
+
+### Ejecutables de control rápido (Doble clic en la raíz):
+- **`instalar_autoarranque.bat`**: Configura Windows para iniciar el servidor automáticamente en cada inicio de sesión.
+- **`estado_servidor.bat`**: Muestra en tiempo real si la API (`:8000`), el túnel ngrok y el autoarranque están activos.
+- **`detener_servidor.bat`**: Apaga el servicio para liberar la memoria VRAM de la GPU antes de entrenar (`train_sft.py`).
+- **`iniciar_servidor.bat`**: Inicia el servidor mostrando la consola interactiva con logs en vivo.
+- **`desinstalar_autoarranque.bat`**: Desactiva el inicio automático.
+
+### Endpoints y Conectividad:
+- **API Local**: `http://127.0.0.1:8000` (Red local: `http://0.0.0.0:8000`).
+- **Túnel Público Seguro**: `https://expend-chaplain-degraded.ngrok-free.dev`.
+- **Sonda de Salud**: `GET /health` (Público, comprueba estado, modelo cargado y GPU).
+- **Inferencia**: `POST /chat` y `POST /v1/chat/completions` (Requiere `Authorization: Bearer <API_KEY>`).
+
+> 📘 Para detalles de arquitectura, diagramas de flujo, especificaciones de memoria VRAM y detalles del supervisor Watchdog, consulta el **[Manual Técnico del Servidor](file:///c:/Users/aleja/Desktop/Proyectos/modelo/MANUAL_TECNICO_SERVIDOR.md)** y la **[Guía Rápida de Autoarranque](file:///c:/Users/aleja/Desktop/Proyectos/modelo/AUTOARRANQUE.md)**.
+
+---
+
+## 9. Hoja de Ruta y Próximos Pasos
 
 1. **Interfaz Gráfica (GUI)**:
    - Crear una aplicación web local ligera y visualmente atractiva (HTML5 / Vanilla CSS / FastAPI o Gradio).

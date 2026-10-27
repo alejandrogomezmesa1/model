@@ -5,7 +5,7 @@ import httpx
 
 BASE = "http://127.0.0.1:8000"
 KEY_FILE = Path(__file__).resolve().parent / "data" / ".api_key"
-KEY = KEY_FILE.read_text(encoding="utf-8").strip() if KEY_FILE.exists() else ""
+KEY = [line.strip() for line in KEY_FILE.read_text(encoding="utf-8").splitlines() if line.strip() and not line.strip().startswith("#")][0] if KEY_FILE.exists() else ""
 
 print("=" * 65)
 print("TEST DE SEGURIDAD Y CONTRATO: API PRIVADA ASISTENTE DE PERFUMERÍA")

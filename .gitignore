@@ -27,8 +27,10 @@ data/product_embeddings_ids.json
 data/*.jsonl
 data/overrides.json
 
-# Logs
+# Logs y PID
 *.log
+logs/
+data/servidor_daemon.pid
 
 # Secretos y claves
 .env
