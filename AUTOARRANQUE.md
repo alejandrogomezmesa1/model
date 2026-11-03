@@ -34,7 +34,7 @@ Todos los archivos ejecutables están en la raíz del proyecto para uso con dobl
    https://expend-chaplain-degraded.ngrok-free.dev
    ```
 6. **Supervisor Activo (Watchdog)**: El script se queda monitoreando en segundo plano. Si por alguna razón la API o ngrok se cierran, los reinicia automáticamente.
-
+-
 ---
 
 ## 📝 Ubicación de los Registros (Logs)
